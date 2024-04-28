@@ -1,12 +1,19 @@
 package com.example.nurad.Activities;
 
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.method.PasswordTransformationMethod;
 import android.text.style.ForegroundColorSpan;
+import android.view.MotionEvent;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,11 +21,16 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.nurad.Activities.Activity_CreateAccount;
 import com.example.nurad.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class Activity_Login extends AppCompatActivity {
-    TextView SignUp_TxtV;
+    TextView SignUp_TxtV, forgotPasswordTextView;
+    private FirebaseAuth auth;
+    private ProgressDialog progressDialog;
+    private EditText logemail, logpassword;
+
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +42,14 @@ public class Activity_Login extends AppCompatActivity {
             return insets;
         });
 
+        // Initialize FirebaseAuth instance
+        auth = FirebaseAuth.getInstance();
+
+        // Initialize views
+        logemail = findViewById(R.id.Email_Etxt);
+        logpassword = findViewById(R.id.Password_Etxt);
         SignUp_TxtV = findViewById(R.id.textView7);
+        forgotPasswordTextView = findViewById(R.id.textView6);
 
         // Change the color of some text within 1 textview
         String text = "Don't have an account yet? Sign Up";
@@ -41,11 +60,98 @@ public class Activity_Login extends AppCompatActivity {
         spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#882065")), startIndex, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         SignUp_TxtV.setText(spannableString);
 
+        // Set password transformation method for the password EditText field
+        logpassword.setTransformationMethod(new PasswordTransformationMethod());
 
+        // Set click listener for the login button
+        Button loginBtn = findViewById(R.id.LoginBtn);
+        loginBtn.setOnClickListener(view -> loginUser());
+
+        // Set click listener for the Sign Up text view
         SignUp_TxtV.setOnClickListener(v -> {
             Intent i = new Intent(this, Activity_CreateAccount.class);
             startActivity(i);
             finish();
         });
+
+        // Set click listener for the Forgot Password text view
+        forgotPasswordTextView.setOnClickListener(v -> {
+            // Implement the logic to handle forgot password using Firebase
+            sendPasswordResetEmail();
+        });
+
+        // Set click listener for the password visibility toggle button (eye icon)
+        logpassword.setOnTouchListener((v, event) -> {
+            final int DRAWABLE_RIGHT = 2;
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (event.getRawX() >= (logpassword.getRight() - logpassword.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                    togglePasswordVisibility();
+                    return true;
+                }
+            }
+            return false;
+        });
+    }
+
+    private void loginUser() {
+        String email = logemail.getText().toString().trim();
+        String password = logpassword.getText().toString().trim();
+
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Please fill out all the fields", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        progressDialog = new ProgressDialog(Activity_Login.this);
+        progressDialog.setTitle("Logging In");
+        progressDialog.setMessage("Please wait while we check your credentials...");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+
+        auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+                    progressDialog.dismiss();
+                    if (task.isSuccessful()) {
+                        // If login is successful
+                        Intent intent = new Intent(Activity_Login.this, SampleActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        // If login fails
+                        Toast.makeText(getApplicationContext(), "Failed to log in. Please check your credentials.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void togglePasswordVisibility() {
+        if (logpassword.getTransformationMethod() == null) {
+
+            logpassword.setTransformationMethod(new PasswordTransformationMethod());
+            logpassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.eye, 0);
+        } else {
+
+            logpassword.setTransformationMethod(null);
+            logpassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.eye_crossed, 0);
+        }
+
+        logpassword.setSelection(logpassword.getText().length());
+    }
+
+    private void sendPasswordResetEmail() {
+        String email = logemail.getText().toString().trim();
+
+        if (email.isEmpty()) {
+            Toast.makeText(this, "Please enter your email to reset the password", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        auth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(this, "Password reset email sent. Check your email inbox.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Failed to send password reset email. Please check your email address.", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }
