@@ -1,6 +1,11 @@
 package com.example.nurad;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,7 +14,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class Activity_SplashScreen extends AppCompatActivity {
-
+    Animation rotateAnimation;
+    ImageView logo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,5 +26,21 @@ public class Activity_SplashScreen extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        logo = (ImageView)findViewById(R.id.logo) ;
+        rotateAnimation();
+
+        new Handler().postDelayed(() -> {
+            {
+                Intent i = new Intent(Activity_SplashScreen.this, Activity_SignUp.class);
+                startActivity(i);
+                finish();
+            }
+        }, 6000);
+    }
+
+    private void rotateAnimation(){
+        rotateAnimation = AnimationUtils.loadAnimation(this, R.anim.rotate);
+        logo.startAnimation(rotateAnimation);
     }
 }
