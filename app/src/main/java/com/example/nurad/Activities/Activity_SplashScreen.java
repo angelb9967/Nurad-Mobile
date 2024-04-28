@@ -1,4 +1,4 @@
-package com.example.nurad;
+package com.example.nurad.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.nurad.R;
 
 public class Activity_SplashScreen extends AppCompatActivity {
     Animation rotateAnimation;

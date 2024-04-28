@@ -5,7 +5,43 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity_CreateAccount">
+    tools:context=".Activities.Activity_CreateAccount">
+
+
+    <TextView
+        android:id="@+id/changeToLog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Already have an account? Log in"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LoginBtn"
+        app:layout_constraintVertical_bias="0.363" />
+
+    <EditText
+        android:id="@+id/ConfirmPassw_Etxt"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="128dp"
+        android:background="@drawable/custom_input"
+        android:drawableStart="@drawable/lock"
+        android:drawableEnd="@drawable/eye"
+        android:drawablePadding="16dp"
+        android:ems="10"
+        android:hint="Confirm password"
+        android:inputType="textPassword"
+        android:paddingStart="18dp"
+        android:paddingEnd="18dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Password_Etxt"
+        app:layout_constraintVertical_bias="0.118" />
 
     <ImageView
         android:id="@+id/logo"
@@ -19,21 +55,21 @@
         app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="@+id/textView2"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.875"
+        app:layout_constraintVertical_bias="0.864"
         app:srcCompat="@drawable/logo_purple" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="532dp"
+        android:layout_marginBottom="560dp"
         android:fontFamily="@font/cinzel"
         android:text="NURAD"
         android:textColor="@color/purple"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent" />
 
     <View
@@ -46,7 +82,7 @@
         app:layout_constraintHorizontal_bias="0.437"
         app:layout_constraintStart_toStartOf="@+id/textView2"
         app:layout_constraintTop_toTopOf="@+id/textView1"
-        app:layout_constraintVertical_bias="0.266" />
+        app:layout_constraintVertical_bias="0.4" />
 
     <TextView
         android:id="@+id/textView3"
@@ -75,7 +111,7 @@
         app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="@+id/textView2"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.993" />
+        app:layout_constraintVertical_bias="0.983" />
 
     <View
         android:layout_width="30dp"
@@ -86,18 +122,19 @@
         app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toEndOf="@+id/textView1"
         app:layout_constraintTop_toTopOf="@+id/textView1"
-        app:layout_constraintVertical_bias="0.266" />
+        app:layout_constraintVertical_bias="0.4" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:text="Create an account"
         android:textColor="@color/purple"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/FirstN_Etxt"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="@+id/FirstN_Etxt"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
@@ -106,7 +143,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="30dp"
         android:background="@drawable/custom_input"
         android:drawableStart="@drawable/user"
@@ -126,7 +163,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="30dp"
         android:background="@drawable/custom_input"
         android:drawableStart="@drawable/user"
@@ -146,7 +183,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="30dp"
         android:background="@drawable/custom_input"
         android:drawableStart="@drawable/mail"
@@ -157,20 +194,20 @@
         android:paddingStart="18dp"
         android:paddingEnd="18dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/LastN_Etxt" />
-
 
     <EditText
         android:id="@+id/Password_Etxt"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="30dp"
         android:background="@drawable/custom_input"
         android:drawableStart="@drawable/lock"
+        android:drawableEnd="@drawable/eye"
         android:drawablePadding="16dp"
         android:ems="10"
         android:hint="Enter your password"
@@ -182,41 +219,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Email_Etxt" />
 
-    <EditText
-        android:id="@+id/ConfirmPassw_Etxt"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="128dp"
-        android:background="@drawable/custom_input"
-        android:drawableStart="@drawable/lock"
-        android:drawablePadding="16dp"
-        android:ems="10"
-        android:hint="Confirm password"
-        android:inputType="textPassword"
-        android:paddingStart="18dp"
-        android:paddingEnd="18dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Password_Etxt" />
+    <CheckBox
+        android:id="@+id/termsAndConditionsCheckbox"
+        android:layout_width="355dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="16dp"
+        android:buttonTint="#872065"
+        android:drawablePadding="8dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:text="By creating an account, you agree to our Terms and Conditions, and Privacy Notice."
+        app:layout_constraintEnd_toEndOf="@+id/ConfirmPassw_Etxt"
+        app:layout_constraintHorizontal_bias="0.45"
+        app:layout_constraintStart_toStartOf="@+id/ConfirmPassw_Etxt"
+        app:layout_constraintTop_toBottomOf="@+id/ConfirmPassw_Etxt" />
 
     <Button
         android:id="@+id/LoginBtn"
         android:layout_width="320dp"
         android:layout_height="60dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginBottom="4dp"
         android:backgroundTint="@color/purple"
         android:text="Sign Up"
         android:textColor="@color/white"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ConfirmPassw_Etxt"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/termsAndConditionsCheckbox"
+        app:layout_constraintVertical_bias="0.25" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
