@@ -113,7 +113,7 @@ public class Activity_Login extends AppCompatActivity {
                     progressDialog.dismiss();
                     if (task.isSuccessful()) {
                         // If login is successful
-                        Intent intent = new Intent(Activity_Login.this, SampleActivity.class);
+                        Intent intent = new Intent(Activity_Login.this, Activity_BottomNav.class);
                         startActivity(intent);
                         finish();
                     } else {
@@ -127,11 +127,11 @@ public class Activity_Login extends AppCompatActivity {
         if (logpassword.getTransformationMethod() == null) {
 
             logpassword.setTransformationMethod(new PasswordTransformationMethod());
-            logpassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.eye, 0);
+            logpassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.lock, 0, R.drawable.eye_crossed, 0);
         } else {
 
             logpassword.setTransformationMethod(null);
-            logpassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.eye_crossed, 0);
+            logpassword.setCompoundDrawablesWithIntrinsicBounds(R.drawable.lock, 0, R.drawable.eye, 0);
         }
 
         logpassword.setSelection(logpassword.getText().length());

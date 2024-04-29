@@ -196,11 +196,11 @@ public class Activity_CreateAccount extends AppCompatActivity {
         if (editText.getInputType() == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
             // Hide password
             editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-            editText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.eye_crossed, 0);
+            editText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.lock, 0, R.drawable.eye_crossed, 0);
         } else {
             // Show password
             editText.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-            editText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.eye, 0);
+            editText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.lock, 0, R.drawable.eye, 0);
         }
         // Move cursor to end of text
         editText.setSelection(editText.getText().length());
