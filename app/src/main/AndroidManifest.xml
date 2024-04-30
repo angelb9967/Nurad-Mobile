@@ -13,19 +13,22 @@
         android:theme="@style/Theme.NUrad"
         tools:targetApi="31">
         <activity
+            android:name=".Activities.Activity_ForgotPassword"
+            android:exported="false" />
+        <activity
             android:name=".Activities.Activity_BottomNav"
             android:exported="false" />
         <activity
             android:name=".Activities.Activity_CreateAccount"
             android:exported="false" />
         <activity
+            android:name=".Activities.Activity_SplashScreen"
+            android:exported="false" />
+        <activity
             android:name=".Activities.Activity_Login"
             android:exported="false" />
         <activity
             android:name=".Activities.Activity_SignUp"
-            android:exported="false" />
-        <activity
-            android:name=".Activities.Activity_SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

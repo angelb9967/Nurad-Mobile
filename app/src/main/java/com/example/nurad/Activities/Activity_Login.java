@@ -25,7 +25,7 @@ import com.example.nurad.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Activity_Login extends AppCompatActivity {
-    TextView SignUp_TxtV, forgotPasswordTextView;
+    private TextView SignUp_TxtV, forgotPasswordTextView;
     private FirebaseAuth auth;
     private ProgressDialog progressDialog;
     private EditText logemail, logpassword;
@@ -76,8 +76,10 @@ public class Activity_Login extends AppCompatActivity {
 
         // Set click listener for the Forgot Password text view
         forgotPasswordTextView.setOnClickListener(v -> {
-            // Implement the logic to handle forgot password using Firebase
-            sendPasswordResetEmail();
+            // Redirect to another activity that will handle forgot password
+            Intent i = new Intent(this, Activity_ForgotPassword.class);
+            startActivity(i);
+            finish();
         });
 
         // Set click listener for the password visibility toggle button (eye icon)
@@ -135,23 +137,5 @@ public class Activity_Login extends AppCompatActivity {
         }
 
         logpassword.setSelection(logpassword.getText().length());
-    }
-
-    private void sendPasswordResetEmail() {
-        String email = logemail.getText().toString().trim();
-
-        if (email.isEmpty()) {
-            Toast.makeText(this, "Please enter your email to reset the password", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        auth.sendPasswordResetEmail(email)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(this, "Password reset email sent. Check your email inbox.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(this, "Failed to send password reset email. Please check your email address.", Toast.LENGTH_SHORT).show();
-                    }
-                });
     }
 }
