@@ -3,6 +3,7 @@ package com.example.nurad.Activities;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -29,7 +30,7 @@ public class Activity_Login extends AppCompatActivity {
     private FirebaseAuth auth;
     private ProgressDialog progressDialog;
     private EditText logemail, logpassword;
-
+    public static final String SHARED_PREFS = "sharedPrefs";
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +115,14 @@ public class Activity_Login extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     progressDialog.dismiss();
                     if (task.isSuccessful()) {
-                        // If login is successful
+                        // If login is successful, Get SharedPreferences instance
+                        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        // Store the login status as "true" in SharedPreferences
+                        editor.putString("account", "true");
+                        editor.apply();
+
+                        // An intent to navigate to the main activity
                         Intent intent = new Intent(Activity_Login.this, Activity_BottomNav.class);
                         startActivity(intent);
                         finish();

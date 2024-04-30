@@ -1,6 +1,7 @@
 package com.example.nurad.Activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -20,8 +21,9 @@ import com.example.nurad.Activities.Activity_Login;
 import com.example.nurad.R;
 
 public class Activity_SignUp extends AppCompatActivity {
-    TextView Login_TxtV;
-    Button SignUp_Btn;
+    private TextView Login_TxtV;
+    private Button SignUp_Btn;
+    public static final String SHARED_PREFS = "sharedPrefs";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +35,10 @@ public class Activity_SignUp extends AppCompatActivity {
             return insets;
         });
 
+        // Check if the user is already logged in
+        keepUserLoggedIn();
+
+        // Initialize views
         SignUp_Btn = findViewById(R.id.LoginBtn);
         Login_TxtV = findViewById(R.id.textView4);
 
@@ -45,17 +51,30 @@ public class Activity_SignUp extends AppCompatActivity {
         spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#882065")), startIndex, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         Login_TxtV.setText(spannableString);
 
-
+        // Set click listeners for sign up button
         SignUp_Btn.setOnClickListener(v -> {
             Intent i = new Intent(this, Activity_CreateAccount.class);
             startActivity(i);
             finish();
         });
 
+        // Set click listeners for login text view
         Login_TxtV.setOnClickListener(v -> {
             Intent i = new Intent(this, Activity_Login.class);
             startActivity(i);
             finish();
         });
+    }
+
+    // Check if the user is already logged in
+    private void keepUserLoggedIn() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        String check = sharedPreferences.getString("account", "");
+        if(check.equals("true")){
+            // If user is logged in, directly navigate to the main activity
+            Intent intent = new Intent(Activity_SignUp.this, Activity_BottomNav.class);
+            startActivity(intent);
+            finish();
+        }
     }
 }
