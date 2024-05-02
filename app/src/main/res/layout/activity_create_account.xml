@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".Activities.Activity_CreateAccount">
 
-
     <TextView
         android:id="@+id/changeToLog"
         android:layout_width="wrap_content"

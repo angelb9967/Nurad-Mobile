@@ -87,7 +87,7 @@
         app:layout_constraintVertical_bias="0.84"
         app:srcCompat="@drawable/logo_purple" />
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/Email_Etxt"
         android:layout_width="match_parent"
         android:layout_height="50dp"

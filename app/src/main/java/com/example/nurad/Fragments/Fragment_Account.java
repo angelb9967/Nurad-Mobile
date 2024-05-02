@@ -1,6 +1,8 @@
 package com.example.nurad.Fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -76,7 +78,7 @@ public class Fragment_Account extends Fragment {
         logoutBtn = view.findViewById(R.id.LogoutBtn);
 
         // Set click listener for logout button
-        logoutBtn.setOnClickListener(view_ -> logoutUser());
+        logoutBtn.setOnClickListener(view_ -> showLogoutConfirmationDialog());
 
         return view;
     }
@@ -84,8 +86,6 @@ public class Fragment_Account extends Fragment {
     private void logoutUser() {
         // Get SharedPreferences instance
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-
-        // Get SharedPreferences editor
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         // Clear the user account information from SharedPreferences
@@ -100,5 +100,25 @@ public class Fragment_Account extends Fragment {
         if (getActivity() != null) {
             getActivity().finish();
         }
+    }
+
+    private void showLogoutConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Logout");
+        builder.setMessage("Are you sure you want to logout?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                logoutUser();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

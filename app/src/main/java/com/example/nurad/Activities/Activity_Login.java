@@ -1,7 +1,10 @@
 package com.example.nurad.Activities;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -10,7 +13,10 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.method.PasswordTransformationMethod;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.MotionEvent;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -22,14 +28,22 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.nurad.Adapters.Adapter_CustomAutoCompleteAdapter;
+import com.example.nurad.Utilities.PreferenceUtils;
 import com.example.nurad.R;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 public class Activity_Login extends AppCompatActivity {
+    private ArrayAdapter<String> adapter;
     private TextView SignUp_TxtV, forgotPasswordTextView;
     private FirebaseAuth auth;
     private ProgressDialog progressDialog;
-    private EditText logemail, logpassword;
+    private AutoCompleteTextView logemail;
+    private EditText  logpassword;
     public static final String SHARED_PREFS = "sharedPrefs";
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -52,6 +66,14 @@ public class Activity_Login extends AppCompatActivity {
         SignUp_TxtV = findViewById(R.id.textView7);
         forgotPasswordTextView = findViewById(R.id.textView6);
 
+        // Retrieve saved emails and set up AutoCompleteTextView
+        Set<String> savedEmails = PreferenceUtils.getSavedEmails(this);
+        List<String> usernamesList = new ArrayList<>(savedEmails);
+
+        adapter = new Adapter_CustomAutoCompleteAdapter(this, android.R.layout.simple_dropdown_item_1line, usernamesList);
+        logemail.setAdapter(adapter);
+        logemail.setThreshold(1);
+
         // Change the color of some text within 1 textview
         String text = "Don't have an account yet? Sign Up";
         SpannableString spannableString = new SpannableString(text);
@@ -67,6 +89,24 @@ public class Activity_Login extends AppCompatActivity {
         // Set click listener for the login button
         Button loginBtn = findViewById(R.id.LoginBtn);
         loginBtn.setOnClickListener(view -> loginUser());
+
+        logemail.setOnItemClickListener((parent, view, position, id) -> {
+            String selected = (String) parent.getItemAtPosition(position);
+            Log.d("ClickedItem", "Clicked item: " + selected); // Add this line to log the clicked item
+            if (getString(R.string.manage_saved_logins).equals(selected)) {
+                // Open the activity for managing saved logins
+                logemail.setText("");
+                Intent managePasswordsIntent = new Intent(Activity_Login.this, Activity_ManageSavedLogins.class);
+                startActivity(managePasswordsIntent);
+                finish();
+            } else {
+                // If a username is selected, populate the password EditText with the corresponding password
+                String password = PreferenceUtils.getPasswordForEmail(Activity_Login.this, selected);
+                if (password != null) {
+                    logpassword.setText(password);
+                }
+            }
+        });
 
         // Set click listener for the Sign Up text view
         SignUp_TxtV.setOnClickListener(v -> {
@@ -115,17 +155,18 @@ public class Activity_Login extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     progressDialog.dismiss();
                     if (task.isSuccessful()) {
-                        // If login is successful, Get SharedPreferences instance
+                        // If login is successful
                         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        // Store the login status as "true" in SharedPreferences
-                        editor.putString("account", "true");
+                        editor.putString("account", "true"); // Store the login status of the account as "true" in SharedPreferences
                         editor.apply();
 
-                        // An intent to navigate to the main activity
-                        Intent intent = new Intent(Activity_Login.this, Activity_BottomNav.class);
-                        startActivity(intent);
-                        finish();
+                        Set<String> savedEmails = PreferenceUtils.getSavedEmails(Activity_Login.this);
+                        if (savedEmails.contains(email)) {
+                            moveToTheNextActivity(email);
+                        }else{
+                            showSaveLoginInformationDialog(Activity_Login.this, email, password);
+                        }
                     } else {
                         // If login fails
                         Toast.makeText(getApplicationContext(), "Failed to log in. Please check your credentials.", Toast.LENGTH_SHORT).show();
@@ -145,5 +186,38 @@ public class Activity_Login extends AppCompatActivity {
         }
 
         logpassword.setSelection(logpassword.getText().length());
+    }
+
+    private void showSaveLoginInformationDialog(Context context, String email, String password) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Remember Login Information?");
+        builder.setMessage("We'll remember the login information for this account. You won't need to enter it again when you log in.");
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Save login information
+                PreferenceUtils.saveUser(context, email, password);
+                Toast.makeText(context, "Login information saved!", Toast.LENGTH_SHORT).show();
+                moveToTheNextActivity(email);
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                moveToTheNextActivity(email);
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void moveToTheNextActivity(String email){
+        Intent intent = new Intent(Activity_Login.this, Activity_BottomNav.class);
+        startActivity(intent);
+        finish();
+        Toast.makeText(getApplicationContext(), "Account: " + email, Toast.LENGTH_SHORT).show();
     }
 }
