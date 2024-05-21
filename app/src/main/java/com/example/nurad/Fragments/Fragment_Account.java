@@ -19,6 +19,7 @@ import com.example.nurad.Activities.Activity_CreateAccount;
 import com.example.nurad.Activities.Activity_Login;
 import com.example.nurad.Activities.Activity_SignUp;
 import com.example.nurad.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -84,6 +85,9 @@ public class Fragment_Account extends Fragment {
     }
 
     private void logoutUser() {
+        // Sign out from Firebase
+        FirebaseAuth.getInstance().signOut();
+
         // Get SharedPreferences instance
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();

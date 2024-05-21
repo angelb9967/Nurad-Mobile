@@ -9,6 +9,7 @@ import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,13 +17,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.nurad.Activities.Activity_CreateAccount;
-import com.example.nurad.Activities.Activity_Login;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.example.nurad.R;
 
 public class Activity_SignUp extends AppCompatActivity {
     private TextView Login_TxtV;
     private Button SignUp_Btn;
+    private FirebaseAuth auth;
     public static final String SHARED_PREFS = "sharedPrefs";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,8 @@ public class Activity_SignUp extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        auth = FirebaseAuth.getInstance();
 
         // Check if the user is already logged in
         keepUserLoggedIn();
@@ -71,10 +75,14 @@ public class Activity_SignUp extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         String check = sharedPreferences.getString("account", "");
         if(check.equals("true")){
+            FirebaseUser currentUser = auth.getCurrentUser();
+            String userEmail = currentUser.getEmail();
             // If user is logged in, directly navigate to the main activity
             Intent intent = new Intent(Activity_SignUp.this, Activity_BottomNav.class);
             startActivity(intent);
             finish();
+            Toast.makeText(getApplicationContext(), "Account: " + userEmail, Toast.LENGTH_SHORT).show();
+
         }
     }
 }

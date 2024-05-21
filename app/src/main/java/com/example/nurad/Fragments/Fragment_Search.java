@@ -6,8 +6,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+// Old library version - uncomment nyo to pag di nagwork ung androidx.annotation.Nullable and androidx.annotation.NonNull
+//import android.support.annotation.NonNull;
+//import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
