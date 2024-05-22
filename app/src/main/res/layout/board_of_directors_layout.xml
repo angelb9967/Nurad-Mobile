@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <!-- Circular Image View for Director's Photo -->
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/directorPhoto"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/person"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="centerCrop"/>
+
+    <!-- Director's Name -->
+    <TextView
+        android:id="@+id/directorName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+        android:text="Director's Name"
+        android:textColor="#882065"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <!-- Director's Position -->
+    <TextView
+        android:id="@+id/directorPosition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="4dp"
+        android:text="Director's Position"
+        android:textColor="#545454"
+        android:textSize="12sp" />
+
+</LinearLayout>

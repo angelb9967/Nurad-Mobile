@@ -7,13 +7,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.nurad.Models.RoomModel;
 import com.example.nurad.R;
 import com.squareup.picasso.Picasso;
-import java.util.List;
+
 import java.text.NumberFormat;
+import java.util.List;
 import java.util.Locale;
 
 public class Adapter_Room extends RecyclerView.Adapter<Adapter_Room.RoomViewHolder> {
@@ -58,6 +61,12 @@ public class Adapter_Room extends RecyclerView.Adapter<Adapter_Room.RoomViewHold
     @Override
     public int getItemCount() {
         return roomList.size();
+    }
+
+    public void updateData(List<RoomModel> newRoomList) {
+        roomList.clear();
+        roomList.addAll(newRoomList);
+        notifyDataSetChanged();
     }
 
     public static class RoomViewHolder extends RecyclerView.ViewHolder {
