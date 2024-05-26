@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.Toast;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.nurad.Activities.Activity_BottomNav;
 import com.example.nurad.Adapters.Adapter_AboutUs;
 import com.example.nurad.Adapters.Adapter_Board;
 import com.example.nurad.Models.AboutUsModel;
@@ -64,6 +66,10 @@ public class Fragment_AboutUs extends Fragment {
                             .replace(R.id.frame_layout, fragmentSearch) // Replace R.id.container with the ID of your container
                             .addToBackStack(null)
                             .commit();
+
+                    // Update the Selected Fragment in the Bottom Navigation
+                    Activity_BottomNav activity = (Activity_BottomNav) requireActivity();
+                    activity.updateSelectedNavItem(fragmentSearch);
                 } else {
                     // Log an error or show a toast if fragmentSearch or getActivity() is null
                     Log.e("Fragment_AboutUs", "Fragment_Search instance or getActivity() is null");

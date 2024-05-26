@@ -49,4 +49,17 @@ public class Activity_BottomNav extends AppCompatActivity {
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
     }
+
+    // Method to update the selected item in the BottomNavigationView based on the current fragment
+    public void updateSelectedNavItem(Fragment fragment) {
+        if (fragment instanceof Fragment_Search) {
+            binding.bottomNavigationView.setSelectedItemId(R.id.search);
+        } else if (fragment instanceof Fragment_Booking) {
+            binding.bottomNavigationView.setSelectedItemId(R.id.booking);
+        } else if (fragment instanceof Fragment_AboutUs) {
+            binding.bottomNavigationView.setSelectedItemId(R.id.aboutus);
+        } else if (fragment instanceof Fragment_Account) {
+            binding.bottomNavigationView.setSelectedItemId(R.id.account);
+        }
+    }
 }
