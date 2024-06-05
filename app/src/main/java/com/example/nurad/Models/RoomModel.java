@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class RoomModel implements Serializable {
     private String title;
-    private String name;
-    private String type;
+    private String roomName;
+    private String roomType;
     private double price;
     private String description;
     private String imageUrl;
@@ -16,10 +16,10 @@ public class RoomModel implements Serializable {
     public RoomModel() {
     }
 
-    public RoomModel(String title, String name, String type, double price, String description, String imageUrl, boolean depositRequired, String priceRule, boolean isRecommended) {
+    public RoomModel(String title, String roomName, String roomType, double price, String description, String imageUrl, boolean depositRequired, String priceRule, boolean isRecommended) {
         this.title = title;
-        this.name = name;
-        this.type = type;
+        this.roomName = roomName;
+        this.roomType = roomType;
         this.price = price;
         this.description = description;
         this.imageUrl = imageUrl;
@@ -36,20 +36,20 @@ public class RoomModel implements Serializable {
         this.title = title;
     }
 
-    public String getName() {
-        return name;
+    public String getRoomName() {
+        return roomName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
     }
 
-    public String getType() {
-        return type;
+    public String getRoomType() {
+        return roomType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setRoomType(String roomType) {
+        this.roomType = roomType;
     }
 
     public double getPrice() {

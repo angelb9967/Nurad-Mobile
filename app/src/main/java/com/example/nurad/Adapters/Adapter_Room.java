@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class Adapter_Room extends RecyclerView.Adapter<Adapter_Room.RoomViewHolder> {
-
     private Context context;
     private List<RoomModel> roomList;
     private Fragment_Search.OnRoomSelectedListener listener;
@@ -43,7 +42,7 @@ public class Adapter_Room extends RecyclerView.Adapter<Adapter_Room.RoomViewHold
         this.context = context;
         this.roomList = roomList;
         this.listener = listener;
-        this.priceRules_DBref = FirebaseDatabase.getInstance().getReference("PriceRules");
+        this.priceRules_DBref = FirebaseDatabase.getInstance().getReference("Price Rules");
     }
 
     @NonNull
@@ -61,8 +60,8 @@ public class Adapter_Room extends RecyclerView.Adapter<Adapter_Room.RoomViewHold
         holder.roomDescription.setText(room.getDescription());
         holder.depositRequired.setVisibility(room.isDepositRequired() ? View.VISIBLE : View.GONE);
         holder.recommendedTag.setVisibility(room.isRecommended() ? View.INVISIBLE : View.GONE);
-        holder.roomName.setText(room.getName());
-        holder.roomType.setText(room.getType());
+        holder.roomName.setText(room.getRoomName());
+        holder.roomType.setText(room.getRoomType());
 
         // Ensure imageUrl is not null or empty before loading
         if (room.getImageUrl() != null && !room.getImageUrl().isEmpty()) {
@@ -72,6 +71,7 @@ public class Adapter_Room extends RecyclerView.Adapter<Adapter_Room.RoomViewHold
             holder.roomImage.setImageResource(R.drawable.logo_purple);
         }
 
+        Log.e("Adapter_Room", "Price Rule" + room.getPriceRule());
         // Fetch the price rule for the room
         if (room.getPriceRule() != null) {
             fetchPriceRule(room.getPriceRule(), holder);
@@ -80,14 +80,15 @@ public class Adapter_Room extends RecyclerView.Adapter<Adapter_Room.RoomViewHold
             holder.roomPrice.setText("₱" + formatPrice(room.getPrice()));
         }
 
+        Log.e("Adapter_Room", "Room Name" + room.getRoomName());
         if (holder.roomName != null) {
-            holder.roomName.setText(room.getName());
+            holder.roomName.setText(room.getRoomName());
         } else {
             Log.e("Adapter_Room", "roomNameTextView is null!");
         }
 
         if (holder.roomType != null) {
-            holder.roomType.setText(room.getType());
+            holder.roomType.setText(room.getRoomType());
         } else {
             Log.e("Adapter_Room", "roomTypeTextView is null!");
         }
@@ -108,8 +109,8 @@ public class Adapter_Room extends RecyclerView.Adapter<Adapter_Room.RoomViewHold
             bundle.putSerializable("selectedRoom", room);
             bundle.putString("title", room.getTitle());
             bundle.putString("description", room.getDescription());
-            bundle.putString("roomName", room.getName());
-            bundle.putString("roomType", room.getType());
+            bundle.putString("roomName", room.getRoomName());
+            bundle.putString("roomType", room.getRoomType());
             bundle.putString("priceRule", room.getPriceRule());
             Fragment_Booking fragmentBooking = Fragment_Booking.newInstance(room);
 
