@@ -36,6 +36,7 @@ public class Adapter_Room extends RecyclerView.Adapter<Adapter_Room.RoomViewHold
     private Context context;
     private List<RoomModel> roomList;
     private Fragment_Search.OnRoomSelectedListener listener;
+    private DatabaseReference roomsDatabaseRef;
     private DatabaseReference priceRules_DBref;
 
     public Adapter_Room(Context context, List<RoomModel> roomList, Fragment_Search.OnRoomSelectedListener listener) {
@@ -43,6 +44,8 @@ public class Adapter_Room extends RecyclerView.Adapter<Adapter_Room.RoomViewHold
         this.roomList = roomList;
         this.listener = listener;
         this.priceRules_DBref = FirebaseDatabase.getInstance().getReference("Price Rules");
+        this.roomsDatabaseRef = FirebaseDatabase.getInstance().getReference("AllRooms");
+        this.roomsDatabaseRef = FirebaseDatabase.getInstance().getReference("RecommRooms");
     }
 
     @NonNull
@@ -104,30 +107,69 @@ public class Adapter_Room extends RecyclerView.Adapter<Adapter_Room.RoomViewHold
                 listener.onRoomSelected(room);
             }
 
-            // Pass the selected room details to Fragment_Booking
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("selectedRoom", room);
-            bundle.putString("title", room.getTitle());
-            bundle.putString("description", room.getDescription());
-            bundle.putString("roomName", room.getRoomName());
-            bundle.putString("roomType", room.getRoomType());
-            bundle.putString("priceRule", room.getPriceRule());
-            Fragment_Booking fragmentBooking = Fragment_Booking.newInstance(room);
-
             // Ensure the context is an instance of FragmentActivity
             if (context instanceof FragmentActivity) {
                 FragmentActivity fragmentActivity = (FragmentActivity) context;
-                fragmentActivity.getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame_layout, fragmentBooking)
-                        .addToBackStack(null)
-                        .commit();
 
-                // Update the Selected Fragment in the Bottom Navigation
-                Activity_BottomNav activity = (Activity_BottomNav) fragmentActivity;
-                activity.updateSelectedNavItem(fragmentBooking);
+                // Pass the FragmentActivity instance to the fetchRoomDetailsFromFirebase method
+                fetchRoomDetailsFromFirebase(room);
             } else {
                 // Handle the case where context is not a FragmentActivity
                 Toast.makeText(context, "Unable to open booking. Context is not a FragmentActivity", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void fetchRoomDetailsFromFirebase(RoomModel room) {
+        DatabaseReference recommRoomsRef = FirebaseDatabase.getInstance().getReference("RecommRooms");
+        DatabaseReference allRoomsRef = FirebaseDatabase.getInstance().getReference("AllRooms");
+
+        // Check if the room exists in RecommRooms
+        recommRoomsRef.child(room.getRoomName()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    RoomModel selectedRoom = dataSnapshot.getValue(RoomModel.class);
+                    if (selectedRoom != null) {
+                        // Pass the selected room details to the booking fragment
+                        passRoomDetailsToBookingFragment(selectedRoom);
+                    } else {
+                        // Handle null selectedRoom
+                        Toast.makeText(context, "Selected room details are null.", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    // If room details not found in RecommRooms, check AllRooms
+                    allRoomsRef.child(room.getRoomName()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                RoomModel selectedRoom = dataSnapshot.getValue(RoomModel.class);
+                                if (selectedRoom != null) {
+                                    // Pass the selected room details to the booking fragment
+                                    passRoomDetailsToBookingFragment(selectedRoom);
+                                } else {
+                                    // Handle null selectedRoom
+                                    Toast.makeText(context, "Selected room details are null.", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                // Handle scenario where room details are not found in either RecommRooms or AllRooms
+                                Toast.makeText(context, "Selected room details not found.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            // Handle the error scenario
+                            Toast.makeText(context, "Failed to fetch room details from the database.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle the error scenario
+                Toast.makeText(context, "Failed to fetch room details from the database.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -137,6 +179,34 @@ public class Adapter_Room extends RecyclerView.Adapter<Adapter_Room.RoomViewHold
         return roomList.size();
     }
 
+
+    private void passRoomDetailsToBookingFragment(RoomModel selectedRoom) {
+        // Pass the selected room details to Fragment_Booking
+        Fragment_Booking fragmentBooking = Fragment_Booking.newInstance(selectedRoom);
+
+        // Replace current fragment with Fragment_Booking
+        if (context instanceof FragmentActivity) {
+            FragmentActivity fragmentActivity = (FragmentActivity) context;
+
+            // Update the roomName and roomType values here
+            selectedRoom.setRoomName(selectedRoom.getRoomName());
+            selectedRoom.setRoomType(selectedRoom.getRoomType());
+            selectedRoom.setPrice(selectedRoom.getPrice());
+
+            // Pass roomName to selectedRoom if it's not null
+            if (selectedRoom.getRoomName() != null && !selectedRoom.getRoomName().isEmpty()) {
+                selectedRoom.setRoomName(selectedRoom.getRoomName());
+            }
+
+            fragmentActivity.getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frame_layout, fragmentBooking)
+                    .addToBackStack(null)
+                    .commit();
+        } else {
+            // Handle the case where context is not a FragmentActivity
+            Toast.makeText(context, "Unable to open booking. Context is not a FragmentActivity", Toast.LENGTH_SHORT).show();
+        }
+    }
     private void fetchPriceRule(String priceRuleName, RoomViewHolder holder) {
         priceRules_DBref.child(priceRuleName).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

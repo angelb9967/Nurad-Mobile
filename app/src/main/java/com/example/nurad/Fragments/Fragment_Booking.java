@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,11 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.nurad.Activities.Activity_BottomNav;
 import com.example.nurad.Models.RoomModel;
 import com.example.nurad.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
@@ -32,6 +38,7 @@ public class Fragment_Booking extends Fragment {
     private RoomModel selectedRoom;
     private TextView roomDetailsTextView;
     private TextView roomNameTextView;
+    private TextView roomTitleTextView;
     private TextView roomTypeTextView;
     private TextView roomPriceTextView;
     private CheckBox applyVoucherCheckBox;
@@ -62,14 +69,9 @@ public class Fragment_Booking extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            Bundle bundle = getArguments();
-            selectedRoom = (RoomModel) bundle.getSerializable("selectedRoom");
-            String title = bundle.getString("title");
-            String description = bundle.getString("description");
-            String roomName = bundle.getString("roomName");
-            String roomType = bundle.getString("roomType");
-            String priceRule = bundle.getString("priceRule");
+            selectedRoom = (RoomModel) getArguments().getSerializable("selectedRoom");
         }
+        Log.d("Fragment_Booking", "Selected Room: " + selectedRoom);
     }
 
     @Override
@@ -78,6 +80,25 @@ public class Fragment_Booking extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment__booking, container, false);
 
+        initializeViews(view);
+
+        // Check if selectedRoom is null
+        if (selectedRoom == null || !isRoomSelected(selectedRoom.getRoomName())) {
+            // Disable the next step button
+            nextStepButton.setEnabled(false);
+            // Show a message indicating that a room needs to be selected first
+            Toast.makeText(getContext(), "Please choose a room before proceeding.", Toast.LENGTH_SHORT).show();
+            return view;
+        }
+
+        populateRoomDetails();
+        setupEventListeners();
+
+        return view;
+    }
+
+    private void initializeViews(View view) {
+        roomTitleTextView = view.findViewById(R.id.roomTitle);
         roomDetailsTextView = view.findViewById(R.id.roomDetailsTextView);
         roomNameTextView = view.findViewById(R.id.roomNameTextView);
         roomTypeTextView = view.findViewById(R.id.roomTypeTextView);
@@ -91,26 +112,23 @@ public class Fragment_Booking extends Fragment {
         checkOutDateTextView = view.findViewById(R.id.checkOutDateTextView);
         guestOptionsButton = view.findViewById(R.id.guestOptionsButton);
         guestsTextView = view.findViewById(R.id.guestsTextView);
+    }
 
-        if (selectedRoom == null) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder.setTitle("No Room Selected");
-            builder.setMessage("Please choose a room before proceeding.");
-            builder.setCancelable(false);
-            builder.setPositiveButton("Search", (dialog, which) -> {
-                Fragment searchFragment = new Fragment_Search();
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.frame_layout, searchFragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
-
-                Activity_BottomNav activity = (Activity_BottomNav) requireActivity();
-                activity.updateSelectedNavItem(searchFragment);
-            });
-            builder.show();
-            return view;
+    private void populateRoomDetails() {
+        // Check if roomNameTextView is not null and room name is not empty
+        if (roomNameTextView != null && selectedRoom != null && selectedRoom.getRoomName() != null && !selectedRoom.getRoomName().isEmpty()) {
+            roomNameTextView.setText("Room Number: " + selectedRoom.getRoomName() + "\n");
         }
 
+        roomTitleTextView.setText(String.valueOf(selectedRoom.getTitle()));
+
+        // Add line breaks between each piece of information
+        roomTypeTextView.setText("Room Type: "+String.valueOf(selectedRoom.getRoomType()) + "\n");
+        roomPriceTextView.setText("Price: "+String.valueOf(selectedRoom.getPrice()) + "\n");
+        roomDetailsTextView.setText("Description: "+String.valueOf(selectedRoom.getDescription() + "\n"));
+    }
+
+    private void setupEventListeners() {
         applyVoucherCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 CompoundButtonCompat.setButtonTintList(applyVoucherCheckBox, ColorStateList.valueOf(Color.parseColor("#882065")));
@@ -140,8 +158,6 @@ public class Fragment_Booking extends Fragment {
         });
 
         guestOptionsButton.setOnClickListener(v -> showGuestOptionsDialog());
-
-        return view;
     }
 
     private void showDatePickerDialog(DateSetListener listener) {
@@ -151,19 +167,23 @@ public class Fragment_Booking extends Fragment {
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (view, year1, month1, dayOfMonth) -> {
-            // Check if the selected date is not past the current date
             Calendar selectedDate = Calendar.getInstance();
             selectedDate.set(year1, month1, dayOfMonth);
-            Calendar currentDate = Calendar.getInstance();
-            if (selectedDate.before(currentDate)) {
-                // Selected date is past the current date
+            if (selectedDate.before(Calendar.getInstance())) {
                 Toast.makeText(getContext(), "Please select a valid date.", Toast.LENGTH_SHORT).show();
             } else {
-                // Selected date is valid, invoke the listener
                 listener.onDateSet(dayOfMonth, month1, year1);
             }
         }, year, month, day);
         datePickerDialog.show();
+    }
+
+    private boolean isRoomSelected(String roomName) {
+        DatabaseReference recommRoomsRef = FirebaseDatabase.getInstance().getReference("RecommRooms").child(roomName);
+        DatabaseReference allRoomsRef = FirebaseDatabase.getInstance().getReference("AllRooms").child(roomName);
+
+        // Check if the room exists in RecommRooms or AllRooms
+        return (recommRoomsRef != null) || (allRoomsRef != null);
     }
 
     private void showGuestOptionsDialog() {
@@ -221,9 +241,8 @@ public class Fragment_Booking extends Fragment {
     }
 
     private boolean validateStep1() {
-        // Check if all required fields are filled
-        return !checkInDateTextView.getText().toString().equals("Not set")
-                && !checkOutDateTextView.getText().toString().equals("Not set");
+        return !checkInDateTextView.getText().toString().isEmpty() &&
+                !checkOutDateTextView.getText().toString().isEmpty();
     }
 
     private void updateStepIndicators(int step) {
@@ -235,7 +254,7 @@ public class Fragment_Booking extends Fragment {
         TextView step5 = getView().findViewById(R.id.step5);
 
         // Reset all steps to be invisible
-        step1.setVisibility(View.VISIBLE);
+        step1.setVisibility(View.INVISIBLE);
         step2.setVisibility(View.INVISIBLE);
         step3.setVisibility(View.INVISIBLE);
         step4.setVisibility(View.INVISIBLE);
@@ -245,15 +264,21 @@ public class Fragment_Booking extends Fragment {
         switch (step) {
             case 5:
                 step5.setVisibility(View.VISIBLE);
-
+                break;
             case 4:
                 step4.setVisibility(View.VISIBLE);
+                break;
             case 3:
                 step3.setVisibility(View.VISIBLE);
+                break;
             case 2:
                 step2.setVisibility(View.VISIBLE);
+                break;
             case 1:
                 step1.setVisibility(View.VISIBLE);
+                break;
+            default:
+                // Handle invalid step
                 break;
         }
     }

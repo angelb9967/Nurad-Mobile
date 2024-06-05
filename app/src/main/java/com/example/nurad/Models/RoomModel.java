@@ -3,6 +3,7 @@ package com.example.nurad.Models;
 import java.io.Serializable;
 
 public class RoomModel implements Serializable {
+
     private String title;
     private String roomName;
     private String roomType;
