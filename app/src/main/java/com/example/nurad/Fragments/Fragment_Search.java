@@ -1,7 +1,7 @@
 package com.example.nurad.Fragments;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Fragment_Search extends Fragment {
-    
+
     private RecyclerView recyclerView;
     private List<RoomModel> roomList;
     private Adapter_Room adapter;
@@ -41,18 +41,14 @@ public class Fragment_Search extends Fragment {
     private ArrayAdapter<String> suggestionsAdapter;
     private List<String> roomTitles;
     private boolean showingRecommended = true;
+    private OnRoomSelectedListener listener;
+
+    public interface OnRoomSelectedListener {
+        void onRoomSelected(RoomModel room);
+    }
 
     public Fragment_Search() {
         // Required empty public constructor
-    }
-
-    public static Fragment_Search newInstance(String param1, String param2) {
-        Fragment_Search fragment = new Fragment_Search();
-        Bundle args = new Bundle();
-        args.putString("ARG_PARAM1", param1);
-        args.putString("ARG_PARAM2", param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     public static Fragment_Search newInstance() {
@@ -60,65 +56,64 @@ public class Fragment_Search extends Fragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnRoomSelectedListener) {
+            listener = (OnRoomSelectedListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnRoomSelectedListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener = null;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            // Handle arguments if needed
-        }
         roomList = new ArrayList<>();
         roomTitles = new ArrayList<>();
     }
 
+    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_search, container, false);
-        recyclerView = view.findViewById(R.id.roomsRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new Adapter_Room(getContext(), roomList);
-        recyclerView.setAdapter(adapter);
+        return inflater.inflate(R.layout.fragment_search, container, false);
+    }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        recyclerView = view.findViewById(R.id.roomsRecyclerView);
         recommendedTextView = view.findViewById(R.id.recommended);
         viewAllTextView = view.findViewById(R.id.viewAll);
         searchEditText = view.findViewById(R.id.search);
         searchIcon = view.findViewById(R.id.search_icon);
 
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new Adapter_Room(getContext(), roomList, listener);
+        recyclerView.setAdapter(adapter);
+
         recommendedTextView.setOnClickListener(v -> showRecommendedRooms());
         viewAllTextView.setOnClickListener(v -> showAllRooms());
+        searchIcon.setOnClickListener(v -> searchRooms());
 
         suggestionsAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, roomTitles);
         searchEditText.setAdapter(suggestionsAdapter);
-        searchEditText.setThreshold(1);
 
-        searchEditText.setOnItemClickListener((parent, view1, position, id) -> {
-            searchEditText.setText(suggestionsAdapter.getItem(position));
-        });
-
-        searchEditText.addTextChangedListener(new android.text.TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                fetchSuggestions(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(android.text.Editable s) {
-            }
-        });
-
-        searchIcon.setOnClickListener(v -> performSearch(searchEditText.getText().toString()));
-
-        return view;
+        fetchRoomData();
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        showRecommendedRooms();
+    private void fetchRoomData() {
+        fetchRoomsFromDatabase("RecommRooms");
     }
 
     private void showRecommendedRooms() {
@@ -170,29 +165,20 @@ public class Fragment_Search extends Fragment {
         }
     }
 
-    private void fetchSuggestions(String query) {
-        List<String> filteredTitles = new ArrayList<>();
-        for (String title : roomTitles) {
-            if (title.toLowerCase().contains(query.toLowerCase())) {
-                filteredTitles.add(title);
+    private void searchRooms() {
+        String query = searchEditText.getText().toString().trim();
+        if (!query.isEmpty()) {
+            List<RoomModel> searchResults = new ArrayList<>();
+            for (RoomModel room : roomList) {
+                if (room.getTitle().toLowerCase().contains(query.toLowerCase())) {
+                    searchResults.add(room);
+                }
+            }
+            if (searchResults.isEmpty()) {
+                Toast.makeText(getContext(), "No rooms found matching your query.", Toast.LENGTH_SHORT).show();
+            } else {
+                adapter.updateData(searchResults);
             }
         }
-        suggestionsAdapter.clear();
-        suggestionsAdapter.addAll(filteredTitles);
-        suggestionsAdapter.notifyDataSetChanged();
-    }
-
-    private void performSearch(String query) {
-        List<RoomModel> filteredRooms = new ArrayList<>();
-        for (RoomModel room : roomList) {
-            if (room.getTitle().toLowerCase().contains(query.toLowerCase())) {
-                filteredRooms.add(room);
-            }
-        }
-        if (filteredRooms.isEmpty()) {
-            // No results found, display a Toast
-            Toast.makeText(getContext(), "No results found for your search.", Toast.LENGTH_SHORT).show();
-        }
-        adapter.updateData(filteredRooms);
     }
 }

@@ -54,7 +54,7 @@
             android:drawableStart="@drawable/baseline_credit_card_24"
             android:paddingStart="0dp"
             android:text="Deposit Required"
-            android:textSize="9dp"
+            android:textSize="9sp"
             android:textStyle="bold" />
 
         <Button
@@ -96,6 +96,33 @@
             android:textAlignment="textEnd"
             android:textColor="#545454"
             android:textSize="7dp" />
+
+        <!-- Invisible views for roomName and roomType -->
+        <TextView
+            android:id="@+id/roomName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="Room Name" />
+
+        <TextView
+            android:id="@+id/roomType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="Room Type" />
+
+        <TextView
+            android:id="@+id/recommendedTag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/roomTitle"
+            android:layout_marginTop="4dp"
+            android:layout_toEndOf="@id/roomImage"
+            android:text="Recommended"
+            android:textColor="#FF0000"
+            android:textSize="12sp"
+            android:visibility="invisible" />
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

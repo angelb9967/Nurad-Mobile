@@ -1,22 +1,31 @@
 package com.example.nurad.Models;
 
-public class RoomModel {
+import java.io.Serializable;
+
+public class RoomModel implements Serializable {
     private String title;
+    private String name;
+    private String type;
     private double price;
     private String description;
     private String imageUrl;
     private boolean depositRequired;
+    private String priceRule;
+    private boolean isRecommended;
 
     public RoomModel() {
-
     }
 
-    public RoomModel(String title, double price, String description, String imageUrl, boolean depositRequired) {
+    public RoomModel(String title, String name, String type, double price, String description, String imageUrl, boolean depositRequired, String priceRule, boolean isRecommended) {
         this.title = title;
+        this.name = name;
+        this.type = type;
         this.price = price;
         this.description = description;
         this.imageUrl = imageUrl;
         this.depositRequired = depositRequired;
+        this.priceRule = priceRule;
+        this.isRecommended = isRecommended;
     }
 
     public String getTitle() {
@@ -25,6 +34,22 @@ public class RoomModel {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public double getPrice() {
@@ -57,5 +82,21 @@ public class RoomModel {
 
     public void setDepositRequired(boolean depositRequired) {
         this.depositRequired = depositRequired;
+    }
+
+    public String getPriceRule() {
+        return priceRule;
+    }
+
+    public void setPriceRule(String priceRule) {
+        this.priceRule = priceRule;
+    }
+
+    public boolean isRecommended() {
+        return isRecommended;
+    }
+
+    public void setRecommended(boolean recommended) {
+        isRecommended = recommended;
     }
 }
