@@ -1,8 +1,8 @@
 package com.example.nurad.Fragments;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,9 +10,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,9 +23,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.widget.CompoundButtonCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
-import com.example.nurad.Activities.Activity_BottomNav;
+import com.example.nurad.Models.Model_PriceRule;
 import com.example.nurad.Models.RoomModel;
 import com.example.nurad.R;
 import com.google.firebase.database.DataSnapshot;
@@ -31,11 +33,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 public class Fragment_Booking extends Fragment {
 
     private RoomModel selectedRoom;
+
+    private TextView checkTimeTextView;
+    private DatabaseReference priceRules_DBref;
     private TextView roomDetailsTextView;
     private TextView roomNameTextView;
     private TextView roomTitleTextView;
@@ -50,8 +59,12 @@ public class Fragment_Booking extends Fragment {
     private TextView checkOutDateTextView;
     private Button guestOptionsButton;
     private TextView guestsTextView;
+    private Context mContext;
     private int adultCount = 1;
     private int childrenCount = 0;
+    private Spinner checkInTimeSpinner;
+    private List<String> availableCheckInTimes;
+    private double fetchedPrice;
 
     public Fragment_Booking() {
         // Required empty public constructor
@@ -68,10 +81,16 @@ public class Fragment_Booking extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        priceRules_DBref = FirebaseDatabase.getInstance().getReference("Price Rules");
         if (getArguments() != null) {
             selectedRoom = (RoomModel) getArguments().getSerializable("selectedRoom");
+            if (selectedRoom != null) {
+                checkRoomInFirebase(selectedRoom.getRoomName());
+                if (selectedRoom.getPriceRule() != null) {
+                    fetchPriceRule(selectedRoom.getPriceRule());
+                }
+            }
         }
-        Log.d("Fragment_Booking", "Selected Room: " + selectedRoom);
     }
 
     @Override
@@ -83,18 +102,24 @@ public class Fragment_Booking extends Fragment {
         initializeViews(view);
 
         // Check if selectedRoom is null
-        if (selectedRoom == null || !isRoomSelected(selectedRoom.getRoomName())) {
-            // Disable the next step button
+        if (selectedRoom == null || selectedRoom.getRoomName() == null || selectedRoom.getRoomName().isEmpty()) {
             nextStepButton.setEnabled(false);
-            // Show a message indicating that a room needs to be selected first
-            Toast.makeText(getContext(), "Please choose a room before proceeding.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Please make sure to choose a room before proceeding.", Toast.LENGTH_SHORT).show();
             return view;
         }
 
         populateRoomDetails();
+        fetchAvailableCheckInTimes(); // Fetch available check-in times before setting the spinner adapter
         setupEventListeners();
 
         return view;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        // Store the context when the Fragment is attached
+        mContext = context;
     }
 
     private void initializeViews(View view) {
@@ -109,23 +134,51 @@ public class Fragment_Booking extends Fragment {
         checkInButton = view.findViewById(R.id.checkInButton);
         checkOutButton = view.findViewById(R.id.checkOutButton);
         checkInDateTextView = view.findViewById(R.id.checkInDateTextView);
-        checkOutDateTextView = view.findViewById(R.id.checkOutDateTextView);
+        checkOutDateTextView = view.findViewById(R.id.checkOutSetTimeTextView);
+        checkTimeTextView = view.findViewById(R.id.checkTimeTextView);
         guestOptionsButton = view.findViewById(R.id.guestOptionsButton);
         guestsTextView = view.findViewById(R.id.guestsTextView);
+        checkInTimeSpinner = view.findViewById(R.id.checkInTimeSpinner);
+        availableCheckInTimes = new ArrayList<>();
+    }
+
+    private void fetchPriceRule(String priceRuleName) {
+        priceRules_DBref.child(priceRuleName).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Model_PriceRule priceRule = snapshot.getValue(Model_PriceRule.class);
+                    if (priceRule != null) {
+                        // Get the appropriate price based on the current day of the week
+                        double price = getPriceForCurrentDay(priceRule);
+                        String formattedPrice = formatPrice(price);
+                        roomPriceTextView.setText("Price: ₱" + formattedPrice);
+                    } else {
+                        // Handle null price rule scenario
+                        roomPriceTextView.setText("Price: ₱" + formatPrice(0));
+                    }
+                } else {
+                    // Handle non-existent price rule scenario
+                    roomPriceTextView.setText("Price: ₱" + formatPrice(0));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle the error scenario
+                roomPriceTextView.setText("Price: ₱" + formatPrice(0));
+            }
+        });
     }
 
     private void populateRoomDetails() {
-        // Check if roomNameTextView is not null and room name is not empty
         if (roomNameTextView != null && selectedRoom != null && selectedRoom.getRoomName() != null && !selectedRoom.getRoomName().isEmpty()) {
             roomNameTextView.setText("Room Number: " + selectedRoom.getRoomName() + "\n");
         }
 
-        roomTitleTextView.setText(String.valueOf(selectedRoom.getTitle()));
-
-        // Add line breaks between each piece of information
-        roomTypeTextView.setText("Room Type: "+String.valueOf(selectedRoom.getRoomType()) + "\n");
-        roomPriceTextView.setText("Price: "+String.valueOf(selectedRoom.getPrice()) + "\n");
-        roomDetailsTextView.setText("Description: "+String.valueOf(selectedRoom.getDescription() + "\n"));
+        roomTitleTextView.setText(selectedRoom.getTitle());
+        roomTypeTextView.setText("Room Type: " + selectedRoom.getRoomType() + "\n");
+        roomDetailsTextView.setText("Description: " + selectedRoom.getDescription() + "\n");
     }
 
     private void setupEventListeners() {
@@ -142,16 +195,64 @@ public class Fragment_Booking extends Fragment {
         checkInButton.setOnClickListener(v -> showDatePickerDialog((date, month, year) -> {
             String checkInDate = (month + 1) + "/" + date + "/" + year;
             checkInDateTextView.setText(checkInDate);
+
+            // Get the selected check-in time
+            String selectedCheckInTime = availableCheckInTimes.get(checkInTimeSpinner.getSelectedItemPosition());
+
+            // Parse the selected check-in time to extract hour and minute
+            String[] checkInTimeParts = selectedCheckInTime.split(":");
+            int checkInHour = Integer.parseInt(checkInTimeParts[0]);
+            int checkInMinute = Integer.parseInt(checkInTimeParts[1].split(" ")[0]);
+
+            // Set check-out date and time
+            setCheckOutDateTime(year, month, date, checkInHour, checkInMinute);
         }));
+
+        // Inside setupEventListeners() method
+        checkInTimeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (!availableCheckInTimes.isEmpty()) {
+                    String selectedTime = availableCheckInTimes.get(position);
+                    // Do something with the selected time if needed
+                    // For example, you can display it or use it in further processing
+                    Log.d("Fragment_Booking", "Selected time: " + selectedTime);
+
+                    // Update checkTimeTextView with the selected time
+                    checkTimeTextView.setText(selectedTime);
+
+                    // Update check-out time based on selected check-in time
+                    updateCheckOutTime(selectedTime);
+                } else {
+                    // Handle case where no time is available
+                    // You might want to inform the user or take appropriate action
+                    Log.d("Fragment_Booking", "No available check-in times.");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Handle case where no time is selected if necessary
+                // For example, you might want to display a message or take some action
+                Log.d("Fragment_Booking", "No time selected.");
+            }
+        });
 
         checkOutButton.setOnClickListener(v -> showDatePickerDialog((date, month, year) -> {
             String checkOutDate = (month + 1) + "/" + date + "/" + year;
             checkOutDateTextView.setText(checkOutDate);
+
+            // Get the selected check-in time
+            String selectedCheckInTime = availableCheckInTimes.get(checkInTimeSpinner.getSelectedItemPosition());
+
+            // Set the checkout time to be the same as the selected check-in time
+            String checkOutTime = selectedCheckInTime;
+            checkTimeTextView.setText(checkOutDate + "; " + checkOutTime);
         }));
 
         nextStepButton.setOnClickListener(v -> {
             if (validateStep1()) {
-                updateStepIndicators(2);
+                updateStepIndicators(2); // Change 2 to the next step number as needed
             } else {
                 Toast.makeText(getContext(), "Please fill in all required fields.", Toast.LENGTH_SHORT).show();
             }
@@ -160,30 +261,127 @@ public class Fragment_Booking extends Fragment {
         guestOptionsButton.setOnClickListener(v -> showGuestOptionsDialog());
     }
 
-    private void showDatePickerDialog(DateSetListener listener) {
+    private double getPriceForCurrentDay(Model_PriceRule priceRule) {
         Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (view, year1, month1, dayOfMonth) -> {
+        switch (dayOfWeek) {
+            case Calendar.FRIDAY:
+                return priceRule.getFriday_price();
+            case Calendar.SATURDAY:
+                return priceRule.getSaturday_price();
+            case Calendar.SUNDAY:
+                return priceRule.getSunday_price();
+            default:
+                return priceRule.getPrice();
+        }
+    }
+
+    private String formatPrice(double price) {
+        return String.format(Locale.US, "%.2f", price);
+    }
+
+    private List<String> getAvailableCheckInTimes() {
+        return Arrays.asList("12:00 AM", "1:00 AM", "2:00 AM", "3:00 AM", "4:00 AM", "5:00 AM",
+                "6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM",
+                "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM",
+                "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM", "11:00 PM");
+    }
+
+    private void fetchAvailableCheckInTimes() {
+        availableCheckInTimes = getAvailableCheckInTimes();
+        // Once the available check-in times are fetched, set up the spinner adapter
+        setupCheckInTimeSpinnerAdapter();
+    }
+
+    private void updateCheckOutTime(String selectedCheckInTime) {
+        String checkOutDate = checkOutDateTextView.getText().toString(); // Get the checkout date
+        checkTimeTextView.setText(checkOutDate + "; " + selectedCheckInTime); // Concatenate with selected check-in time
+    }
+
+    private void setupCheckInTimeSpinnerAdapter() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, availableCheckInTimes);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        checkInTimeSpinner.setAdapter(adapter);
+    }
+
+    private void showDatePickerDialog(DatePickerListener listener) {
+        Calendar calendar = Calendar.getInstance();
+        int initialYear = calendar.get(Calendar.YEAR);
+        int initialMonth = calendar.get(Calendar.MONTH);
+        int initialDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(), (view, year, month, dayOfMonth) -> {
             Calendar selectedDate = Calendar.getInstance();
-            selectedDate.set(year1, month1, dayOfMonth);
+            selectedDate.set(year, month, dayOfMonth);
             if (selectedDate.before(Calendar.getInstance())) {
-                Toast.makeText(getContext(), "Please select a valid date.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Please select a valid date.", Toast.LENGTH_SHORT).show();
             } else {
-                listener.onDateSet(dayOfMonth, month1, year1);
+                // Set the check-in date text
+                String checkInDate = (month + 1) + "/" + dayOfMonth + "/" + year;
+                checkInDateTextView.setText(checkInDate);
+
+                // Extract year from check-in date
+                String[] selectedDateParts = checkInDate.split("/");
+                int selectedYear = Integer.parseInt(selectedDateParts[2]);
+
+                // Pass the date components to the listener
+                listener.onDateSet(dayOfMonth, month, year);
             }
-        }, year, month, day);
+        }, initialYear, initialMonth, initialDay);
         datePickerDialog.show();
     }
 
-    private boolean isRoomSelected(String roomName) {
-        DatabaseReference recommRoomsRef = FirebaseDatabase.getInstance().getReference("RecommRooms").child(roomName);
-        DatabaseReference allRoomsRef = FirebaseDatabase.getInstance().getReference("AllRooms").child(roomName);
+    private void setCheckOutDateTime(int year, int month, int date, int checkInHour, int checkInMinute) {
+        // Set the checkout date to be the next day
+        Calendar checkOutCalendar = Calendar.getInstance();
+        checkOutCalendar.set(year, month, date, checkInHour, checkInMinute); // Set check-out time to check-in time
+        checkOutCalendar.add(Calendar.DAY_OF_YEAR, 1); // Add one day
+        String checkOutDate = (checkOutCalendar.get(Calendar.MONTH) + 1) + "/" + checkOutCalendar.get(Calendar.DAY_OF_MONTH) + "/" + checkOutCalendar.get(Calendar.YEAR);
+        checkOutDateTextView.setText(checkOutDate);
+    }
 
-        // Check if the room exists in RecommRooms or AllRooms
-        return (recommRoomsRef != null) || (allRoomsRef != null);
+    private void checkRoomInFirebase(String roomName) {
+        DatabaseReference roomsRef = FirebaseDatabase.getInstance().getReference();
+
+        roomsRef.child("AllRooms").child(roomName).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Log.d("Fragment_Booking", "Selected Room Found in AllRooms: " + roomName);
+                    // Use mContext to display the Toast message
+                    if (mContext != null) {
+                        Toast.makeText(mContext, roomName + " is now chosen", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    // Check in "RecommRooms"
+                    roomsRef.child("RecommRooms").child(roomName).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()) {
+                                Log.d("Fragment_Booking", "Selected Room Found in RecommRooms: " + roomName);
+                                // Use mContext to display the Toast message
+                                if (mContext != null) {
+                                    Toast.makeText(mContext, roomName + " is now chosen", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Log.d("Fragment_Booking", "Selected Room Not Found: " + roomName);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Log.w("Fragment_Booking", "loadPost:onCancelled", error.toException());
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("Fragment_Booking", "loadPost:onCancelled", error.toException());
+            }
+        });
     }
 
     private void showGuestOptionsDialog() {
@@ -203,8 +401,12 @@ public class Fragment_Booking extends Fragment {
         childrenCountTextView.setText(String.valueOf(childrenCount));
 
         increaseAdultsButton.setOnClickListener(v -> {
-            adultCount++;
-            adultCountTextView.setText(String.valueOf(adultCount));
+            if (adultCount < 10 && (adultCount + childrenCount) < 10) { // Check if total guest count is less than 10
+                adultCount++;
+                adultCountTextView.setText(String.valueOf(adultCount));
+            } else {
+                Toast.makeText(getContext(), "Maximum limit reached for adults.", Toast.LENGTH_SHORT).show();
+            }
         });
 
         decreaseAdultsButton.setOnClickListener(v -> {
@@ -215,8 +417,12 @@ public class Fragment_Booking extends Fragment {
         });
 
         increaseChildrenButton.setOnClickListener(v -> {
-            childrenCount++;
-            childrenCountTextView.setText(String.valueOf(childrenCount));
+            if (childrenCount < 10 && (adultCount + childrenCount) < 10) { // Check if total guest count is less than 10
+                childrenCount++;
+                childrenCountTextView.setText(String.valueOf(childrenCount));
+            } else {
+                Toast.makeText(getContext(), "Maximum limit reached for children.", Toast.LENGTH_SHORT).show();
+            }
         });
 
         decreaseChildrenButton.setOnClickListener(v -> {
@@ -236,31 +442,50 @@ public class Fragment_Booking extends Fragment {
         dialog.show();
     }
 
-    private interface DateSetListener {
-        void onDateSet(int date, int month, int year);
-    }
-
     private boolean validateStep1() {
-        return !checkInDateTextView.getText().toString().isEmpty() &&
-                !checkOutDateTextView.getText().toString().isEmpty();
+        String checkInDate = checkInDateTextView.getText().toString();
+        String checkOutDate = checkOutDateTextView.getText().toString();
+        String guests = guestsTextView.getText().toString();
+
+        if (checkInDate.isEmpty()) {
+            Toast.makeText(getContext(), "Please select a check-in date.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (checkOutDate.isEmpty()) {
+            Toast.makeText(getContext(), "Please select a check-out date.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (guests.isEmpty()) {
+            Toast.makeText(getContext(), "Please select the number of guests.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        // Extract the number of adults and children from the guests string
+        int totalGuests = adultCount + childrenCount;
+
+        if (totalGuests > 10) {
+            Toast.makeText(getContext(), "Total number of guests cannot exceed 10.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
     }
 
     private void updateStepIndicators(int step) {
-        // Update visibility of step indicators based on the current step
         TextView step1 = getView().findViewById(R.id.step1);
         TextView step2 = getView().findViewById(R.id.step2);
         TextView step3 = getView().findViewById(R.id.step3);
         TextView step4 = getView().findViewById(R.id.step4);
         TextView step5 = getView().findViewById(R.id.step5);
 
-        // Reset all steps to be invisible
-        step1.setVisibility(View.INVISIBLE);
-        step2.setVisibility(View.INVISIBLE);
-        step3.setVisibility(View.INVISIBLE);
-        step4.setVisibility(View.INVISIBLE);
-        step5.setVisibility(View.INVISIBLE);
+        step1.setVisibility(View.VISIBLE);
+        step2.setVisibility(View.VISIBLE);
+        step3.setVisibility(View.VISIBLE);
+        step4.setVisibility(View.VISIBLE);
+        step5.setVisibility(View.VISIBLE);
 
-        // Set steps based on the current step
         switch (step) {
             case 5:
                 step5.setVisibility(View.VISIBLE);
@@ -278,8 +503,31 @@ public class Fragment_Booking extends Fragment {
                 step1.setVisibility(View.VISIBLE);
                 break;
             default:
-                // Handle invalid step
                 break;
         }
+
+        updateStepIndicatorBackground(step);
+    }
+
+    private void updateStepIndicatorBackground(int step) {
+        TextView[] steps = {
+                getView().findViewById(R.id.step1),
+                getView().findViewById(R.id.step2),
+                getView().findViewById(R.id.step3),
+                getView().findViewById(R.id.step4),
+                getView().findViewById(R.id.step5)
+        };
+
+        for (int i = 0; i < steps.length; i++) {
+            if (i < step) {
+                steps[i].setBackgroundResource(R.drawable.circle_background_selected);
+            } else {
+                steps[i].setBackgroundResource(R.drawable.circle_background_unselected);
+            }
+        }
+    }
+
+    private interface DatePickerListener {
+        void onDateSet(int date, int month, int year);
     }
 }

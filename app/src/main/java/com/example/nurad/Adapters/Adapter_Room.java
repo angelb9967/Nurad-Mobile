@@ -107,19 +107,14 @@ public class Adapter_Room extends RecyclerView.Adapter<Adapter_Room.RoomViewHold
                 listener.onRoomSelected(room);
             }
 
-            // Ensure the context is an instance of FragmentActivity
             if (context instanceof FragmentActivity) {
                 FragmentActivity fragmentActivity = (FragmentActivity) context;
-
-                // Pass the FragmentActivity instance to the fetchRoomDetailsFromFirebase method
                 fetchRoomDetailsFromFirebase(room);
             } else {
-                // Handle the case where context is not a FragmentActivity
                 Toast.makeText(context, "Unable to open booking. Context is not a FragmentActivity", Toast.LENGTH_SHORT).show();
             }
         });
     }
-
     private void fetchRoomDetailsFromFirebase(RoomModel room) {
         DatabaseReference recommRoomsRef = FirebaseDatabase.getInstance().getReference("RecommRooms");
         DatabaseReference allRoomsRef = FirebaseDatabase.getInstance().getReference("AllRooms");
@@ -191,7 +186,8 @@ public class Adapter_Room extends RecyclerView.Adapter<Adapter_Room.RoomViewHold
             // Update the roomName and roomType values here
             selectedRoom.setRoomName(selectedRoom.getRoomName());
             selectedRoom.setRoomType(selectedRoom.getRoomType());
-            selectedRoom.setPrice(selectedRoom.getPrice());
+            selectedRoom.setPriceRule(selectedRoom.getPriceRule());
+            selectedRoom.setPriceRule(selectedRoom.getPriceRule());
 
             // Pass roomName to selectedRoom if it's not null
             if (selectedRoom.getRoomName() != null && !selectedRoom.getRoomName().isEmpty()) {
