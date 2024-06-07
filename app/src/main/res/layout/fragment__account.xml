@@ -16,6 +16,17 @@
             android:background="#FFFFFF">
 
             <!-- User Info Section -->
+            <View
+                android:id="@+id/view2"
+                android:layout_width="wrap_content"
+                android:layout_height="160dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/rounded_top_background"
+                app:layout_constraintBottom_toTopOf="@+id/user_info_section"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/user_info_section"
                 android:layout_width="0dp"
@@ -30,26 +41,35 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/purple"
-                    android:gravity="center"
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:padding="16dp">
 
-                    <ImageView
-                        android:id="@+id/profile_image"
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/profileImages"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:src="@drawable/search" />
+                        android:layout_marginTop="8dp"
+                        android:src="@drawable/user"
+                        app:civ_border_color="#F6E3CB"
+                        app:civ_border_width="6dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.055"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.011" />
 
                     <TextView
                         android:id="@+id/user_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center"
-                        android:text="Juan Dela Cruz"
-                        android:textColor="@android:color/white"
-                        android:textSize="18sp" />
+                        android:layout_marginStart="16dp"
+                        android:text="Account Name"
+                        android:paddingTop="25dp"
+                        android:textColor="#872065"
+                        android:textStyle="bold"
+                        android:textSize="23sp"
+                        android:gravity="center_vertical" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -84,7 +104,7 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/search" />
+                            android:src="@drawable/baseline_book_online_24" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -107,7 +127,7 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/search" />
+                            android:src="@drawable/baseline_payments_24" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -151,7 +171,7 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/search" />
+                            android:src="@drawable/baseline_help_center_24" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -174,7 +194,7 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/search" />
+                            android:src="@drawable/baseline_rate_review_24" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -197,7 +217,7 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/search" />
+                            android:src="@drawable/baseline_settings_24" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -222,12 +242,15 @@
                 tools:listitem="@layout/item_voucher" />
 
             <!-- Log Out Button -->
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/LogoutBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Log out"
+                android:textColor="@android:color/white"
+                android:background="@drawable/rounded_button"
                 app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recycler_view_vouchers"

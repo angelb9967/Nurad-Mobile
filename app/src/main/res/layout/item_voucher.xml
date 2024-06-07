@@ -25,9 +25,10 @@
                 android:id="@+id/voucher_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
                 android:text="Voucher Title"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
+                android:textColor="#F6E3CB"
+                android:textSize="18dp"
                 android:textStyle="bold" />
 
             <TextView
@@ -36,16 +37,35 @@
                 android:layout_height="wrap_content"
                 android:text="Voucher Description"
                 android:textColor="@android:color/white"
+                android:paddingBottom="4dp"
                 android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/voucher_validity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Voucher Validity"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/voucher_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Value"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/voucher_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="VOUCHER123"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
+                android:text="Voucher Redeem Code"
+                android:textColor="#F6E3CB"
+                android:textSize="17sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -53,6 +73,6 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/search" />
+            android:src="@drawable/baseline_discount_24" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
