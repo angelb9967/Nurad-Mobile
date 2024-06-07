@@ -26,8 +26,6 @@ import com.example.nurad.Activities.Activity_SignUp;
 import com.example.nurad.Adapters.Adapter_Vouchers;
 import com.example.nurad.Models.VoucherModel;
 import com.example.nurad.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,7 +33,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -210,10 +207,11 @@ public class Fragment_Account extends Fragment {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     VoucherModel voucher = snapshot.getValue(VoucherModel.class);
                     if (voucher != null) {
+                        voucher.setKey(snapshot.getKey()); // Set the key
                         voucherList.add(voucher);
                     }
                 }
-                voucherAdapter.notifyDataSetChanged();
+                voucherAdapter.setVoucherList(voucherList); // Update the adapter with the new list
             }
 
             @Override

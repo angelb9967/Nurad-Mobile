@@ -1,5 +1,7 @@
 package com.example.nurad.Models;
 
+import java.util.UUID;
+
 public class VoucherModel {
     private String code;
     private String description;
@@ -7,6 +9,7 @@ public class VoucherModel {
     private String title;
     private String validity;
     private double value;  // Use double for value to ensure decimal precision
+    private String key;
 
     public VoucherModel() {
         // Default constructor required for calls to DataSnapshot.getValue(VoucherModel.class)
@@ -21,6 +24,13 @@ public class VoucherModel {
         this.value = value;
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
     public String getCode() {
         return code;
     }
