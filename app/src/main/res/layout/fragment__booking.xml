@@ -480,10 +480,9 @@
         <!-- Navigation Button -->
         <Button
             android:id="@+id/nextStepButton"
-            android:layout_width="120dp"
-            android:layout_height="47dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:backgroundTint="#882065"
-            android:layout_marginLeft="260dp"
             android:text="Next Step" />
     </LinearLayout>
 </ScrollView>
