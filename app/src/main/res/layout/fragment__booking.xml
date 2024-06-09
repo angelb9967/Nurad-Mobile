@@ -234,7 +234,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:layout_marginStart="0dp"
-            android:text="Phone"
+            android:text="Landline"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -248,8 +248,9 @@
             android:layout_marginStart="0dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/custom_input"
+            android:hint="XXXX-YYYY"
             android:inputType="phone"
-            android:maxLength="11"
+            android:maxLength="8"
             android:paddingStart="18dp"
             android:paddingEnd="18dp"
             app:layout_constraintEnd_toEndOf="@+id/textView303"
@@ -277,7 +278,7 @@
             android:layout_marginStart="0dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/custom_input"
-            android:hint="Mobile Phone"
+            android:hint="09XX-XXX-YYYY"
             android:inputType="phone"
             android:maxLength="11"
             android:paddingStart="18dp"
@@ -307,7 +308,7 @@
             android:layout_marginStart="0dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/custom_input"
-            android:hint="Email"
+            android:hint="Ex: john.smith@gmail.com."
             android:inputType="textEmailAddress"
             android:paddingStart="18dp"
             android:paddingEnd="18dp"
@@ -414,19 +415,34 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="30dp"
+            android:text="Region"
+            android:textSize="15sp" />
+
+        <Spinner
+            android:id="@+id/Region_Spinner"
+            android:layout_width="349dp"
+            android:layout_height="50dp"
+            android:background="@drawable/style_spinner"
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp" />
+
+        <TextView
+            android:id="@+id/textView3ji"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="30dp"
             android:text="City"
             android:textSize="15sp" />
 
-        <EditText
-            android:id="@+id/City_Etxt"
-            android:layout_width="match_parent"
+        <Spinner
+            android:id="@+id/City_Spinner"
+            android:layout_width="349dp"
             android:layout_height="50dp"
-            android:layout_marginEnd="30dp"
-            android:background="@drawable/custom_input"
-            android:hint="City"
-            android:inputType="text"
+            android:background="@drawable/style_spinner"
             android:paddingStart="18dp"
             android:paddingEnd="18dp" />
+
 
         <TextView
             android:id="@+id/textView313"
@@ -442,6 +458,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginEnd="30dp"
+            android:maxLength="4"
             android:background="@drawable/custom_input"
             android:hint="Zip / Postal Code"
             android:inputType="text"
