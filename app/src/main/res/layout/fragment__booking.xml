@@ -10,173 +10,16 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Custom Progress Bar -->
-        <LinearLayout
+        <!-- Unsaved Changes Note -->
+        <TextView
+            android:id="@+id/unsavedChangesNote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:paddingBottom="16dp">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/step1"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/circle_background_selected"
-                    android:padding="8dp"
-                    android:text="1"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/white" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Rooms"
-                    android:textAlignment="center"
-                    android:textSize="10sp"
-                    android:textColor="@android:color/black"
-                    android:paddingTop="4dp" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="40dp"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray"
-                android:layout_gravity="center_vertical" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/step2"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/circle_background_unselected"
-                    android:padding="8dp"
-                    android:text="2"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/white" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Add-ons"
-                    android:textSize="10sp"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/black"
-                    android:paddingTop="4dp" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="40dp"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray"
-                android:layout_gravity="center_vertical" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/step3"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:textAlignment="center"
-                    android:text="3"
-                    android:textColor="@android:color/white"
-                    android:background="@drawable/circle_background_unselected"
-                    android:padding="8dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Guest Details"
-                    android:textAlignment="center"
-                    android:textSize="10sp"
-                    android:textColor="@android:color/black"
-                    android:paddingTop="4dp" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="40dp"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray"
-                android:layout_gravity="center_vertical" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/step4"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/circle_background_unselected"
-                    android:padding="8dp"
-                    android:text="4"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/white" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Review"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/black"
-                    android:textSize="10sp"
-                    android:paddingTop="4dp" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="40dp"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray"
-                android:layout_gravity="center_vertical" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/step5"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:textAlignment="center"
-                    android:text="5"
-                    android:textColor="@android:color/white"
-                    android:background="@drawable/circle_background_unselected"
-                    android:padding="8dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Confirm"
-                    android:textAlignment="center"
-                    android:textSize="10sp"
-                    android:textColor="@android:color/black"
-                    android:paddingTop="4dp" />
-            </LinearLayout>
-        </LinearLayout>
+            android:layout_marginBottom="16dp"
+            android:text="Note: Changes will not be saved if you leave this page."
+            android:textColor="#545454"
+            android:textSize="12sp"
+            android:textAlignment="center" />
 
         <!-- Room Details Card -->
         <androidx.cardview.widget.CardView
@@ -188,17 +31,29 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="5dp">
+
+                <!-- Room Details Header -->
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="369dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="30dp"
+                    android:text="Room Details"
+                    android:textColor="#333333"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/roomTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Room and Description"
-                    android:paddingBottom="8dp"
-                    android:text="Room Details"
+                    android:paddingBottom="4dp"
+                    android:text="Room Title"
                     android:textColor="#875E2C"
                     android:textSize="18sp"
                     android:textStyle="normal" />
@@ -240,235 +95,1089 @@
                     android:textSize="12sp"
                     android:textStyle="normal" />
 
+
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Guest Selection Card -->
-        <androidx.cardview.widget.CardView
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:background="#882065"
+            app:layout_constraintEnd_toEndOf="@+id/Email_Etxt"
+            app:layout_constraintStart_toStartOf="@+id/Email_Etxt"
+            app:layout_constraintTop_toBottomOf="@+id/Email_Etxt" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="30dp"
+            android:text="Contact Information"
+            android:textColor="#333333"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textView2"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+        <TextView
+            android:id="@+id/textView1011"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:paddingBottom="8dp"
+            android:text="Enter name and contact information."
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+        <TextView
+            android:id="@+id/textView201"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="0dp"
+            android:text="Prefix Name"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        <Spinner
+            android:id="@+id/Prefix_Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/style_spinner"
+            android:inputType="text"
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textView201"
+            app:layout_constraintTop_toBottomOf="@+id/textView201" />
+
+
+        <TextView
+            android:id="@+id/textView101"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="0dp"
+            android:text="First Name"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Prefix_Spinner" />
+
+        <EditText
+            android:id="@+id/FirstName_Etxt"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/custom_input"
+            android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:hint="First Name"
+            android:inputType="text"
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textView101"
+            app:layout_constraintTop_toBottomOf="@+id/textView101" />
+
+        <TextView
+            android:id="@+id/textView301"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="0dp"
+            android:text="Last Name"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/FirstName_Etxt" />
+
+        <EditText
+            android:id="@+id/LastName_Etxt"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/custom_input"
+            android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:hint="Last Name"
+            android:inputType="text"
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textView301"
+            app:layout_constraintTop_toBottomOf="@+id/textView301" />
+
+        <TextView
+            android:id="@+id/textView303"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="0dp"
+            android:text="Phone"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/LastName_Etxt" />
+
+        <EditText
+            android:id="@+id/Phone_Etxt"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/custom_input"
+            android:inputType="phone"
+            android:maxLength="11"
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp"
+            app:layout_constraintEnd_toEndOf="@+id/textView303"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textView303"
+            app:layout_constraintTop_toBottomOf="@+id/textView303" />
+
+        <TextView
+            android:id="@+id/textView102"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="0dp"
+            android:text="Mobile Phone"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Phone_Etxt" />
+
+        <EditText
+            android:id="@+id/MobilePhone_Etxt"
+            android:layout_width="194dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/custom_input"
+            android:hint="Mobile Phone"
+            android:inputType="phone"
+            android:maxLength="11"
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp"
+            app:layout_constraintEnd_toEndOf="@+id/textView102"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textView102"
+            app:layout_constraintTop_toBottomOf="@+id/textView102" />
+
+        <TextView
+            android:id="@+id/textView305"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="0dp"
+            android:text="Email"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/MobilePhone_Etxt" />
+
+        <EditText
+            android:id="@+id/Email_Etxt"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/custom_input"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp"
+            app:layout_constraintEnd_toEndOf="@+id/textView305"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textView305"
+            app:layout_constraintTop_toBottomOf="@+id/textView305" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:background="#882065"
+            app:layout_constraintEnd_toEndOf="@+id/Email_Etxt"
+            app:layout_constraintStart_toStartOf="@+id/Email_Etxt"
+            app:layout_constraintTop_toBottomOf="@+id/Email_Etxt" />
+
+        <TextView
+            android:id="@+id/textView306"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Address Information"
+            android:textColor="#333333"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView307"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Enter address information."
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/textView309"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="30dp"
+            android:text="Country"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/Country_Etxt"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/custom_input"
+            android:hint="Country"
+            android:inputType="text"
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp" />
+
+        <TextView
+            android:id="@+id/textView310"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="30dp"
+            android:text="Address 1"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/Address1_Etxt"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/custom_input"
+            android:hint="Address 1"
+            android:inputType="text"
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp" />
+
+        <TextView
+            android:id="@+id/textView311"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="30dp"
+            android:text="Address 2"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/Address2_Etxt"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/custom_input"
+            android:hint="Address 2"
+            android:inputType="text"
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp" />
+
+        <TextView
+            android:id="@+id/textView312"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="30dp"
+            android:text="City"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/City_Etxt"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/custom_input"
+            android:hint="City"
+            android:inputType="text"
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp" />
+
+        <TextView
+            android:id="@+id/textView313"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="30dp"
+            android:text="Zip/Postal Code"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/ZipCode_Etxt"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/custom_input"
+            android:hint="Zip / Postal Code"
+            android:inputType="text"
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:background="#882065"
+            app:layout_constraintEnd_toEndOf="@+id/Email_Etxt"
+            app:layout_constraintStart_toStartOf="@+id/Email_Etxt"
+            app:layout_constraintTop_toBottomOf="@+id/Email_Etxt" />
+
+        <TextView
+            android:id="@+id/textView314"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Payment Information"
+            android:textColor="#333333"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView315"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Enter payment information for the transaction."
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/textView316"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="30dp"
+            android:text="Card Number"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/CardNumber_Etxt"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/custom_input"
+            android:hint="Card Number"
+            android:inputType="number"
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp" />
+
+        <TextView
+            android:id="@+id/textView317"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="30dp"
+            android:text="Expiration Date"
+            android:textSize="15sp" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp">
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <EditText
+                android:id="@+id/ExpirationDate_Etxt"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/custom_input"
+                android:inputType="none"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:hint="Expiration Date"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ExpirationCalendarPicker_Img"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="5dp">
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="16dp"
+                app:srcCompat="@drawable/calendar_days" />
+        </LinearLayout>
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/user" />
+        <TextView
+            android:id="@+id/textView318"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="30dp"
+            android:text="CVV"
+            android:textSize="15sp" />
 
-                <Button
-                    android:id="@+id/guestOptionsButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:backgroundTint="#882065"
-                    android:text="Guests" />
+        <EditText
+            android:id="@+id/CVV_Etxt"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/custom_input"
+            android:hint="CVV"
+            android:inputType="number"
+            android:maxLength="3"
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp" />
 
-                <TextView
-                    android:id="@+id/guestsTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="Adults: 1, Children: 0"
-                    android:textSize="14sp" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        <TextView
+            android:id="@+id/textView319"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="30dp"
+            android:text="Name on the Card"
+            android:textSize="15sp" />
 
-        <!-- Check-in Date Card -->
-        <androidx.cardview.widget.CardView
+        <EditText
+            android:id="@+id/NameOntheCard_Etxt"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/custom_input"
+            android:hint="Name on the Card"
+            android:inputType="textPersonName"
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:background="#882065"
+            app:layout_constraintEnd_toEndOf="@+id/Email_Etxt"
+            app:layout_constraintStart_toStartOf="@+id/Email_Etxt"
+            app:layout_constraintTop_toBottomOf="@+id/Email_Etxt" />
+
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Booking Date and Time"
+            android:textColor="#333333"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Select check-in and check-out information."
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/textView103"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Check-In Date"
+            android:textSize="15sp" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp">
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <EditText
+                android:id="@+id/CheckInDate_Etxt"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/custom_input"
+                android:inputType="none"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:hint="Check-In Date"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/CalendarPicker_In_Img"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="5dp"
-                android:gravity="center_vertical">
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="16dp"
+                app:srcCompat="@drawable/calendar_days" />
+        </LinearLayout>
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/baseline_calendar_month_24" />
+        <TextView
+            android:id="@+id/textView104"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="30dp"
+            android:text="Check-Out Date"
+            android:textSize="15sp" />
 
-                <Button
-                    android:id="@+id/checkInButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:backgroundTint="#882065"
-                    android:text="Check-in Date" />
-
-                <TextView
-                    android:id="@+id/checkInDateTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="Not set"
-                    android:textSize="14sp" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- Check-out Card -->
-        <androidx.cardview.widget.CardView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp">
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <EditText
+                android:id="@+id/CheckOutDate_Etxt"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/custom_input"
+                android:inputType="date"
+                android:hint="Check-Out Date"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/CalendarPicker_Out_Img"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="5dp"
-                android:gravity="center_vertical">
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="16dp"
+                app:srcCompat="@drawable/calendar_days" />
+        </LinearLayout>
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/baseline_calendar_month_24" />
-
-                <Button
-                    android:id="@+id/checkOutButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:backgroundTint="#882065"
-                    android:text="Check-out Date" />
-
-                <TextView
-                    android:id="@+id/checkOutSetTimeTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="Not set"
-                    android:textSize="14sp" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- Check-in Time Card -->
-        <androidx.cardview.widget.CardView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp">
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="30dp"
+            android:gravity="center_vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/baseline_access_time_24" />
+
+            <TextView
+                android:id="@+id/checkInTimeTextView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="5dp"
-                android:gravity="center_vertical">
+                android:layout_marginStart="8dp"
+                android:text="Check-in Time:"
+                android:textSize="14sp"
+                android:textColor="@android:color/black" />
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/baseline_access_time_24" />
+            <Spinner
+                android:id="@+id/checkInTimeSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp" />
+        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/checkInTimeTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="Check-in Time:"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/black" />
-
-                <Spinner
-                    android:id="@+id/checkInTimeSpinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/checkOutSetTimeTextView"
-                    android:layout_centerHorizontal="true" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- Check-out Time Card -->
-        <androidx.cardview.widget.CardView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp">
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="30dp"
+            android:gravity="center_vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/baseline_access_time_24" />
+
+            <TextView
+                android:id="@+id/checkOutTimeTextView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="5dp"
-                android:gravity="center_vertical">
+                android:layout_marginStart="8dp"
+                android:text="Check-out Time:"
+                android:textSize="14sp"
+                android:textColor="@android:color/black" />
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/baseline_access_time_24" />
+            <TextView
+                android:id="@+id/checkTimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Not set"
+                android:textSize="14sp" />
+        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/checkOutTimeTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="Check-out Time:"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/black" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:background="#882065"
+            app:layout_constraintEnd_toEndOf="@+id/Email_Etxt"
+            app:layout_constraintStart_toStartOf="@+id/Email_Etxt"
+            app:layout_constraintTop_toBottomOf="@+id/Email_Etxt" />
 
-                <TextView
-                    android:id="@+id/checkTimeTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="Not set"
-                    android:textSize="14sp" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
 
-        <!-- Voucher Application Card -->
-        <androidx.cardview.widget.CardView
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Extras"
+            android:textColor="#333333"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <!-- Pricing and Extras Description -->
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Enter how many extra authorized guest/s you need."
+            android:textSize="14sp" />
+
+        <!-- Extra Adult Guests Label -->
+        <TextView
+            android:id="@+id/textView106"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="No. of Extra Adult Guest/s"
+            android:textSize="15sp" />
+
+        <!-- Extra Adult Guests Input Group -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp">
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <!-- Extra Adult Input -->
+            <EditText
+                android:id="@+id/Adult_Etxt"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="50dp"
+                android:layout_marginEnd="16dp"
+                android:inputType="number"
+                android:maxLength="2"
+                android:background="@drawable/custom_input"
+                android:hint="Extra Adult"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp" />
+
+            <!-- Plus Icon for Extra Adult -->
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/Adult_Plus_Img"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="5dp"
-                android:gravity="center_vertical">
+                android:src="@drawable/square_plus"
+                android:layout_marginEnd="16dp"
+                android:layout_gravity="center_vertical" />
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/applyVoucherCheckBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="#882065"
-                    android:text="Apply Voucher" />
+            <!-- Minus Icon for Extra Adult -->
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/Adult_Minus_Img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/square_minus"
+                android:layout_gravity="center_vertical" />
+        </LinearLayout>
 
-                <EditText
-                    android:id="@+id/voucherEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:hint="Enter Voucher Code"
-                    android:visibility="gone" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        <!-- Extra Child Guests Label -->
+        <TextView
+            android:id="@+id/textView107"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="No. of Extra Child Guest/s"
+            android:textSize="15sp" />
 
+        <!-- Extra Child Guests Input Group -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <!-- Extra Child Input -->
+            <EditText
+                android:id="@+id/Child_Etxt"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="50dp"
+                android:layout_marginEnd="16dp"
+                android:inputType="number"
+                android:maxLength="2"
+                android:background="@drawable/custom_input"
+                android:hint="Extra Child"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp" />
+
+            <!-- Plus Icon for Extra Child -->
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/Child_Plus_Img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/square_plus"
+                android:layout_marginEnd="16dp"
+                android:layout_gravity="center_vertical" />
+
+            <!-- Minus Icon for Extra Child -->
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/Child_Minus_Img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/square_minus"
+                android:layout_gravity="center_vertical" />
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:background="#882065"
+            app:layout_constraintEnd_toEndOf="@+id/Email_Etxt"
+            app:layout_constraintStart_toStartOf="@+id/Email_Etxt"
+            app:layout_constraintTop_toBottomOf="@+id/Email_Etxt" />
+
+
+        <TextView
+            android:id="@+id/textView84"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Use a Voucher"
+            android:textColor="#333333"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView18"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Get a discount by redeeming a valid code."
+            android:textSize="14sp" />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/applyVoucherCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="#882065"
+            android:text="Apply Voucher" />
+
+        <EditText
+            android:id="@+id/voucherEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:hint="Enter Voucher Code"
+            android:visibility="gone" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:background="#882065"
+            app:layout_constraintEnd_toEndOf="@+id/Email_Etxt"
+            app:layout_constraintStart_toStartOf="@+id/Email_Etxt"
+            app:layout_constraintTop_toBottomOf="@+id/Email_Etxt" />
+
+        <!-- Additional Information Header -->
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Additional Information"
+            android:textColor="#333333"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <!-- Additional Information Description -->
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Add any additional notes for your booking."
+            android:textSize="14sp" />
+
+        <!-- Notes Input Field -->
+        <EditText
+            android:id="@+id/Notes_Txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minLines="3"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/custom_input"
+            android:hint="Note"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:paddingTop="10dp"
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp"
+            android:paddingBottom="10dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:background="#882065"
+            app:layout_constraintEnd_toEndOf="@+id/Email_Etxt"
+            app:layout_constraintStart_toStartOf="@+id/Email_Etxt"
+            app:layout_constraintTop_toBottomOf="@+id/Email_Etxt" />
+
+        <!-- Add Ons Header -->
+        <TextView
+            android:id="@+id/textView783"
+            android:layout_width="378dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Add Ons"
+            android:textColor="#333333"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+                <!-- Add Ons Description -->
+        <TextView
+            android:id="@+id/textView791"
+            android:layout_width="378dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Choose an add-on to enhance your experience."
+            android:textSize="14sp" />
+
+                <!-- RecyclerView for Add Ons -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="361dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:maxHeight="300dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="15dp"
+            android:background="#882065"
+            app:layout_constraintEnd_toEndOf="@+id/Email_Etxt"
+            app:layout_constraintStart_toStartOf="@+id/Email_Etxt"
+            app:layout_constraintTop_toBottomOf="@+id/Email_Etxt" />
+
+    <!-- Room Details Card -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/textView121"
+            android:layout_width="378dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="30dp"
+            android:text="Your Booking Summary"
+            android:textColor="#333333"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/stayDuration"
+            android:layout_width="378dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Stay Duration:"
+            android:textSize="14sp" />
+        <TextView
+            android:id="@+id/payMeth"
+            android:layout_width="378dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Payment Method:"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/bookingD"
+            android:layout_width="378dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Booking Details"
+            android:textStyle="bold"
+            android:textSize="14sp" />
+        <TextView
+            android:id="@+id/sumRoom"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Room Name and Number"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/sumAdultVal"
+            android:layout_width="378dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Qty of Adult"
+            android:textSize="14sp" />
+        <TextView
+            android:id="@+id/sumChildVal"
+            android:layout_width="378dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Qty of Child"
+            android:textSize="14sp" />
+        <TextView
+            android:id="@+id/sumAddOnVal"
+            android:layout_width="378dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Add-Ons"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:background="#882065"
+            app:layout_constraintEnd_toEndOf="@+id/Email_Etxt"
+            app:layout_constraintStart_toStartOf="@+id/Email_Etxt"
+            app:layout_constraintTop_toBottomOf="@+id/Email_Etxt" />
+
+
+        <TextView
+            android:id="@+id/sumSubtotalVal"
+            android:layout_width="378dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Subtotal"
+            android:textSize="14sp" />
+        <TextView
+            android:id="@+id/sumTaxVal"
+            android:layout_width="378dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Tax/VAT (12%)"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/sumVouchVal"
+            android:layout_width="378dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Discount (Code)"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/sumTotalVal"
+            android:layout_width="378dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Total"
+            android:textStyle="bold"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:background="#882065"
+            app:layout_constraintEnd_toEndOf="@+id/Email_Etxt"
+            app:layout_constraintStart_toStartOf="@+id/Email_Etxt"
+            app:layout_constraintTop_toBottomOf="@+id/Email_Etxt" />
         <!-- Unsaved Changes Note -->
         <TextView
-            android:id="@+id/unsavedChangesNote"
+            android:id="@+id/unsavedChangesNote2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -483,6 +1192,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#882065"
-            android:text="Next Step" />
+            android:text="BOOK" />
     </LinearLayout>
 </ScrollView>
