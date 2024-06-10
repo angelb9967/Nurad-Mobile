@@ -21,6 +21,7 @@
             android:textSize="12sp"
             android:textAlignment="center" />
 
+
         <!-- Room Details Card -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -101,14 +102,16 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="3dp"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
             android:background="#882065"
             app:layout_constraintEnd_toEndOf="@+id/Email_Etxt"
             app:layout_constraintStart_toStartOf="@+id/Email_Etxt"
             app:layout_constraintTop_toBottomOf="@+id/Email_Etxt" />
+        <!-- Unsaved Changes Note -->
 
         <TextView
             android:id="@+id/textView3"
@@ -1035,153 +1038,6 @@
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:layout_marginTop="16dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="15dp"
-            android:background="#882065"
-            app:layout_constraintEnd_toEndOf="@+id/Email_Etxt"
-            app:layout_constraintStart_toStartOf="@+id/Email_Etxt"
-            app:layout_constraintTop_toBottomOf="@+id/Email_Etxt" />
-
-    <!-- Room Details Card -->
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="5dp">
-
-        <TextView
-            android:id="@+id/textView121"
-            android:layout_width="378dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="30dp"
-            android:text="Your Booking Summary"
-            android:textColor="#333333"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-        <TextView
-            android:id="@+id/stayDuration"
-            android:layout_width="378dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="30dp"
-            android:text="Stay Duration:"
-            android:textSize="14sp" />
-        <TextView
-            android:id="@+id/payMeth"
-            android:layout_width="378dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="30dp"
-            android:text="Payment Method:"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/bookingD"
-            android:layout_width="378dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="30dp"
-            android:text="Booking Details"
-            android:textStyle="bold"
-            android:textSize="14sp" />
-        <TextView
-            android:id="@+id/sumRoom"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="30dp"
-            android:text="Room Name and Number"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/sumAdultVal"
-            android:layout_width="378dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="30dp"
-            android:text="Qty of Adult"
-            android:textSize="14sp" />
-        <TextView
-            android:id="@+id/sumChildVal"
-            android:layout_width="378dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="30dp"
-            android:text="Qty of Child"
-            android:textSize="14sp" />
-        <TextView
-            android:id="@+id/sumAddOnVal"
-            android:layout_width="378dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="30dp"
-            android:text="Add-Ons"
-            android:textSize="14sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:background="#882065"
-            app:layout_constraintEnd_toEndOf="@+id/Email_Etxt"
-            app:layout_constraintStart_toStartOf="@+id/Email_Etxt"
-            app:layout_constraintTop_toBottomOf="@+id/Email_Etxt" />
-
-
-        <TextView
-            android:id="@+id/sumSubtotalVal"
-            android:layout_width="378dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="30dp"
-            android:text="Subtotal"
-            android:textSize="14sp" />
-        <TextView
-            android:id="@+id/sumTaxVal"
-            android:layout_width="378dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="30dp"
-            android:text="Tax/VAT (12%)"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/sumVouchVal"
-            android:layout_width="378dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="30dp"
-            android:text="Discount (Code)"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/sumTotalVal"
-            android:layout_width="378dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="30dp"
-            android:text="Total"
-            android:textStyle="bold"
-            android:textSize="14sp" />
-
-    </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:layout_marginTop="1dp"
             android:layout_marginBottom="10dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
@@ -1206,6 +1062,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#882065"
-            android:text="BOOK" />
+            android:text="NEXT" />
     </LinearLayout>
 </ScrollView>
