@@ -511,6 +511,7 @@
             android:layout_height="50dp"
             android:background="@drawable/custom_input"
             android:hint="Card Number"
+            android:maxLength="16"
             android:inputType="number"
             android:paddingStart="18dp"
             android:paddingEnd="18dp"

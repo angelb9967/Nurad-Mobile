@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -70,6 +72,11 @@ public class Fragment_Booking extends Fragment {
             address1EditText, address2EditText, zipCodeEditText;
 
     private static final Map<String, List<String>> cities = new HashMap<>();
+    private EditText expirationDateEditText;
+    private ImageView expirationCalendarPickerImg;
+    private EditText cardNumberEditText;
+    private EditText cvvEditText;
+    private EditText nameOnCardEditText;
 
     static {
         cities.put("ARMM", Arrays.asList("Lamitan City", "Marawi City"));
@@ -303,6 +310,13 @@ public class Fragment_Booking extends Fragment {
         citySpinner = view.findViewById(R.id.City_Spinner);
         zipCodeEditText = view.findViewById(R.id.ZipCode_Etxt);
 
+        expirationDateEditText = view.findViewById(R.id.ExpirationDate_Etxt);
+        expirationCalendarPickerImg = view.findViewById(R.id.ExpirationCalendarPicker_Img);
+        cardNumberEditText = view.findViewById(R.id.CardNumber_Etxt);
+        cvvEditText = view.findViewById(R.id.CVV_Etxt);
+        nameOnCardEditText = view.findViewById(R.id.NameOntheCard_Etxt);
+
+
     }
 
     private void fetchAddOnsFromDatabase() {
@@ -373,8 +387,7 @@ public class Fragment_Booking extends Fragment {
     }
 
     private void setupEventListeners() {
-
-
+        setupExpirationDatePicker();
     }
 
     private double getPriceForCurrentDay(Model_PriceRule priceRule) {
@@ -469,6 +482,31 @@ public class Fragment_Booking extends Fragment {
         return true;
     }
 
+    private void setupExpirationDatePicker() {
+        expirationCalendarPickerImg.setOnClickListener(v -> showDatePicker_and_setMonthYear(expirationDateEditText));
+    }
+
+    private void showDatePicker_and_setMonthYear(EditText field) {
+        Calendar calendar = Calendar.getInstance();
+        int currentYear = calendar.get(Calendar.YEAR);
+        int currentMonth = calendar.get(Calendar.MONTH);
+        int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                getContext(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar_MinWidth,
+                (view, year, month, dayOfMonth) -> {
+                    month = month + 1;
+                    String date = month + "/" + (year % 100);
+                    field.setText(date);
+                }, currentYear, currentMonth, 1);
+
+        datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
+        datePickerDialog.getDatePicker().findViewById(getResources().getIdentifier("day", "id", "android")).setVisibility(View.GONE);
+        datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        datePickerDialog.show();
+    }
+
+
     private boolean validateInputs() {
         String firstName = firstNameEditText.getText().toString().trim();
         String lastName = lastNameEditText.getText().toString().trim();
@@ -480,6 +518,10 @@ public class Fragment_Booking extends Fragment {
         String selectedRegion = regionSpinner.getSelectedItem().toString();
         String selectedCity = citySpinner.getSelectedItem().toString();
         String zipCode = zipCodeEditText.getText().toString().trim();
+        String cardNumber = cardNumberEditText.getText().toString().trim();
+        String expirationDate = expirationDateEditText.getText().toString().trim();
+        String cvv = cvvEditText.getText().toString().trim();
+        String nameOnCard = nameOnCardEditText.getText().toString().trim();
 
         if (prefixSpinner.getSelectedItem() == null || prefixSpinner.getSelectedItem().toString().isEmpty()) {
             Toast.makeText(getContext(), "Please select a prefix", Toast.LENGTH_SHORT).show();
@@ -560,6 +602,30 @@ public class Fragment_Booking extends Fragment {
         if (zipCode.isEmpty() || !isValidPhilippinePostalCode(zipCode)) {
             zipCodeEditText.setError("Invalid Zip/Postal Code");
             zipCodeEditText.requestFocus();
+            return false;
+        }
+
+        if (cardNumber.isEmpty() || cardNumber.length() != 16) {
+            cardNumberEditText.setError("Card number must be 16 digits");
+            cardNumberEditText.requestFocus();
+            return false;
+        }
+
+        if (expirationDate.isEmpty()) {
+            expirationDateEditText.setError("Expiration date is required");
+            expirationDateEditText.requestFocus();
+            return false;
+        }
+
+        if (cvv.isEmpty() || cvv.length() != 3) {
+            cvvEditText.setError("CVV must be 3 digits");
+            cvvEditText.requestFocus();
+            return false;
+        }
+
+        if (nameOnCard.isEmpty()) {
+            nameOnCardEditText.setError("Name on the card is required");
+            nameOnCardEditText.requestFocus();
             return false;
         }
 
