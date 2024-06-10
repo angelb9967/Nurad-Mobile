@@ -849,6 +849,15 @@
                 android:layout_gravity="center_vertical" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/adultGuestPrice"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Total Price of Extra Adult Guest/s:"
+            android:textSize="15sp" />
+
+
         <!-- Extra Child Guests Label -->
         <TextView
             android:id="@+id/textView107"
@@ -897,6 +906,13 @@
                 android:layout_gravity="center_vertical" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/childGuestPrice"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Total Price of Extra Child Guest/s:"
+            android:textSize="15sp" />
 
         <View
             android:layout_width="match_parent"

@@ -53,6 +53,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class Fragment_Booking extends Fragment {
 
@@ -65,7 +66,7 @@ public class Fragment_Booking extends Fragment {
     private TextView roomPriceTextView;
     private Context mContext;
     private List<String> availableCheckInTimes;
-    private double fetchedPrice;
+    private double fetchedPrice, subtotal, vat, price;
     private DatabaseReference addOnsDBRef;
     private RecyclerView recyclerView;
     private Adapter_AddOn adapter;
@@ -84,8 +85,7 @@ public class Fragment_Booking extends Fragment {
     private ImageView calendarPickerInImg, calendarPickerOutImg;
     private Spinner checkInTimeSpinner;
     private TextView checkOutTimeTextView;
-    private Calendar checkInDateCalendar;
-    private Calendar checkOutDateCalendar;
+    private Calendar checkInDateCalendar, checkOutDateCalendar;
     private EditText adultEditText;
     private ImageView adultPlusImg;
     private ImageView adultMinusImg;
@@ -410,9 +410,9 @@ public class Fragment_Booking extends Fragment {
                     Model_PriceRule priceRule = snapshot.getValue(Model_PriceRule.class);
                     if (priceRule != null) {
                         // Get the appropriate price based on the current day of the week
-                        double price = getPriceForCurrentDay(priceRule);
-                        String formattedPrice = formatPrice(price);
-                        roomPriceTextView.setText("Price: ₱" + formattedPrice);
+                        double dailyPrice = getPriceForCurrentDay(priceRule);
+                        price = dailyPrice;
+                        updateRoomPrice();
                     } else {
                         // Handle null price rule scenario
                         roomPriceTextView.setText("Price: ₱" + formatPrice(0));
@@ -441,6 +441,18 @@ public class Fragment_Booking extends Fragment {
         roomTypeTextView.setText("Room Type: " + selectedRoom.getRoomType() + "\n");
         roomDetailsTextView.setText("Description: " + selectedRoom.getDescription() + "\n");
     }
+
+    private void updateRoomPrice() {
+        if (checkInDateCalendar != null && checkOutDateCalendar != null) {
+            long diffInMillis = checkOutDateCalendar.getTimeInMillis() - checkInDateCalendar.getTimeInMillis();
+            long days = TimeUnit.MILLISECONDS.toDays(diffInMillis);
+            double totalPrice = price * days;
+            roomPriceTextView.setText("Price: ₱" + formatPrice(totalPrice));
+        } else {
+            roomPriceTextView.setText("Price: ₱" + formatPrice(price));
+        }
+    }
+
 
     private void setupEventListeners() {
 
@@ -603,6 +615,8 @@ public class Fragment_Booking extends Fragment {
                 checkOutDateCalendar = calendar;
             }
 
+            updateRoomPrice();
+
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
         if (isCheckIn) {
@@ -697,6 +711,23 @@ public class Fragment_Booking extends Fragment {
     }
 
     private boolean validateInputs() {
+        //PREFIX
+        //STATUS
+        //CHECK IN DATE, CHECK OUT DATE, CHECK IN TIME, CHECK OUT TIME
+        //VOUCHER
+        //SELECTED ADD ONS
+        //ROOM PRICE
+        //ADULT COUNT
+        //CHILD COUNT
+        String prefix = prefixSpinner.getSelectedItem().toString();
+        String checkInDate = checkInDateEditText.getText().toString().trim();
+        String checkOutDate = checkOutDateEditText.getText().toString().trim();
+        String checkInTime = checkInTimeSpinner.getSelectedItem().toString();
+        String checkOutTime = checkInTimeSpinner.getSelectedItem().toString();
+        String room = roomNameTextView.getText().toString();
+        String roomTitle = roomTitleTextView.getText().toString();
+        String adultCount = adultEditText.getText().toString();
+        String childCount = childEditText.getText().toString();
         String firstName = firstNameEditText.getText().toString().trim();
         String lastName = lastNameEditText.getText().toString().trim();
         String phone = phoneEditText.getText().toString().trim();
