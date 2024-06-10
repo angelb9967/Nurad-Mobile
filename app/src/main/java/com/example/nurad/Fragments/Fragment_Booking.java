@@ -78,6 +78,14 @@ public class Fragment_Booking extends Fragment {
     private EditText cvvEditText;
     private EditText nameOnCardEditText;
 
+    private EditText checkInDateEditText, checkOutDateEditText;
+    private ImageView calendarPickerInImg, calendarPickerOutImg;
+    private Spinner checkInTimeSpinner;
+    private TextView checkOutTimeTextView;
+
+    private Calendar checkInDateCalendar;
+    private Calendar checkOutDateCalendar;
+
     static {
         cities.put("ARMM", Arrays.asList("Lamitan City", "Marawi City"));
         cities.put("CAR", Arrays.asList("Baguio City", "Tabuk City"));
@@ -316,6 +324,12 @@ public class Fragment_Booking extends Fragment {
         cvvEditText = view.findViewById(R.id.CVV_Etxt);
         nameOnCardEditText = view.findViewById(R.id.NameOntheCard_Etxt);
 
+        checkInDateEditText = view.findViewById(R.id.CheckInDate_Etxt);
+        checkOutDateEditText = view.findViewById(R.id.CheckOutDate_Etxt);
+        calendarPickerInImg = view.findViewById(R.id.CalendarPicker_In_Img);
+        calendarPickerOutImg = view.findViewById(R.id.CalendarPicker_Out_Img);
+        checkInTimeSpinner = view.findViewById(R.id.checkInTimeSpinner);
+        checkOutTimeTextView = view.findViewById(R.id.checkTimeTextView);
 
     }
 
@@ -388,6 +402,8 @@ public class Fragment_Booking extends Fragment {
 
     private void setupEventListeners() {
         setupExpirationDatePicker();
+        setupDatePickers();
+        setupTimeSpinner();
     }
 
     private double getPriceForCurrentDay(Model_PriceRule priceRule) {
@@ -504,6 +520,68 @@ public class Fragment_Booking extends Fragment {
         datePickerDialog.getDatePicker().findViewById(getResources().getIdentifier("day", "id", "android")).setVisibility(View.GONE);
         datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         datePickerDialog.show();
+    }
+
+    private void setupDatePickers() {
+        calendarPickerInImg.setOnClickListener(v -> showDatePicker(checkInDateEditText, true));
+        calendarPickerOutImg.setOnClickListener(v -> showDatePicker(checkOutDateEditText, false));
+    }
+
+    private void showDatePicker(EditText field, boolean isCheckIn) {
+        Calendar calendar = Calendar.getInstance();
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                getContext(), (view, year, month, dayOfMonth) -> {
+            calendar.set(year, month, dayOfMonth);
+            String selectedDate = dayOfMonth + "/" + (month + 1) + "/" + year;
+            field.setText(selectedDate);
+
+            if (isCheckIn) {
+                checkInDateCalendar = calendar;
+                checkOutDateEditText.setText("");
+            } else {
+                checkOutDateCalendar = calendar;
+            }
+
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+
+        if (isCheckIn) {
+            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        } else if (checkInDateCalendar != null) {
+            datePickerDialog.getDatePicker().setMinDate(checkInDateCalendar.getTimeInMillis() + 24 * 60 * 60 * 1000); // +1 day
+        } else {
+            Toast.makeText(getContext(), "Please select a check-in date first", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        datePickerDialog.show();
+    }
+
+    private void setupTimeSpinner() {
+        List<String> timeSlots = new ArrayList<>();
+        for (int i = 0; i < 24; i++) {
+            int hour = i % 12;
+            if (hour == 0) hour = 12;
+            String amPm = (i < 12) ? "AM" : "PM";
+            String timeSlot = String.format("%02d:00 %s", hour, amPm);
+            timeSlots.add(timeSlot);
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, timeSlots);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        checkInTimeSpinner.setAdapter(adapter);
+
+        checkInTimeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedTime = parent.getItemAtPosition(position).toString();
+                checkOutTimeTextView.setText(selectedTime);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                checkOutTimeTextView.setText("Not set");
+            }
+        });
     }
 
 
