@@ -84,7 +84,7 @@ public class Fragment_Booking extends Fragment {
     private EditText checkInDateEditText, checkOutDateEditText;
     private ImageView calendarPickerInImg, calendarPickerOutImg;
     private Spinner checkInTimeSpinner;
-    private TextView checkOutTimeTextView;
+    private TextView checkOutTimeTextView, adultGuestPrice, childGuestPrice;
     private Calendar checkInDateCalendar, checkOutDateCalendar;
     private EditText adultEditText;
     private ImageView adultPlusImg;
@@ -353,6 +353,8 @@ public class Fragment_Booking extends Fragment {
         checkOutTimeTextView = view.findViewById(R.id.checkTimeTextView);
 
         //guest inclusion
+        childGuestPrice = view.findViewById(R.id.childGuestPrice);
+        adultGuestPrice = view.findViewById(R.id.adultGuestPrice);
         adultEditText = view.findViewById(R.id.Adult_Etxt);
         adultPlusImg = view.findViewById(R.id.Adult_Plus_Img);
         adultMinusImg = view.findViewById(R.id.Adult_Minus_Img);
@@ -413,13 +415,20 @@ public class Fragment_Booking extends Fragment {
                         double dailyPrice = getPriceForCurrentDay(priceRule);
                         price = dailyPrice;
                         updateRoomPrice();
+                        // Display the extra child and adult prices
+                        childGuestPrice.setText("Extra Child Price: ₱" + formatPrice(priceRule.getExtraChild_price()));
+                        adultGuestPrice.setText("Extra Adult Price: ₱" + formatPrice(priceRule.getExtraAdult_price()));
                     } else {
                         // Handle null price rule scenario
                         roomPriceTextView.setText("Price: ₱" + formatPrice(0));
+                        childGuestPrice.setText("Extra Child Price: ₱" + formatPrice(0));
+                        adultGuestPrice.setText("Extra Adult Price: ₱" + formatPrice(0));
                     }
                 } else {
                     // Handle non-existent price rule scenario
                     roomPriceTextView.setText("Price: ₱" + formatPrice(0));
+                    childGuestPrice.setText("Extra Child Price: ₱" + formatPrice(0));
+                    adultEditText.setText("Extra Adult Price: ₱" + formatPrice(0));
                 }
             }
 
@@ -427,6 +436,8 @@ public class Fragment_Booking extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
                 // Handle the error scenario
                 roomPriceTextView.setText("Price: ₱" + formatPrice(0));
+                childGuestPrice.setText("Extra Child Price: ₱" + formatPrice(0));
+                adultGuestPrice.setText("Extra Adult Price: ₱" + formatPrice(0));
             }
         });
     }
@@ -440,6 +451,12 @@ public class Fragment_Booking extends Fragment {
         roomTitleTextView.setText(selectedRoom.getTitle());
         roomTypeTextView.setText("Room Type: " + selectedRoom.getRoomType() + "\n");
         roomDetailsTextView.setText("Description: " + selectedRoom.getDescription() + "\n");
+        childGuestPrice.setText("Total Price of Extra Child Guest/s: "+ selectedRoom.getPriceRule());
+
+        if (selectedRoom.getPriceRule() != null) {
+            // Fetch the price rule from the database
+            fetchPriceRule(selectedRoom.getPriceRule());
+        }
     }
 
     private void updateRoomPrice() {

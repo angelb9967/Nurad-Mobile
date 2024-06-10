@@ -187,7 +187,7 @@ public class Adapter_Room extends RecyclerView.Adapter<Adapter_Room.RoomViewHold
             selectedRoom.setRoomName(selectedRoom.getRoomName());
             selectedRoom.setRoomType(selectedRoom.getRoomType());
             selectedRoom.setPriceRule(selectedRoom.getPriceRule());
-            selectedRoom.setPriceRule(selectedRoom.getPriceRule());
+
 
             // Pass roomName to selectedRoom if it's not null
             if (selectedRoom.getRoomName() != null && !selectedRoom.getRoomName().isEmpty()) {
@@ -214,13 +214,24 @@ public class Adapter_Room extends RecyclerView.Adapter<Adapter_Room.RoomViewHold
                         double price = getPriceForCurrentDay(priceRule);
                         String formattedPrice = formatPrice(price);
                         holder.roomPrice.setText("₱" + formattedPrice);
+
+                        String formattedAdultPrice = formatPrice(priceRule.getExtraAdult_price());
+                        holder.extraAdultPriceTextView.setText("₱" + formattedAdultPrice);
+
+                        String formattedChildPrice = formatPrice(priceRule.getExtraChild_price());
+                        holder.extraChildPriceTextView.setText("₱" + formattedChildPrice);
+
                     } else {
                         // Handle null price rule scenario
                         holder.roomPrice.setText("₱" + formatPrice(0));
+                        holder.extraAdultPriceTextView.setText("₱" + formatPrice(0));
+                        holder.extraChildPriceTextView.setText("₱" + formatPrice(0));
                     }
                 } else {
                     // Handle non-existent price rule scenario
                     holder.roomPrice.setText("₱" + formatPrice(0));
+                    holder.extraAdultPriceTextView.setText("₱" + formatPrice(0));
+                    holder.extraChildPriceTextView.setText("₱" + formatPrice(0));
                 }
             }
 
@@ -228,6 +239,8 @@ public class Adapter_Room extends RecyclerView.Adapter<Adapter_Room.RoomViewHold
             public void onCancelled(@NonNull DatabaseError error) {
                 // Handle the error scenario
                 holder.roomPrice.setText("₱" + formatPrice(0));
+                holder.extraAdultPriceTextView.setText("₱" + formatPrice(0));
+                holder.extraChildPriceTextView.setText("₱" + formatPrice(0));
             }
         });
     }
@@ -259,12 +272,13 @@ public class Adapter_Room extends RecyclerView.Adapter<Adapter_Room.RoomViewHold
     }
 
     public static class RoomViewHolder extends RecyclerView.ViewHolder {
+
         ImageView roomImage;
         TextView roomTitle;
         TextView roomDescription;
         TextView depositRequired;
-        TextView roomName; // Add this line
-        TextView roomType; // Add this line
+        TextView roomName, extraAdultPriceTextView, extraChildPriceTextView;
+        TextView roomType;
         TextView roomPrice;
         TextView priceDetails;
         TextView recommendedTag;
@@ -278,6 +292,8 @@ public class Adapter_Room extends RecyclerView.Adapter<Adapter_Room.RoomViewHold
             depositRequired = itemView.findViewById(R.id.depositRequired);
             roomName = itemView.findViewById(R.id.roomName); // Add this line
             roomType = itemView.findViewById(R.id.roomType); // Add this line
+            extraChildPriceTextView = itemView.findViewById(R.id.extraChildPriceTextView);
+            extraAdultPriceTextView = itemView.findViewById(R.id.extraAdultPriceTextView);
             roomPrice = itemView.findViewById(R.id.roomPrice);
             priceDetails = itemView.findViewById(R.id.priceDetails);
             recommendedTag = itemView.findViewById(R.id.recommendedTag);

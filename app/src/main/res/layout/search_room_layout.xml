@@ -124,5 +124,18 @@
             android:textSize="12sp"
             android:visibility="invisible" />
 
+        <!-- Invisible TextViews to store extra prices -->
+        <TextView
+            android:id="@+id/extraAdultPriceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/extraChildPriceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
