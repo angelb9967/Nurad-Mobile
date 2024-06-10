@@ -906,42 +906,38 @@
             app:layout_constraintStart_toStartOf="@+id/Email_Etxt"
             app:layout_constraintTop_toBottomOf="@+id/Email_Etxt" />
 
-
+        <!-- Apply Voucher -->
         <TextView
-            android:id="@+id/textView84"
-            android:layout_width="369dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="30dp"
-            android:text="Use a Voucher"
-            android:textColor="#333333"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/textView18"
-            android:layout_width="369dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="30dp"
-            android:text="Get a discount by redeeming a valid code."
-            android:textSize="14sp" />
-
-        <androidx.appcompat.widget.AppCompatCheckBox
-            android:id="@+id/applyVoucherCheckBox"
+            android:id="@+id/textViewVoucher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:buttonTint="#882065"
-            android:text="Apply Voucher" />
+            android:text="Apply Voucher"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
 
-        <EditText
-            android:id="@+id/voucherEditText"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="8dp"
-            android:hint="Enter Voucher Code"
-            android:visibility="gone" />
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/applyVoucherCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="#882065"
+                android:text="Apply Voucher" />
+
+            <EditText
+                android:id="@+id/voucherEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:hint="Enter Voucher Code"
+                android:visibility="gone" />
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"

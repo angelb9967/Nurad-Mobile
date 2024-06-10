@@ -89,7 +89,10 @@ public class Fragment_Booking extends Fragment {
     private EditText childEditText;
     private ImageView childPlusImg;
     private ImageView childMinusImg;
+    private CheckBox applyVoucherCheckBox;
+    private EditText voucherEditText;
 
+    //for region and city spinner
     static {
         cities.put("ARMM", Arrays.asList("Lamitan City", "Marawi City"));
         cities.put("CAR", Arrays.asList("Baguio City", "Tabuk City"));
@@ -233,6 +236,7 @@ public class Fragment_Booking extends Fragment {
     }
 
     private void initializeViews(View view) {
+        //room
         roomTitleTextView = view.findViewById(R.id.roomTitle);
         roomDetailsTextView = view.findViewById(R.id.roomDetailsTextView);
         roomNameTextView = view.findViewById(R.id.roomNameTextView);
@@ -241,6 +245,7 @@ public class Fragment_Booking extends Fragment {
         availableCheckInTimes = new ArrayList<>();
         nextStepButton = view.findViewById(R.id.nextStepButton);
 
+        //contact
         firstNameEditText = view.findViewById(R.id.FirstName_Etxt);
         lastNameEditText = view.findViewById(R.id.LastName_Etxt);
         phoneEditText = view.findViewById(R.id.Phone_Etxt);
@@ -251,8 +256,6 @@ public class Fragment_Booking extends Fragment {
         countryEditText.setText("Philippines");
         countryEditText.setEnabled(false);
 
-        //contact
-        // Initialize UI components
         prefixSpinner = view.findViewById(R.id.Prefix_Spinner);
         List<String> prefixes = Arrays.asList("Mr", "Ms", "Mrs");
         ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, prefixes);
@@ -316,18 +319,21 @@ public class Fragment_Booking extends Fragment {
             }
         });
 
+        //address
         address1EditText = view.findViewById(R.id.Address1_Etxt);
         address2EditText = view.findViewById(R.id.Address2_Etxt);
         regionSpinner = view.findViewById(R.id.Region_Spinner);
         citySpinner = view.findViewById(R.id.City_Spinner);
         zipCodeEditText = view.findViewById(R.id.ZipCode_Etxt);
 
+        //payment
         expirationDateEditText = view.findViewById(R.id.ExpirationDate_Etxt);
         expirationCalendarPickerImg = view.findViewById(R.id.ExpirationCalendarPicker_Img);
         cardNumberEditText = view.findViewById(R.id.CardNumber_Etxt);
         cvvEditText = view.findViewById(R.id.CVV_Etxt);
         nameOnCardEditText = view.findViewById(R.id.NameOntheCard_Etxt);
 
+        //date and time
         checkInDateEditText = view.findViewById(R.id.CheckInDate_Etxt);
         checkOutDateEditText = view.findViewById(R.id.CheckOutDate_Etxt);
         calendarPickerInImg = view.findViewById(R.id.CalendarPicker_In_Img);
@@ -335,6 +341,7 @@ public class Fragment_Booking extends Fragment {
         checkInTimeSpinner = view.findViewById(R.id.checkInTimeSpinner);
         checkOutTimeTextView = view.findViewById(R.id.checkTimeTextView);
 
+        //guest inclusion
         adultEditText = view.findViewById(R.id.Adult_Etxt);
         adultPlusImg = view.findViewById(R.id.Adult_Plus_Img);
         adultMinusImg = view.findViewById(R.id.Adult_Minus_Img);
@@ -346,8 +353,13 @@ public class Fragment_Booking extends Fragment {
         adultEditText.setText("1");
         childEditText.setText("0");
 
+        //voucher
+        applyVoucherCheckBox = view.findViewById(R.id.applyVoucherCheckBox);
+        voucherEditText = view.findViewById(R.id.voucherEditText);
+
     }
 
+    //fetching add ons
     private void fetchAddOnsFromDatabase() {
         addOnsDBRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -376,6 +388,7 @@ public class Fragment_Booking extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 
+    //fetching price of room
     private void fetchPriceRule(String priceRuleName) {
         priceRules_DBref.child(priceRuleName).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -405,6 +418,7 @@ public class Fragment_Booking extends Fragment {
         });
     }
 
+    //other details of chosen room
     private void populateRoomDetails() {
         if (roomNameTextView != null && selectedRoom != null && selectedRoom.getRoomName() != null && !selectedRoom.getRoomName().isEmpty()) {
             roomNameTextView.setText("Room Number: " + selectedRoom.getRoomName() + "\n");
@@ -416,12 +430,25 @@ public class Fragment_Booking extends Fragment {
     }
 
     private void setupEventListeners() {
+
+        applyVoucherCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                CompoundButtonCompat.setButtonTintList(applyVoucherCheckBox, ColorStateList.valueOf(Color.parseColor("#882065")));
+                voucherEditText.setVisibility(View.VISIBLE);
+            } else {
+                CompoundButtonCompat.setButtonTintList(applyVoucherCheckBox, ColorStateList.valueOf(Color.parseColor("#000000")));
+                voucherEditText.setVisibility(View.GONE);
+            }
+        });
+
         setupExpirationDatePicker();
         setupDatePickers();
         setupTimeSpinner();
         setupGuestControls();
     }
 
+    //VALIDATIONS
+    //getting price of the day
     private double getPriceForCurrentDay(Model_PriceRule priceRule) {
         Calendar calendar = Calendar.getInstance();
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
