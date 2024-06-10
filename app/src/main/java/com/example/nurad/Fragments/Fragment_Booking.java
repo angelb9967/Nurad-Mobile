@@ -77,14 +77,18 @@ public class Fragment_Booking extends Fragment {
     private EditText cardNumberEditText;
     private EditText cvvEditText;
     private EditText nameOnCardEditText;
-
     private EditText checkInDateEditText, checkOutDateEditText;
     private ImageView calendarPickerInImg, calendarPickerOutImg;
     private Spinner checkInTimeSpinner;
     private TextView checkOutTimeTextView;
-
     private Calendar checkInDateCalendar;
     private Calendar checkOutDateCalendar;
+    private EditText adultEditText;
+    private ImageView adultPlusImg;
+    private ImageView adultMinusImg;
+    private EditText childEditText;
+    private ImageView childPlusImg;
+    private ImageView childMinusImg;
 
     static {
         cities.put("ARMM", Arrays.asList("Lamitan City", "Marawi City"));
@@ -331,6 +335,17 @@ public class Fragment_Booking extends Fragment {
         checkInTimeSpinner = view.findViewById(R.id.checkInTimeSpinner);
         checkOutTimeTextView = view.findViewById(R.id.checkTimeTextView);
 
+        adultEditText = view.findViewById(R.id.Adult_Etxt);
+        adultPlusImg = view.findViewById(R.id.Adult_Plus_Img);
+        adultMinusImg = view.findViewById(R.id.Adult_Minus_Img);
+        childEditText = view.findViewById(R.id.Child_Etxt);
+        childPlusImg = view.findViewById(R.id.Child_Plus_Img);
+        childMinusImg = view.findViewById(R.id.Child_Minus_Img);
+
+        // Set initial values
+        adultEditText.setText("1");
+        childEditText.setText("0");
+
     }
 
     private void fetchAddOnsFromDatabase() {
@@ -404,6 +419,7 @@ public class Fragment_Booking extends Fragment {
         setupExpirationDatePicker();
         setupDatePickers();
         setupTimeSpinner();
+        setupGuestControls();
     }
 
     private double getPriceForCurrentDay(Model_PriceRule priceRule) {
@@ -584,6 +600,26 @@ public class Fragment_Booking extends Fragment {
         });
     }
 
+    private void setupGuestControls() {
+        adultPlusImg.setOnClickListener(v -> changeGuestCount(adultEditText, 1, 1, 20));
+        adultMinusImg.setOnClickListener(v -> changeGuestCount(adultEditText, -1, 1, 20));
+
+        childPlusImg.setOnClickListener(v -> changeGuestCount(childEditText, 1, 0, 20));
+        childMinusImg.setOnClickListener(v -> changeGuestCount(childEditText, -1, 0, 20));
+    }
+
+    private void changeGuestCount(EditText editText, int change, int min, int max) {
+        int currentCount = Integer.parseInt(editText.getText().toString());
+        int newCount = currentCount + change;
+
+        if (newCount >= min && newCount <= max) {
+            editText.setText(String.valueOf(newCount));
+        } else if (newCount < min) {
+            Toast.makeText(getContext(), "Value cannot be lower than " + min, Toast.LENGTH_SHORT).show();
+        } else if (newCount > max) {
+            Toast.makeText(getContext(), "Value cannot be higher than " + max, Toast.LENGTH_SHORT).show();
+        }
+    }
 
     private boolean validateInputs() {
         String firstName = firstNameEditText.getText().toString().trim();
