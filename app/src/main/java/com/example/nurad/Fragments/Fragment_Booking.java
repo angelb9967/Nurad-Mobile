@@ -3,6 +3,7 @@ package com.example.nurad.Fragments;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -18,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -32,6 +34,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nurad.Activities.Activity_BookingSummary;
 import com.example.nurad.Adapters.Adapter_AddOn;
 import com.example.nurad.Models.Model_AddOns;
 import com.example.nurad.Models.Model_PriceRule;
@@ -91,6 +94,9 @@ public class Fragment_Booking extends Fragment {
     private ImageView childMinusImg;
     private CheckBox applyVoucherCheckBox;
     private EditText voucherEditText;
+    private boolean isVoucherValid = false;
+    private boolean isVoucherChecked = false;
+    private EditText notesEditText;
 
     //for region and city spinner
     static {
@@ -218,12 +224,17 @@ public class Fragment_Booking extends Fragment {
         nextStepButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validateInputs()) {
-                    Toast.makeText(mContext, "All conditions are met", Toast.LENGTH_SHORT).show();
+                // Validate all inputs including voucher code
+                if (validateInputs() && (isVoucherChecked && isVoucherValid)) {
+                    // All conditions including voucher validation are met
+                    Intent intent = new Intent(mContext, Activity_BookingSummary.class);
+                    startActivity(intent);
+                } else {
+                    // Handle invalid inputs, such as displaying error messages or alerts
+                    Toast.makeText(mContext, "Please ensure all fields are filled correctly and voucher code is valid.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
 
         return view;
     }
@@ -357,6 +368,8 @@ public class Fragment_Booking extends Fragment {
         applyVoucherCheckBox = view.findViewById(R.id.applyVoucherCheckBox);
         voucherEditText = view.findViewById(R.id.voucherEditText);
 
+        //note
+        notesEditText = view.findViewById(R.id.Notes_Txt);
     }
 
     //fetching add ons
@@ -431,13 +444,18 @@ public class Fragment_Booking extends Fragment {
 
     private void setupEventListeners() {
 
-        applyVoucherCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                CompoundButtonCompat.setButtonTintList(applyVoucherCheckBox, ColorStateList.valueOf(Color.parseColor("#882065")));
-                voucherEditText.setVisibility(View.VISIBLE);
-            } else {
-                CompoundButtonCompat.setButtonTintList(applyVoucherCheckBox, ColorStateList.valueOf(Color.parseColor("#000000")));
-                voucherEditText.setVisibility(View.GONE);
+        applyVoucherCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    CompoundButtonCompat.setButtonTintList(applyVoucherCheckBox, ColorStateList.valueOf(Color.parseColor("#882065")));
+                    voucherEditText.setVisibility(View.VISIBLE);
+                    isVoucherChecked = true;
+                } else {
+                    CompoundButtonCompat.setButtonTintList(applyVoucherCheckBox, ColorStateList.valueOf(Color.parseColor("#000000")));
+                    voucherEditText.setVisibility(View.GONE);
+                    isVoucherChecked = false;
+                }
             }
         });
 
@@ -648,6 +666,36 @@ public class Fragment_Booking extends Fragment {
         }
     }
 
+    private void validateVoucherCode(final String code, final OnVoucherValidationListener listener) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference vouchersRef = database.getReference("Vouchers");
+
+        vouchersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                boolean voucherFound = false;
+                for (DataSnapshot voucherSnapshot : dataSnapshot.getChildren()) {
+                    String voucherCode = voucherSnapshot.child("code").getValue(String.class);
+                    if (code.equals(voucherCode)) {
+                        voucherFound = true;
+                        break;
+                    }
+                }
+
+                if (voucherFound) {
+                    listener.onValidationSuccess();
+                } else {
+                    listener.onValidationFailure();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onValidationError();
+            }
+        });
+    }
+
     private boolean validateInputs() {
         String firstName = firstNameEditText.getText().toString().trim();
         String lastName = lastNameEditText.getText().toString().trim();
@@ -663,6 +711,7 @@ public class Fragment_Booking extends Fragment {
         String expirationDate = expirationDateEditText.getText().toString().trim();
         String cvv = cvvEditText.getText().toString().trim();
         String nameOnCard = nameOnCardEditText.getText().toString().trim();
+        String notes = notesEditText.getText().toString().trim();
 
         if (prefixSpinner.getSelectedItem() == null || prefixSpinner.getSelectedItem().toString().isEmpty()) {
             Toast.makeText(getContext(), "Please select a prefix", Toast.LENGTH_SHORT).show();
@@ -770,10 +819,69 @@ public class Fragment_Booking extends Fragment {
             return false;
         }
 
+        // Validate notes
+        if (notes.isEmpty()) {
+            notes = "N/A";
+        } else if (notes.split("\\s+").length > 150) {
+            notesEditText.setError("Notes cannot exceed 250 words");
+            notesEditText.requestFocus();
+            return false;
+        }
+
+        if (isVoucherChecked) {
+            String voucherCode = voucherEditText.getText().toString().trim();
+            if (voucherCode.isEmpty()) {
+                voucherEditText.setError("Voucher code is required");
+                voucherEditText.requestFocus();
+                return false;
+            } else {
+                // Validate voucher code from the database
+                validateVoucherCode(voucherCode, new OnVoucherValidationListener() {
+                    @Override
+                    public void onValidationSuccess() {
+                        // Proceed with the booking or other actions since voucher is valid
+                        // Here you can add additional logic if needed
+                        continueBookingProcess();
+                    }
+
+                    @Override
+                    public void onValidationFailure() {
+                        voucherEditText.setError("Invalid voucher code. Please try again.");
+                        voucherEditText.requestFocus();
+                    }
+
+                    @Override
+                    public void onValidationError() {
+                        Toast.makeText(getContext(), "Error checking voucher code. Please try again.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                // Return false temporarily until voucher validation is completed
+                return false;
+            }
+        } else {
+            // If voucher code validation is not required, continue with booking process
+            continueBookingProcess();
+        }
+
         return true;
+    }
+
+    private void continueBookingProcess() {
+        // All conditions including voucher validation are met
+        Intent intent = new Intent(mContext, Activity_BookingSummary.class);
+        startActivity(intent);
     }
 
     private interface DatePickerListener {
         void onDateSet(int date, int month, int year);
+    }
+
+    interface OnVoucherValidationListener {
+        void onValidationSuccess();
+
+        void onValidationFailure();
+
+        void onValidationError();
     }
 }
