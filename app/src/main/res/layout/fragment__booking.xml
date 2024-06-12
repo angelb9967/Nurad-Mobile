@@ -958,6 +958,15 @@
                 android:visibility="gone" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/voucherPrice"
+            android:layout_width="369dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:visibility="gone"
+            android:text="Voucher Value: "
+            android:textSize="15sp" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"

@@ -84,7 +84,7 @@ public class Fragment_Booking extends Fragment {
     private EditText checkInDateEditText, checkOutDateEditText;
     private ImageView calendarPickerInImg, calendarPickerOutImg;
     private Spinner checkInTimeSpinner;
-    private TextView checkOutTimeTextView;
+    private TextView checkOutTimeTextView, voucherPrice;
     private TextView adultGuestPrice, childGuestPrice;
     private double extraChildPrice, extraAdultPrice;
     private Calendar checkInDateCalendar, checkOutDateCalendar;
@@ -227,7 +227,7 @@ public class Fragment_Booking extends Fragment {
             @Override
             public void onClick(View v) {
                 // Validate all inputs including voucher code
-                if (validateInputs() && (isVoucherChecked && isVoucherValid)) {
+                if (validateInputs() && (!isVoucherChecked || (isVoucherChecked && isVoucherValid))) {
                     // All conditions including voucher validation are met
                     Intent intent = new Intent(mContext, Activity_BookingSummary.class);
                     startActivity(intent);
@@ -369,6 +369,7 @@ public class Fragment_Booking extends Fragment {
         childEditText.setText("0");
 
         //voucher
+        voucherPrice = view.findViewById(R.id.voucherPrice);
         applyVoucherCheckBox = view.findViewById(R.id.applyVoucherCheckBox);
         voucherEditText = view.findViewById(R.id.voucherEditText);
 
@@ -457,7 +458,7 @@ public class Fragment_Booking extends Fragment {
         childGuestPrice.setText("Total Price of Extra Child Guests: ₱" + formatPrice(totalChildPrice));
         adultGuestPrice.setText("Total Price of Extra Adult Guests: ₱" + formatPrice(totalAdultPrice));
     }
-    //haha
+
 
     //other details of chosen room
     private void populateRoomDetails() {
@@ -489,7 +490,6 @@ public class Fragment_Booking extends Fragment {
 
 
     private void setupEventListeners() {
-
         applyVoucherCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -501,6 +501,7 @@ public class Fragment_Booking extends Fragment {
                     CompoundButtonCompat.setButtonTintList(applyVoucherCheckBox, ColorStateList.valueOf(Color.parseColor("#000000")));
                     voucherEditText.setVisibility(View.GONE);
                     isVoucherChecked = false;
+                    voucherPrice.setText("Voucher Value: "); // Clear voucher value display
                 }
             }
         });
@@ -723,16 +724,19 @@ public class Fragment_Booking extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 boolean voucherFound = false;
+                double voucherValue = 0;
+
                 for (DataSnapshot voucherSnapshot : dataSnapshot.getChildren()) {
                     String voucherCode = voucherSnapshot.child("code").getValue(String.class);
                     if (code.equals(voucherCode)) {
                         voucherFound = true;
+                        voucherValue = voucherSnapshot.child("value").getValue(Double.class); // Assuming the value is stored as a Double
                         break;
                     }
                 }
 
                 if (voucherFound) {
-                    listener.onValidationSuccess();
+                    listener.onValidationSuccess(voucherValue);
                 } else {
                     listener.onValidationFailure();
                 }
@@ -756,6 +760,7 @@ public class Fragment_Booking extends Fragment {
         //CHILD COUNT
         //VAT
         //String vatValue
+        String voucherValue = voucherPrice.getText().toString().trim();
         Map<String, String> selectedAddOns = adapter.getSelectedAddOns();
         String roomPrice = roomPriceTextView.getText().toString().trim();
         String extraAdultPrice = adultGuestPrice.getText().toString().trim();
@@ -911,9 +916,10 @@ public class Fragment_Booking extends Fragment {
                 // Validate voucher code from the database
                 validateVoucherCode(voucherCode, new OnVoucherValidationListener() {
                     @Override
-                    public void onValidationSuccess() {
-                        // Proceed with the booking or other actions since voucher is valid
-                        // Here you can add additional logic if needed
+                    public void onValidationSuccess(double voucherValue) {
+                        // Voucher is valid, update the UI with voucher value
+                        voucherPrice.setText("Voucher Value: ₱" + formatPrice(voucherValue));
+                        isVoucherValid = true;
                         continueBookingProcess();
                     }
 
@@ -921,11 +927,13 @@ public class Fragment_Booking extends Fragment {
                     public void onValidationFailure() {
                         voucherEditText.setError("Invalid voucher code. Please try again.");
                         voucherEditText.requestFocus();
+                        isVoucherValid = false;
                     }
 
                     @Override
                     public void onValidationError() {
                         Toast.makeText(getContext(), "Error checking voucher code. Please try again.", Toast.LENGTH_SHORT).show();
+                        isVoucherValid = false;
                     }
                 });
 
@@ -950,11 +958,10 @@ public class Fragment_Booking extends Fragment {
         void onDateSet(int date, int month, int year);
     }
 
-    interface OnVoucherValidationListener {
-        void onValidationSuccess();
-
+    public interface OnVoucherValidationListener {
+        void onValidationSuccess(double voucherValue);
         void onValidationFailure();
-
         void onValidationError();
     }
+
 }
