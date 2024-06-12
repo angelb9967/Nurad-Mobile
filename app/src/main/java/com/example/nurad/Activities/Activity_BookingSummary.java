@@ -14,6 +14,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.nurad.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class Activity_BookingSummary extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
@@ -66,6 +69,7 @@ public class Activity_BookingSummary extends AppCompatActivity {
         String selectedAddOns = intent.getStringExtra("selectedAddOns");
         String voucherCode = intent.getStringExtra("voucherCode");
 
+
         TextView roomTitleTextView = findViewById(R.id.roomNameNumber);
         TextView roomPriceTextView = findViewById(R.id.roomNameNumberVals);
         TextView adultCountTextView = findViewById(R.id.quantityAdult);
@@ -78,6 +82,7 @@ public class Activity_BookingSummary extends AppCompatActivity {
         TextView voucherValueTextView = findViewById(R.id.discountVoucherVal);
         TextView notesTextView = findViewById(R.id.notess);
         TextView totalValTextView = findViewById(R.id.totalVal);
+        TextView dateTextView = findViewById(R.id.dateval);
         @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TextView checkoutduration =  findViewById(R.id.staydurationoutval);
         @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TextView checkinduration = findViewById(R.id.staydurationval);
 
@@ -91,7 +96,7 @@ public class Activity_BookingSummary extends AppCompatActivity {
         subtotalTextView.setText("₱ "+subtotal);
         vatTextView.setText("₱ "+vat);
         voucherCodeTextView.setText("Discount ("+ voucherCode +")");
-        voucherValueTextView.setText("₱ - "+voucherValue);
+        voucherValueTextView.setText("₱ "+voucherValue);
         notesTextView.setText(notes);
         checkinduration.setText(checkInDate+" ("+checkInTime+")");
         checkoutduration.setText(checkOutDate+" ("+checkOutTime+")");
@@ -112,6 +117,22 @@ public class Activity_BookingSummary extends AppCompatActivity {
 
 // Set total price
         totalValTextView.setText("₱ " + String.format("%.2f", totalValue));
+
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String currentDate = dateFormat.format(calendar.getTime());
+
+        dateTextView.setText(currentDate);
+
+        String lastFourDigits = "";
+        if (cardNumber != null && cardNumber.length() >= 4) {
+            lastFourDigits = cardNumber.substring(cardNumber.length() - 4);
+        }
+
+// Display the last four digits in the TextView
+        TextView methodPaymentTextView = findViewById(R.id.paymentmethod);
+        methodPaymentTextView.setText("Card ending in ****" + lastFourDigits);
+
     }
 
     private double parsePrice(String price) {
@@ -163,7 +184,7 @@ public class Activity_BookingSummary extends AppCompatActivity {
             addOnsValTextView.setText("₱ " + formatPrice(totalAddOnPrice));
         } else {
             // If no add-ons selected, set empty text to TextViews
-            addOnsTextView.setText("");
+            addOnsTextView.setText("No Selected Add-On");
             addOnsValTextView.setText("₱ 0.00");
         }
     }

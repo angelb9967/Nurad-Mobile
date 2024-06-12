@@ -542,7 +542,7 @@ public class Fragment_Booking extends Fragment {
                     CompoundButtonCompat.setButtonTintList(applyVoucherCheckBox, ColorStateList.valueOf(Color.parseColor("#000000")));
                     voucherEditText.setVisibility(View.GONE);
                     isVoucherChecked = false;
-                    voucherPrice.setText(""); // Clear voucher value display
+                    voucherPrice.setText("No Voucher Selected"); // Clear voucher value display
                 }
             }
         });
@@ -933,7 +933,7 @@ public class Fragment_Booking extends Fragment {
 
         // Validate notes
         if (notes.isEmpty()) {
-            notes = "N/A";
+            notes = "No Note";
         } else if (notes.split("\\s+").length > 150) {
             notesEditText.setError("Notes cannot exceed 250 words");
             notesEditText.requestFocus();
@@ -976,6 +976,9 @@ public class Fragment_Booking extends Fragment {
             }
         } else {
             // If voucher code validation is not required, continue with booking process
+            double defaultVoucherValue = 0.0; // Set default voucher value
+            voucherPrice.setText(formatPrice(defaultVoucherValue)); // Update the UI
+            voucherEditText.setText("N/A");
             continueBookingProcess();
         }
 
