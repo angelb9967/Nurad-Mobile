@@ -457,6 +457,7 @@ public class Fragment_Booking extends Fragment {
         childGuestPrice.setText("Total Price of Extra Child Guests: ₱" + formatPrice(totalChildPrice));
         adultGuestPrice.setText("Total Price of Extra Adult Guests: ₱" + formatPrice(totalAdultPrice));
     }
+    //haha
 
     //other details of chosen room
     private void populateRoomDetails() {
