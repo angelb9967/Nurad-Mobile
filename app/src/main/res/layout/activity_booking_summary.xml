@@ -82,6 +82,64 @@
                 android:layout_marginTop="8dp">
 
                 <TextView
+                    android:id="@+id/stayduration"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Check-In"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/staydurationval"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="Schedule"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:id="@+id/staydurationout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Check-Out"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/staydurationoutval"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="Schedule"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <TextView
                     android:id="@+id/roomNameNumber"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -166,6 +224,7 @@
 
             <!-- Add-Ons -->
             <LinearLayout
+                android:id="@+id/addOnsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -179,11 +238,43 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
+                    android:visibility="visible"
                     android:text="Add-Ons"
                     android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/addOnsVal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="Price"
+                    android:visibility="visible"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- Add-Ons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:id="@+id/Note"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Note:"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/notess"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -326,6 +417,7 @@
             </LinearLayout>
 
         </LinearLayout>
+
     </androidx.cardview.widget.CardView>
 
     <!-- View below "Your Booking Summary" -->
@@ -358,83 +450,6 @@
         android:layout_marginBottom="16dp"/>
 
     <!-- Policies -->
-    <TextView
-        android:id="@+id/policies"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Policies"
-        android:textColor="#333333"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/unsavedChangesNote2"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp" />
-
-    <TextView
-        android:id="@+id/guaranteePolicy"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Guarantee Policy"
-        android:textColor="#333333"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/policies"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="4dp" />
-
-    <TextView
-        android:id="@+id/guaranteePolicyDetails"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="This is a Book-and-Buy arrangement. Full payment through credit card is required upon booking and is non-refundable but may be rebooked subject to applicable charges such as rate difference."
-        android:textColor="#545454"
-        android:textSize="10sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guaranteePolicy"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="16dp" />
-
-    <TextView
-        android:id="@+id/cancelPolicy"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Cancel Policy"
-        android:textColor="#333333"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guaranteePolicyDetails"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="4dp" />
-
-    <TextView
-        android:id="@+id/cancelPolicyDetails"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="This reservation is non-cancellable &amp; non-refundable but may be rebooked subject to applicable rate difference. Rebooking should be done at least 3 days before arrival. Full payment will be forfeited for no-show. Add-Ons will be cancelled automatically."
-        android:textColor="#545454"
-        android:textSize="10sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cancelPolicy"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="100dp" />
 
     <Button
         android:id="@+id/nextStepButton"
@@ -447,7 +462,85 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/topDivider"
-        app:layout_constraintVertical_bias="0.975" />
+        app:layout_constraintTop_toBottomOf="@+id/unsavedChangesNote5"
+        app:layout_constraintVertical_bias="0.032" />
+
+    <TextView
+        android:id="@+id/policies"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="30dp"
+        android:text="Policies"
+        android:textColor="#333333"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nextStepButton" />
+
+    <TextView
+        android:id="@+id/guaranteePolicyDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="30dp"
+        android:text="This is a Book-and-Buy arrangement. Full payment through credit card is required upon booking and is non-refundable but may be rebooked subject to applicable charges such as rate difference."
+        android:textColor="#545454"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guaranteePolicy" />
+
+    <TextView
+        android:id="@+id/cancelPolicyDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="30dp"
+        android:text="This reservation is non-cancellable &amp; non-refundable but may be rebooked subject to applicable rate difference. Rebooking should be done at least 3 days before arrival. Full payment will be forfeited for no-show. Add-Ons will be cancelled automatically."
+        android:textColor="#545454"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cancelPolicy" />
+
+    <TextView
+        android:id="@+id/cancelPolicy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="30dp"
+        android:text="Cancel Policy"
+        android:textColor="#333333"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guaranteePolicyDetails" />
+
+    <TextView
+        android:id="@+id/guaranteePolicy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="30dp"
+        android:text="Guarantee Policy"
+        android:textColor="#333333"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/policies" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -231,6 +231,7 @@ public class Fragment_Booking extends Fragment {
                 if (validateInputs() && (!isVoucherChecked || (isVoucherChecked && isVoucherValid))) {
                     // All conditions including voucher validation are met
                     Intent intent = new Intent(mContext, Activity_BookingSummary.class);
+
                     startActivity(intent);
                 } else {
                     // Handle invalid inputs, such as displaying error messages or alerts
@@ -413,7 +414,7 @@ public class Fragment_Booking extends Fragment {
         adapter = new Adapter_AddOn(getContext(), addOnList, new Adapter_AddOn.OnAddOnSelectionChangedListener() {
             @Override
             public void onSelectionChanged(double totalPrice) {
-                selectedAddOnsPrice.setText("Total Add-Ons Price: ₱" + formatPrice(totalPrice));
+                selectedAddOnsPrice.setText(formatPrice(totalPrice));
                 updateSubtotalAndVat();
             }
         });
@@ -429,8 +430,8 @@ public class Fragment_Booking extends Fragment {
         double subtotal = roomPrice + totalChildPrice + totalAdultPrice + addOnsPrice;
         double vatVal = subtotal * 0.12;
 
-        bookSubTotal.setText("Subtotal: ₱" + formatPrice(subtotal));
-        bookVatVal.setText("Additional Tax/VAT (12%): ₱" + formatPrice(vatVal));
+        bookSubTotal.setText(formatPrice(subtotal));
+        bookVatVal.setText(formatPrice(vatVal));
 
         // Optionally update visibility
         bookSubTotal.setVisibility(View.VISIBLE);
@@ -492,8 +493,8 @@ public class Fragment_Booking extends Fragment {
         double totalChildPrice = childCount * extraChildPrice;
         double totalAdultPrice = adultCount * extraAdultPrice;
 
-        childGuestPrice.setText("Total Price of Extra Child Guests: ₱" + formatPrice(totalChildPrice));
-        adultGuestPrice.setText("Total Price of Extra Adult Guests: ₱" + formatPrice(totalAdultPrice));
+        childGuestPrice.setText(formatPrice(totalChildPrice));
+        adultGuestPrice.setText(formatPrice(totalAdultPrice));
 
         updateSubtotalAndVat();
     }
@@ -521,9 +522,9 @@ public class Fragment_Booking extends Fragment {
             long diffInMillis = checkOutDateCalendar.getTimeInMillis() - checkInDateCalendar.getTimeInMillis();
             long days = TimeUnit.MILLISECONDS.toDays(diffInMillis);
             double totalPrice = price * days;
-            roomPriceTextView.setText("Price: ₱" + formatPrice(totalPrice));
+            roomPriceTextView.setText(formatPrice(totalPrice));
         } else {
-            roomPriceTextView.setText("Price: ₱" + formatPrice(price));
+            roomPriceTextView.setText(formatPrice(price));
         }
         updateSubtotalAndVat();
     }
@@ -541,7 +542,7 @@ public class Fragment_Booking extends Fragment {
                     CompoundButtonCompat.setButtonTintList(applyVoucherCheckBox, ColorStateList.valueOf(Color.parseColor("#000000")));
                     voucherEditText.setVisibility(View.GONE);
                     isVoucherChecked = false;
-                    voucherPrice.setText("Voucher Value: "); // Clear voucher value display
+                    voucherPrice.setText(""); // Clear voucher value display
                 }
             }
         });
@@ -791,7 +792,7 @@ public class Fragment_Booking extends Fragment {
 
     private boolean validateInputs() {
 
-        //STATUS
+        //we need to make sure subtotal, vat, and status is also included in this
         String AddOnsPrice = selectedAddOnsPrice.getText().toString().trim();
         String voucherValue = voucherPrice.getText().toString().trim();
         Map<String, Model_AddOns> selectedAddOns = adapter.getSelectedAddOns();
@@ -951,7 +952,7 @@ public class Fragment_Booking extends Fragment {
                     @Override
                     public void onValidationSuccess(double voucherValue) {
                         // Voucher is valid, update the UI with voucher value
-                        voucherPrice.setText("Voucher Value: ₱" + formatPrice(voucherValue));
+                        voucherPrice.setText(formatPrice(voucherValue));
                         isVoucherValid = true;
                         continueBookingProcess();
                     }
@@ -984,6 +985,51 @@ public class Fragment_Booking extends Fragment {
     private void continueBookingProcess() {
         // All conditions including voucher validation are met
         Intent intent = new Intent(mContext, Activity_BookingSummary.class);
+
+        // Put all necessary data as extras
+        intent.putExtra("addOnsPrice", selectedAddOnsPrice.getText().toString().trim());
+        intent.putExtra("voucherValue", voucherPrice.getText().toString().trim());
+        intent.putExtra("roomPrice", roomPriceTextView.getText().toString().trim());
+        intent.putExtra("extraAdultPrice", adultGuestPrice.getText().toString().trim());
+        intent.putExtra("extraChildPrice", childGuestPrice.getText().toString().trim());
+        intent.putExtra("subtotal", bookSubTotal.getText().toString().trim());
+        intent.putExtra("vat", bookVatVal.getText().toString().trim());
+        intent.putExtra("status", status);
+        intent.putExtra("country", countryEditText.getText().toString().trim());
+        intent.putExtra("prefix", prefixSpinner.getSelectedItem().toString());
+        intent.putExtra("checkInDate", checkInDateEditText.getText().toString().trim());
+        intent.putExtra("checkOutDate", checkOutDateEditText.getText().toString().trim());
+        intent.putExtra("checkInTime", checkInTimeSpinner.getSelectedItem().toString());
+        intent.putExtra("checkOutTime", checkInTimeSpinner.getSelectedItem().toString());
+        intent.putExtra("room", selectedRoom.getRoomName());
+        intent.putExtra("roomTitle", selectedRoom.getTitle());
+        intent.putExtra("adultCount", adultEditText.getText().toString());
+        intent.putExtra("childCount", childEditText.getText().toString());
+        intent.putExtra("firstName", firstNameEditText.getText().toString().trim());
+        intent.putExtra("lastName", lastNameEditText.getText().toString().trim());
+        intent.putExtra("phone", phoneEditText.getText().toString().trim());
+        intent.putExtra("mobilePhone", mobilePhoneEditText.getText().toString().trim());
+        intent.putExtra("email", emailEditText.getText().toString().trim());
+        intent.putExtra("address1", address1EditText.getText().toString().trim());
+        intent.putExtra("address2", address2EditText.getText().toString().trim());
+        intent.putExtra("selectedRegion", regionSpinner.getSelectedItem().toString());
+        intent.putExtra("selectedCity", citySpinner.getSelectedItem().toString());
+        intent.putExtra("zipCode", zipCodeEditText.getText().toString().trim());
+        intent.putExtra("cardNumber", cardNumberEditText.getText().toString().trim());
+        intent.putExtra("expirationDate", expirationDateEditText.getText().toString().trim());
+        intent.putExtra("cvv", cvvEditText.getText().toString().trim());
+        intent.putExtra("nameOnCard", nameOnCardEditText.getText().toString().trim());
+        intent.putExtra("notes", notesEditText.getText().toString().trim());
+
+        // Concatenate selected add-ons names and prices
+        StringBuilder selectedAddOnsBuilder = new StringBuilder();
+        Map<String, Model_AddOns> selectedAddOnsMap = adapter.getSelectedAddOns();
+        for (Model_AddOns addOn : selectedAddOnsMap.values()) {
+            selectedAddOnsBuilder.append(addOn.getTitle()).append(": ₱").append(addOn.getPrice()).append("\n");
+        }
+        intent.putExtra("selectedAddOns", selectedAddOnsBuilder.toString());
+        String voucherCode = voucherEditText.getText().toString().trim();
+        intent.putExtra("voucherCode", voucherCode);
         startActivity(intent);
     }
 
