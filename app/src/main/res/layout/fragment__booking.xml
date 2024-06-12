@@ -1050,6 +1050,15 @@
             android:text="Choose an add-on to enhance your experience."
             android:textSize="14sp" />
 
+        <TextView
+            android:id="@+id/selectedAddOnsPrice"
+            android:layout_width="378dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Total Add-Ons Price: "
+            android:textSize="14sp" />
+
                 <!-- RecyclerView for Add Ons -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -1058,6 +1067,37 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="30dp"
             android:maxHeight="300dp" />
+
+        <TextView
+            android:id="@+id/bookStatus"
+            android:layout_width="378dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Status"
+            android:visibility="gone"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/bookSubTotal"
+            android:layout_width="378dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Status"
+            android:visibility="visible"
+            android:textSize="14sp" />
+
+
+        <TextView
+            android:id="@+id/bookVatVal"
+            android:layout_width="378dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:text="Vat"
+            android:visibility="visible"
+            android:textSize="14sp" />
 
         <View
             android:layout_width="match_parent"

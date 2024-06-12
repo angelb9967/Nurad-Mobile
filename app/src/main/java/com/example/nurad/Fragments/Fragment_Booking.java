@@ -84,8 +84,9 @@ public class Fragment_Booking extends Fragment {
     private EditText checkInDateEditText, checkOutDateEditText;
     private ImageView calendarPickerInImg, calendarPickerOutImg;
     private Spinner checkInTimeSpinner;
-    private TextView checkOutTimeTextView, voucherPrice;
-    private TextView adultGuestPrice, childGuestPrice;
+    private TextView checkOutTimeTextView, voucherPrice, selectedAddOnsPrice;
+    private String status = "Booked";
+    private TextView adultGuestPrice, childGuestPrice, bookStatus, bookSubTotal, bookVatVal;
     private double extraChildPrice, extraAdultPrice;
     private Calendar checkInDateCalendar, checkOutDateCalendar;
     private EditText adultEditText;
@@ -373,6 +374,13 @@ public class Fragment_Booking extends Fragment {
         applyVoucherCheckBox = view.findViewById(R.id.applyVoucherCheckBox);
         voucherEditText = view.findViewById(R.id.voucherEditText);
 
+        bookStatus = view.findViewById(R.id.bookStatus);
+        bookSubTotal = view.findViewById(R.id.bookSubTotal);
+        bookVatVal = view.findViewById(R.id.bookVatVal);
+
+        //Addon
+        selectedAddOnsPrice = view.findViewById(R.id.selectedAddOnsPrice);
+
         //note
         notesEditText = view.findViewById(R.id.Notes_Txt);
     }
@@ -402,8 +410,37 @@ public class Fragment_Booking extends Fragment {
 
     private void displayAddOns(List<Model_AddOns> addOnList) {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new Adapter_AddOn(getContext(), addOnList);
+        adapter = new Adapter_AddOn(getContext(), addOnList, new Adapter_AddOn.OnAddOnSelectionChangedListener() {
+            @Override
+            public void onSelectionChanged(double totalPrice) {
+                selectedAddOnsPrice.setText("Total Add-Ons Price: ₱" + formatPrice(totalPrice));
+                updateSubtotalAndVat();
+            }
+        });
         recyclerView.setAdapter(adapter);
+    }
+
+    private void updateSubtotalAndVat() {
+        double roomPrice = parsePrice(roomPriceTextView.getText().toString());
+        double totalChildPrice = parsePrice(childGuestPrice.getText().toString());
+        double totalAdultPrice = parsePrice(adultGuestPrice.getText().toString());
+        double addOnsPrice = parsePrice(selectedAddOnsPrice.getText().toString());
+
+        double subtotal = roomPrice + totalChildPrice + totalAdultPrice + addOnsPrice;
+        double vatVal = subtotal * 0.12;
+
+        bookSubTotal.setText("Subtotal: ₱" + formatPrice(subtotal));
+        bookVatVal.setText("Additional Tax/VAT (12%): ₱" + formatPrice(vatVal));
+
+        // Optionally update visibility
+        bookSubTotal.setVisibility(View.VISIBLE);
+        bookVatVal.setVisibility(View.VISIBLE);
+    }
+
+    private double parsePrice(String priceText) {
+        // Remove everything except numbers and decimal point
+        String price = priceText.replaceAll("[^\\d.]", "");
+        return price.isEmpty() ? 0.0 : Double.parseDouble(price);
     }
 
     //fetching price of room
@@ -457,6 +494,8 @@ public class Fragment_Booking extends Fragment {
 
         childGuestPrice.setText("Total Price of Extra Child Guests: ₱" + formatPrice(totalChildPrice));
         adultGuestPrice.setText("Total Price of Extra Adult Guests: ₱" + formatPrice(totalAdultPrice));
+
+        updateSubtotalAndVat();
     }
 
 
@@ -486,6 +525,7 @@ public class Fragment_Booking extends Fragment {
         } else {
             roomPriceTextView.setText("Price: ₱" + formatPrice(price));
         }
+        updateSubtotalAndVat();
     }
 
 
@@ -750,18 +790,11 @@ public class Fragment_Booking extends Fragment {
     }
 
     private boolean validateInputs() {
-        //PREFIX
+
         //STATUS
-        //CHECK IN DATE, CHECK OUT DATE, CHECK IN TIME, CHECK OUT TIME
-        //VOUCHER
-        //SELECTED ADD ONS
-        //ROOM PRICE
-        //ADULT COUNT
-        //CHILD COUNT
-        //VAT
-        //String vatValue
+        String AddOnsPrice = selectedAddOnsPrice.getText().toString().trim();
         String voucherValue = voucherPrice.getText().toString().trim();
-        Map<String, String> selectedAddOns = adapter.getSelectedAddOns();
+        Map<String, Model_AddOns> selectedAddOns = adapter.getSelectedAddOns();
         String roomPrice = roomPriceTextView.getText().toString().trim();
         String extraAdultPrice = adultGuestPrice.getText().toString().trim();
         String extraChildPrice = childGuestPrice.getText().toString().trim();
