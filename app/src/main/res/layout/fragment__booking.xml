@@ -26,7 +26,6 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="4dp">
 
@@ -44,7 +43,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="30dp"
                     android:text="Room Details"
-                    android:textColor="#333333"
+                    android:textColor="#882065"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -130,7 +129,7 @@
             android:layout_marginTop="6dp"
             android:layout_marginEnd="30dp"
             android:text="Contact Information"
-            android:textColor="#333333"
+            android:textColor="#882065"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -144,8 +143,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
             android:paddingBottom="8dp"
-            android:text="Enter name and contact information."
-            android:textSize="14sp"
+            android:text="Enter name and contact information"
+            android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -166,8 +165,8 @@
 
         <Spinner
             android:id="@+id/Prefix_Spinner"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="360dp"
+            android:layout_height="45dp"
             android:layout_marginStart="0dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/style_spinner"
@@ -195,13 +194,13 @@
 
         <EditText
             android:id="@+id/FirstName_Etxt"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="360dp"
+            android:layout_height="45dp"
             android:layout_marginStart="0dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/custom_input"
             android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            android:hint="First Name"
+            android:hint="Enter Here"
             android:inputType="text"
             android:paddingStart="18dp"
             android:paddingEnd="18dp"
@@ -225,13 +224,13 @@
 
         <EditText
             android:id="@+id/LastName_Etxt"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="360dp"
+            android:layout_height="45dp"
             android:layout_marginStart="0dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/custom_input"
             android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            android:hint="Last Name"
+            android:hint="Enter Here"
             android:inputType="text"
             android:paddingStart="18dp"
             android:paddingEnd="18dp"
@@ -255,12 +254,12 @@
 
         <EditText
             android:id="@+id/Phone_Etxt"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="360dp"
+            android:layout_height="45dp"
             android:layout_marginStart="0dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/custom_input"
-            android:hint="XXXX-YYYY"
+            android:hint="XXXX-XXXX"
             android:inputType="phone"
             android:maxLength="8"
             android:paddingStart="18dp"
@@ -285,12 +284,12 @@
 
         <EditText
             android:id="@+id/MobilePhone_Etxt"
-            android:layout_width="194dp"
-            android:layout_height="50dp"
+            android:layout_width="360dp"
+            android:layout_height="45dp"
             android:layout_marginStart="0dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/custom_input"
-            android:hint="09XX-XXX-YYYY"
+            android:hint="09XX-XXX-XXXX"
             android:inputType="phone"
             android:maxLength="11"
             android:paddingStart="18dp"
@@ -315,8 +314,8 @@
 
         <EditText
             android:id="@+id/Email_Etxt"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="360dp"
+            android:layout_height="45dp"
             android:layout_marginStart="0dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/custom_input"
@@ -348,7 +347,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="30dp"
             android:text="Address Information"
-            android:textColor="#333333"
+            android:textColor="#882065"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -358,8 +357,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="30dp"
-            android:text="Enter address information."
-            android:textSize="14sp" />
+            android:text="Enter address information"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/textView309"
@@ -372,8 +371,8 @@
 
         <EditText
             android:id="@+id/Country_Etxt"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="360dp"
+            android:layout_height="45dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/custom_input"
             android:hint="Country"
@@ -392,11 +391,11 @@
 
         <EditText
             android:id="@+id/Address1_Etxt"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="360dp"
+            android:layout_height="45dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/custom_input"
-            android:hint="Address 1"
+            android:hint="House No., Street Name, Barangay No."
             android:inputType="text"
             android:paddingStart="18dp"
             android:paddingEnd="18dp" />
@@ -412,11 +411,11 @@
 
         <EditText
             android:id="@+id/Address2_Etxt"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="360dp"
+            android:layout_height="45dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/custom_input"
-            android:hint="Address 2"
+            android:hint="House No., Street Name, Barangay No."
             android:inputType="text"
             android:paddingStart="18dp"
             android:paddingEnd="18dp" />
@@ -432,8 +431,8 @@
 
         <Spinner
             android:id="@+id/Region_Spinner"
-            android:layout_width="349dp"
-            android:layout_height="50dp"
+            android:layout_width="360dp"
+            android:layout_height="45dp"
             android:background="@drawable/style_spinner"
             android:paddingStart="18dp"
             android:paddingEnd="18dp" />
@@ -449,8 +448,8 @@
 
         <Spinner
             android:id="@+id/City_Spinner"
-            android:layout_width="349dp"
-            android:layout_height="50dp"
+            android:layout_width="360dp"
+            android:layout_height="45dp"
             android:background="@drawable/style_spinner"
             android:paddingStart="18dp"
             android:paddingEnd="18dp" />
@@ -467,13 +466,13 @@
 
         <EditText
             android:id="@+id/ZipCode_Etxt"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="360dp"
+            android:layout_height="45dp"
             android:layout_marginEnd="30dp"
             android:inputType="number"
             android:maxLength="4"
             android:background="@drawable/custom_input"
-            android:hint="Zip / Postal Code"
+            android:hint="XXXX"
             android:paddingStart="18dp"
             android:paddingEnd="18dp" />
 
@@ -495,7 +494,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="30dp"
             android:text="Payment Information"
-            android:textColor="#333333"
+            android:textColor="#882065"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -505,8 +504,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="30dp"
-            android:text="Enter payment information for the transaction."
-            android:textSize="14sp" />
+            android:text="Enter payment information for the transaction"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/textView316"
@@ -519,10 +518,10 @@
 
         <EditText
             android:id="@+id/CardNumber_Etxt"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="360dp"
+            android:layout_height="45dp"
             android:background="@drawable/custom_input"
-            android:hint="Card Number"
+            android:hint="XXXX-XXXX-XXXX-XXXX"
             android:maxLength="16"
             android:inputType="number"
             android:paddingStart="18dp"
@@ -555,7 +554,7 @@
                 android:inputType="none"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-                android:hint="Expiration Date"
+                android:hint="MM/YY"
                 android:paddingStart="18dp"
                 android:paddingEnd="18dp" />
 
@@ -579,10 +578,10 @@
 
         <EditText
             android:id="@+id/CVV_Etxt"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="360dp"
+            android:layout_height="45dp"
             android:background="@drawable/custom_input"
-            android:hint="CVV"
+            android:hint="XXX"
             android:inputType="number"
             android:maxLength="3"
             android:paddingStart="18dp"
@@ -601,10 +600,10 @@
 
         <EditText
             android:id="@+id/NameOntheCard_Etxt"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="360dp"
+            android:layout_height="45dp"
             android:background="@drawable/custom_input"
-            android:hint="Name on the Card"
+            android:hint="Enter Here"
             android:inputType="textPersonName"
             android:paddingStart="18dp"
             android:paddingEnd="18dp"
@@ -630,7 +629,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="30dp"
             android:text="Booking Date and Time"
-            android:textColor="#333333"
+            android:textColor="#882065"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -640,8 +639,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="30dp"
-            android:text="Select check-in and check-out information."
-            android:textSize="14sp" />
+            android:text="Select check-in and check-out information"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/textView103"
@@ -662,13 +661,13 @@
             <EditText
                 android:id="@+id/CheckInDate_Etxt"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
+                android:layout_height="45dp"
                 android:layout_weight="1"
                 android:background="@drawable/custom_input"
                 android:inputType="none"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-                android:hint="Check-In Date"
+                android:hint="DD/MM/YYYY"
                 android:paddingStart="18dp"
                 android:paddingEnd="18dp" />
 
@@ -700,11 +699,11 @@
             <EditText
                 android:id="@+id/CheckOutDate_Etxt"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
+                android:layout_height="45dp"
                 android:layout_weight="1"
                 android:background="@drawable/custom_input"
                 android:inputType="date"
-                android:hint="Check-Out Date"
+                android:hint="DD/MM/YYYY"
                 android:paddingStart="18dp"
                 android:paddingEnd="18dp" />
 
@@ -795,8 +794,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="30dp"
+            android:textColor="#882065"
             android:text="Extras"
-            android:textColor="#333333"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -807,8 +806,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="30dp"
-            android:text="Enter how many extra authorized guest/s you need."
-            android:textSize="14sp" />
+            android:text="Enter how many extra authorized guest/s you need"
+            android:textSize="15sp" />
 
         <!-- Extra Adult Guests Label -->
         <TextView
@@ -836,7 +835,7 @@
                 android:inputType="number"
                 android:maxLength="2"
                 android:background="@drawable/custom_input"
-                android:hint="Extra Adult"
+                android:hint="Enter Here"
                 android:paddingStart="18dp"
                 android:paddingEnd="18dp" />
 
@@ -902,7 +901,7 @@
                 android:inputType="number"
                 android:maxLength="2"
                 android:background="@drawable/custom_input"
-                android:hint="Extra Child"
+                android:hint="Enter Here"
                 android:paddingStart="18dp"
                 android:paddingEnd="18dp" />
 
@@ -959,6 +958,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Apply Voucher"
+            android:textColor="#882065"
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_marginTop="16dp" />
@@ -1014,7 +1014,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="30dp"
             android:text="Additional Information"
-            android:textColor="#333333"
+            android:textColor="#882065"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -1025,7 +1025,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="30dp"
-            android:text="Add any additional notes for your booking."
+            android:text="Add any additional notes for your booking"
             android:textSize="14sp" />
 
         <!-- Notes Input Field -->
@@ -1064,7 +1064,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="30dp"
             android:text="Add Ons"
-            android:textColor="#333333"
+            android:textColor="#882065"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -1075,8 +1075,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="30dp"
-            android:text="Choose an add-on to enhance your experience."
-            android:textSize="14sp" />
+            android:text="Choose an add-on to enhance your experience"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/selectedAddOnsPriceprice"

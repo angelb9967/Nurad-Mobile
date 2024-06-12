@@ -53,7 +53,7 @@
             android:layout_toEndOf="@id/roomImage"
             android:drawableStart="@drawable/baseline_credit_card_24"
             android:paddingStart="0dp"
-            android:text="Deposit Required"
+            android:text="Card Required"
             android:textSize="9sp"
             android:textStyle="bold" />
 

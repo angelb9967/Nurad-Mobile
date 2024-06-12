@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
     tools:context=".Activities.Activity_BookingSummary">
 
     <TextView
@@ -62,7 +65,7 @@
                 android:layout_marginEnd="30dp"
                 android:text="Your Booking Summary"
                 android:textAlignment="center"
-                android:textColor="#333333"
+                android:textColor="#882065"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -88,7 +91,7 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:text="Date: "
+                    android:text="Date"
                     android:textSize="12sp" />
 
                 <TextView
@@ -176,7 +179,7 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:text="Payment Method: "
+                    android:text="Payment Method"
                     android:textSize="12sp" />
 
                 <TextView
@@ -329,7 +332,7 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:text="Note:"
+                    android:text="Note"
                     android:textSize="12sp" />
 
                 <TextView
@@ -453,6 +456,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textColor="#882065"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
@@ -465,6 +469,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textColor="#882065"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="5dp"
@@ -510,19 +515,19 @@
 
     <!-- Policies -->
 
-    <Button
-        android:id="@+id/nextStepButton"
-        android:layout_width="263dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:backgroundTint="#882065"
-        android:text="BOOK"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/unsavedChangesNote5"
-        app:layout_constraintVertical_bias="0.032" />
+        <Button
+            android:id="@+id/nextStepButton"
+            android:layout_width="114dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:backgroundTint="#882065"
+            android:text="BOOK"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/unsavedChangesNote5"
+            app:layout_constraintVertical_bias="0.032" />
 
     <TextView
         android:id="@+id/policies"
@@ -530,10 +535,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="16dp"
         android:text="Policies"
-        android:textColor="#333333"
-        android:textSize="15sp"
+        android:textColor="#882065"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -546,7 +551,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="16dp"
         android:text="This is a Book-and-Buy arrangement. Full payment through credit card is required upon booking and is non-refundable but may be rebooked subject to applicable charges such as rate difference."
         android:textColor="#545454"
         android:textSize="10sp"
@@ -555,20 +560,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/guaranteePolicy" />
 
-    <TextView
-        android:id="@+id/cancelPolicyDetails"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="30dp"
-        android:text="This reservation is non-cancellable &amp; non-refundable but may be rebooked subject to applicable rate difference. Rebooking should be done at least 3 days before arrival. Full payment will be forfeited for no-show. Add-Ons will be cancelled automatically."
-        android:textColor="#545454"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cancelPolicy" />
+        <TextView
+            android:id="@+id/cancelPolicyDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="This reservation is non-cancellable &amp; non-refundable but may be rebooked subject to applicable rate difference. Rebooking should be done at least 3 days before arrival. Full payment will be forfeited for no-show. Add-Ons will be cancelled automatically."
+            android:textColor="#545454"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cancelPolicy" />
 
     <TextView
         android:id="@+id/cancelPolicy"
@@ -576,7 +582,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="16dp"
         android:text="Cancel Policy"
         android:textColor="#333333"
         android:textSize="12sp"
@@ -592,7 +598,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="16dp"
         android:text="Guarantee Policy"
         android:textColor="#333333"
         android:textSize="12sp"
@@ -602,4 +608,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/policies" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
