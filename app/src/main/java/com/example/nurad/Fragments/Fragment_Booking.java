@@ -84,7 +84,9 @@ public class Fragment_Booking extends Fragment {
     private EditText checkInDateEditText, checkOutDateEditText;
     private ImageView calendarPickerInImg, calendarPickerOutImg;
     private Spinner checkInTimeSpinner;
-    private TextView checkOutTimeTextView, adultGuestPrice, childGuestPrice;
+    private TextView checkOutTimeTextView;
+    private TextView adultGuestPrice, childGuestPrice;
+    private double extraChildPrice, extraAdultPrice;
     private Calendar checkInDateCalendar, checkOutDateCalendar;
     private EditText adultEditText;
     private ImageView adultPlusImg;
@@ -414,32 +416,46 @@ public class Fragment_Booking extends Fragment {
                         // Get the appropriate price based on the current day of the week
                         double dailyPrice = getPriceForCurrentDay(priceRule);
                         price = dailyPrice;
+                        extraChildPrice = priceRule.getExtraChild_price();
+                        extraAdultPrice = priceRule.getExtraAdult_price();
                         updateRoomPrice();
                         // Display the extra child and adult prices
-                        childGuestPrice.setText("Extra Child Price: ₱" + formatPrice(priceRule.getExtraChild_price()));
-                        adultGuestPrice.setText("Extra Adult Price: ₱" + formatPrice(priceRule.getExtraAdult_price()));
+                        updateGuestPrices();
                     } else {
                         // Handle null price rule scenario
-                        roomPriceTextView.setText("Price: ₱" + formatPrice(0));
-                        childGuestPrice.setText("Extra Child Price: ₱" + formatPrice(0));
-                        adultGuestPrice.setText("Extra Adult Price: ₱" + formatPrice(0));
+                        setDefaultPrices();
                     }
                 } else {
                     // Handle non-existent price rule scenario
-                    roomPriceTextView.setText("Price: ₱" + formatPrice(0));
-                    childGuestPrice.setText("Extra Child Price: ₱" + formatPrice(0));
-                    adultEditText.setText("Extra Adult Price: ₱" + formatPrice(0));
+                    setDefaultPrices();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // Handle the error scenario
-                roomPriceTextView.setText("Price: ₱" + formatPrice(0));
-                childGuestPrice.setText("Extra Child Price: ₱" + formatPrice(0));
-                adultGuestPrice.setText("Extra Adult Price: ₱" + formatPrice(0));
+                setDefaultPrices();
             }
         });
+    }
+
+    private void setDefaultPrices() {
+        price = 0;
+        extraAdultPrice = 0;
+        extraChildPrice = 0;
+        updateRoomPrice();
+        updateGuestPrices();
+    }
+
+    private void updateGuestPrices() {
+        int childCount = Integer.parseInt(childEditText.getText().toString());
+        int adultCount = Integer.parseInt(adultEditText.getText().toString());
+
+        double totalChildPrice = childCount * extraChildPrice;
+        double totalAdultPrice = adultCount * extraAdultPrice;
+
+        childGuestPrice.setText("Total Price of Extra Child Guests: ₱" + formatPrice(totalChildPrice));
+        adultGuestPrice.setText("Total Price of Extra Adult Guests: ₱" + formatPrice(totalAdultPrice));
     }
 
     //other details of chosen room
@@ -451,7 +467,7 @@ public class Fragment_Booking extends Fragment {
         roomTitleTextView.setText(selectedRoom.getTitle());
         roomTypeTextView.setText("Room Type: " + selectedRoom.getRoomType() + "\n");
         roomDetailsTextView.setText("Description: " + selectedRoom.getDescription() + "\n");
-        childGuestPrice.setText("Total Price of Extra Child Guest/s: "+ selectedRoom.getPriceRule());
+//        childGuestPrice.setText("Total Price of Extra Child Guest/s: "+ selectedRoom.getPriceRule());
 
         if (selectedRoom.getPriceRule() != null) {
             // Fetch the price rule from the database
@@ -690,6 +706,7 @@ public class Fragment_Booking extends Fragment {
 
         if (newCount >= min && newCount <= max) {
             editText.setText(String.valueOf(newCount));
+            updateGuestPrices(); // Update guest prices after changing the count
         } else if (newCount < min) {
             Toast.makeText(getContext(), "Value cannot be lower than " + min, Toast.LENGTH_SHORT).show();
         } else if (newCount > max) {
@@ -736,6 +753,13 @@ public class Fragment_Booking extends Fragment {
         //ROOM PRICE
         //ADULT COUNT
         //CHILD COUNT
+        //VAT
+        //String vatValue
+        Map<String, String> selectedAddOns = adapter.getSelectedAddOns();
+        String roomPrice = roomPriceTextView.getText().toString().trim();
+        String extraAdultPrice = adultGuestPrice.getText().toString().trim();
+        String extraChildPrice = childGuestPrice.getText().toString().trim();
+        String country = countryEditText.getText().toString().trim();
         String prefix = prefixSpinner.getSelectedItem().toString();
         String checkInDate = checkInDateEditText.getText().toString().trim();
         String checkOutDate = checkOutDateEditText.getText().toString().trim();
