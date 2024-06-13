@@ -37,6 +37,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.nurad.Activities.Activity_BookingSummary;
 import com.example.nurad.Adapters.Adapter_AddOn;
 import com.example.nurad.Models.Model_AddOns;
+import com.example.nurad.Models.Model_Booking;
 import com.example.nurad.Models.Model_PriceRule;
 import com.example.nurad.Models.RoomModel;
 import com.example.nurad.R;
@@ -45,10 +46,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -89,6 +92,9 @@ public class Fragment_Booking extends Fragment {
     private TextView adultGuestPrice, childGuestPrice, bookStatus, bookSubTotal, bookVatVal;
     private double extraChildPrice, extraAdultPrice;
     private Calendar checkInDateCalendar, checkOutDateCalendar;
+    private String checkInDate;
+    private String checkOutDate;
+    private Map<Long, Long> unavailableDateRanges = new HashMap<>();
     private EditText adultEditText;
     private ImageView adultPlusImg;
     private ImageView adultMinusImg;
@@ -384,6 +390,7 @@ public class Fragment_Booking extends Fragment {
 
         //note
         notesEditText = view.findViewById(R.id.Notes_Txt);
+
     }
 
     //fetching add ons
@@ -679,32 +686,102 @@ public class Fragment_Booking extends Fragment {
     private void showDatePicker(EditText field, boolean isCheckIn) {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(
-                getContext(), (view, year, month, dayOfMonth) -> {
+                mContext, (view, year, month, dayOfMonth) -> {
             calendar.set(year, month, dayOfMonth);
             String selectedDate = dayOfMonth + "/" + (month + 1) + "/" + year;
             field.setText(selectedDate);
 
             if (isCheckIn) {
                 checkInDateCalendar = calendar;
-                checkOutDateEditText.setText("");
+                checkInDate = selectedDate;
+                checkOutDateEditText.setText(""); // Clear check-out date if check-in date changes
+                checkOutDate = null;
             } else {
                 checkOutDateCalendar = calendar;
+                checkOutDate = selectedDate;
+            }
+
+            // Only check room availability if both dates are set
+            if (checkInDate != null && checkOutDate != null) {
+                checkRoomAvailability();
             }
 
             updateRoomPrice();
 
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
+        // Set min date
         if (isCheckIn) {
             datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         } else if (checkInDateCalendar != null) {
             datePickerDialog.getDatePicker().setMinDate(checkInDateCalendar.getTimeInMillis() + 24 * 60 * 60 * 1000); // +1 day
         } else {
-            Toast.makeText(getContext(), "Please select a check-in date first", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "Please select a check-in date first", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        datePickerDialog.show();
+        // Fetch unavailable dates before showing the date picker
+        fetchUnavailableDates(() -> datePickerDialog.show(), isCheckIn);
+    }
+
+    private void fetchUnavailableDates(Runnable onSuccess, boolean isCheckIn) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference bookingsRef = database.getReference("Booking");
+
+        bookingsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                unavailableDateRanges.clear();
+                String selectedRoomName = selectedRoom.getRoomName();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+
+                for (DataSnapshot bookingSnapshot : dataSnapshot.getChildren()) {
+                    Model_Booking booking = bookingSnapshot.getValue(Model_Booking.class);
+                    if (booking != null && selectedRoomName.equals(booking.getRoom())) {
+                        try {
+                            Date existingCheckIn = sdf.parse(booking.getCheckInDate());
+                            Date existingCheckOut = sdf.parse(booking.getCheckOutDate());
+                            unavailableDateRanges.put(existingCheckIn.getTime(), existingCheckOut.getTime());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                onSuccess.run(); // Run the success callback
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle possible errors.
+            }
+        });
+    }
+
+    private void checkRoomAvailability() {
+        if (checkInDate == null || checkOutDate == null) {
+            return; // Avoid null pointer exceptions
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        try {
+            Date newCheckIn = sdf.parse(checkInDate);
+            Date newCheckOut = sdf.parse(checkOutDate);
+
+            for (Map.Entry<Long, Long> entry : unavailableDateRanges.entrySet()) {
+                Date existingCheckIn = new Date(entry.getKey());
+                Date existingCheckOut = new Date(entry.getValue());
+
+                if ((newCheckIn.before(existingCheckOut) && newCheckOut.after(existingCheckIn))) {
+                    Toast.makeText(mContext, "Room is not available for the selected dates", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+
+            Toast.makeText(mContext, "Room is available", Toast.LENGTH_SHORT).show();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setupTimeSpinner() {
@@ -756,6 +833,7 @@ public class Fragment_Booking extends Fragment {
             Toast.makeText(getContext(), "Value cannot be higher than " + max, Toast.LENGTH_SHORT).show();
         }
     }
+
 
     private void validateVoucherCode(final String code, final OnVoucherValidationListener listener) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();

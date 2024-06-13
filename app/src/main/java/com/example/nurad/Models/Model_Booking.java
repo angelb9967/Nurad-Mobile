@@ -32,6 +32,9 @@ public class Model_Booking {
     private double totalValue;
     private double vatValue;
 
+    // No-argument constructor
+    public Model_Booking() {
+    }
 
     public Model_Booking(String bookingId, String contactId, String addressId, String paymentId, String userId, String checkInDate, String checkOutDate, String checkInTime, String checkOutTime, String voucherCode, double subtotalValue, int adultCount, int childCount, String notes, String room, Map<String, String> selectedAddOns, String bookingDate, double voucherValueValue, String status, double roomPrice, double extraAdultPrice, double extraChildPrice, double addOnsPrice, double totalValue, double vatValue, String roomTitle) {
         this.bookingId = bookingId;
