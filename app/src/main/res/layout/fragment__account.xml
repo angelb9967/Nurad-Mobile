@@ -229,19 +229,33 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Vouchers Section -->
+            <TextView
+                android:id="@+id/vouchers_ons_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="18dp"
+                android:text="My Vouchers"
+                android:textColor="#882065"
+                android:textSize="23sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/recycler_view_vouchers"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/menu_options_2" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_vouchers"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/menu_options_2"
+                android:layout_marginTop="40dp"
                 app:layout_constraintBottom_toTopOf="@+id/LogoutBtn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/vouchers_ons_label"
                 tools:listitem="@layout/item_voucher" />
 
-            <!-- Log Out Button -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/LogoutBtn"
                 android:layout_width="wrap_content"
