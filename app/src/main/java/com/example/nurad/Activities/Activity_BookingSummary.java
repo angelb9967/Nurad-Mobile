@@ -249,25 +249,24 @@ public class Activity_BookingSummary extends AppCompatActivity {
                 voucherCode, subtotalValue, Integer.parseInt(adultCount), Integer.parseInt(childCount), notes, room,
                 parseSelectedAddOns(selectedAddOns), new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()),
                 voucherValueValue, status, parsePrice(roomPrice), parsePrice(extraAdultPrice), parsePrice(extraChildPrice),
-                parsePrice(addOnsPrice), totalValue, vatValue
-        );
+                parsePrice(addOnsPrice), totalValue, vatValue, roomTitle);
         Model_AddressInfo addressInfo = new Model_AddressInfo(addressId, userId, country, address1, address2, selectedCity, selectedRegion, zipCode);
         Model_ContactInfo contactInfo = new Model_ContactInfo(contactId, userId, prefix, firstName, lastName, phone, mobilePhone, email);
         Model_PaymentInfo paymentInfo = new Model_PaymentInfo(paymentId, userId, cardNumber, expirationDate, cvv, nameOnCard);
 
         // Save the data to Firebase
-        saveToBookingFirebase(userId, bookingId, booking);
-        saveToAddressInfoFirebase(userId, addressId, addressInfo);
-        saveToContactInfoFirebase(userId, contactId, contactInfo);
-        saveToPaymentInfoFirebase(userId, paymentId, paymentInfo);
+        saveToBookingFirebase(bookingId, booking);
+        saveToAddressInfoFirebase(addressId, addressInfo);
+        saveToContactInfoFirebase(contactId, contactInfo);
+        saveToPaymentInfoFirebase(paymentId, paymentInfo);
 
         // Show a success message
         Toast.makeText(this, "Room Officially Booked", Toast.LENGTH_SHORT).show();
     }
 
 
-    private void saveToPaymentInfoFirebase(String userId, String paymentId, Model_PaymentInfo paymentInfo) {
-        payment_DBref.child(userId).child(paymentId).setValue(paymentInfo)
+    private void saveToPaymentInfoFirebase(String paymentId, Model_PaymentInfo paymentInfo) {
+        payment_DBref.child(paymentId).setValue(paymentInfo)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "Payment info saved successfully", Toast.LENGTH_SHORT).show();
                 })
@@ -277,8 +276,8 @@ public class Activity_BookingSummary extends AppCompatActivity {
     }
 
 
-    private void saveToContactInfoFirebase(String userId, String contactId, Model_ContactInfo contactInfo) {
-        contact_DBref.child(userId).child(contactId).setValue(contactInfo)
+    private void saveToContactInfoFirebase(String contactId, Model_ContactInfo contactInfo) {
+        contact_DBref.child(contactId).setValue(contactInfo)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "Contact info saved successfully", Toast.LENGTH_SHORT).show();
                 })
@@ -288,8 +287,8 @@ public class Activity_BookingSummary extends AppCompatActivity {
     }
 
 
-    private void saveToAddressInfoFirebase(String userId, String addressId, Model_AddressInfo addressInfo) {
-        address_DBref.child(userId).child(addressId).setValue(addressInfo)
+    private void saveToAddressInfoFirebase(String addressId, Model_AddressInfo addressInfo) {
+        address_DBref.child(addressId).setValue(addressInfo)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "Address info saved successfully", Toast.LENGTH_SHORT).show();
                 })
@@ -298,9 +297,8 @@ public class Activity_BookingSummary extends AppCompatActivity {
                 });
     }
 
-
-    private void saveToBookingFirebase(String userId, String bookingId, Model_Booking booking) {
-        booking_DBref.child(userId).child(bookingId).setValue(booking)
+    private void saveToBookingFirebase(String bookingId, Model_Booking booking) {
+        booking_DBref.child(bookingId).setValue(booking)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "Booking saved successfully", Toast.LENGTH_SHORT).show();
                 })

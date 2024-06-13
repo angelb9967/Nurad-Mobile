@@ -24,6 +24,7 @@ public class Model_Booking {
     private String bookingDate;
     private double voucherValueValue;
     private String status;
+    private String roomTitle;
     private double roomPrice;
     private double extraAdultPrice;
     private double extraChildPrice;
@@ -32,7 +33,7 @@ public class Model_Booking {
     private double vatValue;
 
 
-    public Model_Booking(String bookingId, String contactId, String addressId, String paymentId, String userId, String checkInDate, String checkOutDate, String checkInTime, String checkOutTime, String voucherCode, double subtotalValue, int adultCount, int childCount, String notes, String room, Map<String, String> selectedAddOns, String bookingDate, double voucherValueValue, String status, double roomPrice, double extraAdultPrice, double extraChildPrice, double addOnsPrice, double totalValue, double vatValue) {
+    public Model_Booking(String bookingId, String contactId, String addressId, String paymentId, String userId, String checkInDate, String checkOutDate, String checkInTime, String checkOutTime, String voucherCode, double subtotalValue, int adultCount, int childCount, String notes, String room, Map<String, String> selectedAddOns, String bookingDate, double voucherValueValue, String status, double roomPrice, double extraAdultPrice, double extraChildPrice, double addOnsPrice, double totalValue, double vatValue, String roomTitle) {
         this.bookingId = bookingId;
         this.contactId = contactId;
         this.addressId = addressId;
@@ -58,6 +59,7 @@ public class Model_Booking {
         this.addOnsPrice = addOnsPrice;
         this.totalValue = totalValue;
         this.vatValue = vatValue;
+        this.roomTitle = roomTitle;
     }
 
 
@@ -306,5 +308,13 @@ public class Model_Booking {
 
     public void setVatValue(double vatValue) {
         this.vatValue = vatValue;
+    }
+
+    public String getRoomTitle() {
+        return roomTitle;
+    }
+
+    public void setRoomTitle(String roomTitle) {
+        this.roomTitle = roomTitle;
     }
 }
