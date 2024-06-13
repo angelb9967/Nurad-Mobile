@@ -35,6 +35,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nurad.Activities.Activity_BookingSummary;
+import com.example.nurad.Activities.CheckOutDateValidator;
+import com.example.nurad.Activities.FutureDateValidator;
+import com.example.nurad.Activities.MyCompositeDateValidator;
+import com.example.nurad.Activities.UnavailableDateValidator;
 import com.example.nurad.Adapters.Adapter_AddOn;
 import com.example.nurad.Models.Model_AddOns;
 import com.example.nurad.Models.Model_Booking;
@@ -57,6 +61,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.DateValidatorPointForward;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.android.material.datepicker.DateValidatorPointBackward;
+import java.util.ArrayList;
+import java.util.List;
+import com.google.android.material.datepicker.CompositeDateValidator;
 
 public class Fragment_Booking extends Fragment {
 
@@ -680,15 +692,43 @@ public class Fragment_Booking extends Fragment {
 
     private void setupDatePickers() {
         calendarPickerInImg.setOnClickListener(v -> showDatePicker(checkInDateEditText, true));
-        calendarPickerOutImg.setOnClickListener(v -> showDatePicker(checkOutDateEditText, false));
+        calendarPickerOutImg.setOnClickListener(v -> {
+            if (checkInDateCalendar != null) {
+                showDatePicker(checkOutDateEditText, false);
+            } else {
+                Toast.makeText(mContext, "Please select a check-in date first", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void showDatePicker(EditText field, boolean isCheckIn) {
         Calendar calendar = Calendar.getInstance();
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                mContext, (view, year, month, dayOfMonth) -> {
-            calendar.set(year, month, dayOfMonth);
-            String selectedDate = dayOfMonth + "/" + (month + 1) + "/" + year;
+        MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
+        builder.setSelection(calendar.getTimeInMillis());
+        builder.setTitleText(isCheckIn ? "Select Check-In Date" : "Select Check-Out Date");
+
+        // Define constraints
+        CalendarConstraints.Builder constraintsBuilder = new CalendarConstraints.Builder();
+
+        // Create a list of validators
+        List<CalendarConstraints.DateValidator> validators = new ArrayList<>();
+        validators.add(new FutureDateValidator());  // Allow only future dates
+        validators.add(new UnavailableDateValidator(unavailableDateRanges));  // Add the custom UnavailableDateValidator
+
+        if (!isCheckIn && checkInDateCalendar != null) {
+            validators.add(new CheckOutDateValidator(checkInDateCalendar.getTimeInMillis()));  // Ensure check-out date is after check-in date
+        }
+
+        MyCompositeDateValidator compositeValidator = new MyCompositeDateValidator(validators);
+        constraintsBuilder.setValidator(compositeValidator);
+
+        builder.setCalendarConstraints(constraintsBuilder.build());
+
+        MaterialDatePicker<Long> datePicker = builder.build();
+
+        datePicker.addOnPositiveButtonClickListener(selection -> {
+            calendar.setTimeInMillis(selection);
+            String selectedDate = calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "/" + calendar.get(Calendar.YEAR);
             field.setText(selectedDate);
 
             if (isCheckIn) {
@@ -707,21 +747,10 @@ public class Fragment_Booking extends Fragment {
             }
 
             updateRoomPrice();
-
-        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-
-        // Set min date
-        if (isCheckIn) {
-            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-        } else if (checkInDateCalendar != null) {
-            datePickerDialog.getDatePicker().setMinDate(checkInDateCalendar.getTimeInMillis() + 24 * 60 * 60 * 1000); // +1 day
-        } else {
-            Toast.makeText(mContext, "Please select a check-in date first", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        });
 
         // Fetch unavailable dates before showing the date picker
-        fetchUnavailableDates(() -> datePickerDialog.show(), isCheckIn);
+        fetchUnavailableDates(() -> datePicker.show(getParentFragmentManager(), "DATE_PICKER"), isCheckIn);
     }
 
     private void fetchUnavailableDates(Runnable onSuccess, boolean isCheckIn) {
@@ -1116,6 +1145,10 @@ public class Fragment_Booking extends Fragment {
 
     private interface DatePickerListener {
         void onDateSet(int date, int month, int year);
+    }
+
+    public interface DateValidator {
+        boolean isValid(long date);
     }
 
     public interface OnVoucherValidationListener {
