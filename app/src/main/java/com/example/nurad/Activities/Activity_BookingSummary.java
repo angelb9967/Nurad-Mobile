@@ -23,8 +23,11 @@ import com.example.nurad.Models.Model_PaymentInfo;
 import com.example.nurad.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -35,7 +38,7 @@ import java.util.Map;
 public class Activity_BookingSummary extends AppCompatActivity {
 
 
-    private DatabaseReference booking_DBref, contact_DBref, address_DBref, payment_DBref;
+    private DatabaseReference booking_DBref, contact_DBref, address_DBref, payment_DBref, vouchers_DBref, userVouchers_DBref;
 
 
     @SuppressLint("SetTextI18n")
@@ -232,6 +235,8 @@ public class Activity_BookingSummary extends AppCompatActivity {
         contact_DBref = FirebaseDatabase.getInstance().getReference("Contact Information");
         address_DBref = FirebaseDatabase.getInstance().getReference("Address Information");
         payment_DBref = FirebaseDatabase.getInstance().getReference("Payment Information");
+        vouchers_DBref = FirebaseDatabase.getInstance().getReference("Vouchers");
+        userVouchers_DBref = FirebaseDatabase.getInstance().getReference("User Vouchers");
 
         String bookingId = booking_DBref.push().getKey();
         String contactId = contact_DBref.push().getKey();
@@ -259,6 +264,7 @@ public class Activity_BookingSummary extends AppCompatActivity {
         saveToAddressInfoFirebase(addressId, addressInfo);
         saveToContactInfoFirebase(contactId, contactInfo);
         saveToPaymentInfoFirebase(paymentId, paymentInfo);
+        updateUserVoucherStatus(voucherCode);
 
         // Show a success message
         Toast.makeText(this, "Room Officially Booked", Toast.LENGTH_SHORT).show();
@@ -322,6 +328,33 @@ public class Activity_BookingSummary extends AppCompatActivity {
             }
         }
         return addOnsMap;
+    }
+
+    private void updateUserVoucherStatus(String voucherCode) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null && voucherCode != null && !voucherCode.isEmpty()) {
+            String userId = user.getUid();
+            userVouchers_DBref = FirebaseDatabase.getInstance().getReference("UserVouchers").child(userId).child(voucherCode);
+
+            // Add the used voucher under the user's vouchers
+            Map<String, Object> userVoucherData = new HashMap<>();
+            userVoucherData.put("status", "Used");  // Update status to "Used"
+            userVoucherData.put("usedDate", getCurrentTimestamp());  // Store the timestamp of when it was used
+            userVoucherData.put("code", voucherCode);  // Save the voucher code under "code"
+
+            userVouchers_DBref.setValue(userVoucherData)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(Activity_BookingSummary.this, "Voucher status updated successfully for the user!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(Activity_BookingSummary.this, "Failed to update user voucher status.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+    }
+
+    private long getCurrentTimestamp() {
+        return System.currentTimeMillis();
     }
 
 

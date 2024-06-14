@@ -1,5 +1,6 @@
 package com.example.nurad.Adapters;
 
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nurad.Models.VoucherModel;
 import com.example.nurad.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,6 +32,8 @@ public class Adapter_Vouchers extends RecyclerView.Adapter<Adapter_Vouchers.Vouc
     private List<VoucherModel> voucherList;
     private SimpleDateFormat dateFormat;
     private DatabaseReference expiredVouchersRef;
+    private DatabaseReference userVouchersRef;
+    private FirebaseUser currentUser;
 
     public Adapter_Vouchers(List<VoucherModel> voucherList) {
         this.voucherList = voucherList;
@@ -33,6 +41,10 @@ public class Adapter_Vouchers extends RecyclerView.Adapter<Adapter_Vouchers.Vouc
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         expiredVouchersRef = database.getReference().child("Expired Vouchers");
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            userVouchersRef = database.getReference().child("UserVouchers").child(currentUser.getUid());
+        }
     }
 
     @NonNull
@@ -47,11 +59,24 @@ public class Adapter_Vouchers extends RecyclerView.Adapter<Adapter_Vouchers.Vouc
         VoucherModel voucher = voucherList.get(position);
 
         // Check if the voucher status is "Active" before binding
-        if (voucher.getStatus().equals("Active")) {
-            holder.bindVoucher(voucher);
+        // Check if the voucher is used by the current user
+        if (currentUser != null && voucher.getCode() != null && !voucher.getCode().isEmpty()) {
+            String voucherCode = voucher.getCode();
+            userVouchersRef.child(voucherCode).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    boolean isUsedByUser = dataSnapshot.exists(); // Check if voucher exists under UserVouchers
+                    holder.bindVoucher(voucher, isUsedByUser);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    holder.bindVoucher(voucher, false); // Assume voucher is active if there's an error
+                }
+            });
         } else {
-            // Hide the card view if the voucher is not active
-            holder.cardView.setVisibility(View.GONE);
+            // If currentUser is null or voucher code is null/empty, treat as active voucher
+            holder.bindVoucher(voucher, false);
         }
     }
 
@@ -79,7 +104,7 @@ public class Adapter_Vouchers extends RecyclerView.Adapter<Adapter_Vouchers.Vouc
             voucherCode = itemView.findViewById(R.id.voucher_code);
         }
 
-        public void bindVoucher(VoucherModel voucher) {
+        public void bindVoucher(VoucherModel voucher, boolean isUsedByUser) {
             voucherTitle.setText(voucher.getTitle());
             voucherDescription.setText(voucher.getDescription());
             voucherValidity.setText("Valid Until: " + voucher.getValidity());
@@ -87,6 +112,12 @@ public class Adapter_Vouchers extends RecyclerView.Adapter<Adapter_Vouchers.Vouc
             String formattedValue = formatPrice(value);
             voucherValue.setText("Get a Discount Value of: ₱" + formattedValue);
             voucherCode.setText("Redeem Code: " + voucher.getCode());
+
+            if (isUsedByUser) {
+                cardView.setBackgroundColor(Color.parseColor("#FBE3F3")); // Used by user
+            } else {
+                cardView.setBackgroundColor(itemView.getResources().getColor(R.color.colorActiveVoucher)); // Active voucher
+            }
 
             if (isVoucherExpired(voucher.getValidity())) {
                 // Move voucher to "Expired Vouchers" node in Firebase database

@@ -44,7 +44,10 @@ import com.example.nurad.Models.Model_AddOns;
 import com.example.nurad.Models.Model_Booking;
 import com.example.nurad.Models.Model_PriceRule;
 import com.example.nurad.Models.RoomModel;
+import com.example.nurad.Models.VoucherModel;
 import com.example.nurad.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -865,23 +868,52 @@ public class Fragment_Booking extends Fragment {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference vouchersRef = database.getReference("Vouchers");
 
-        vouchersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        // Get the current user UID
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null) {
+            listener.onValidationError(); // Handle case where user is not authenticated
+            return;
+        }
+
+        String userId = currentUser.getUid();
+
+        // Check if the voucher code exists in Vouchers node
+        vouchersRef.orderByChild("code").equalTo(code).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 boolean voucherFound = false;
                 double voucherValue = 0;
 
                 for (DataSnapshot voucherSnapshot : dataSnapshot.getChildren()) {
-                    String voucherCode = voucherSnapshot.child("code").getValue(String.class);
-                    if (code.equals(voucherCode)) {
+                    VoucherModel voucher = voucherSnapshot.getValue(VoucherModel.class);
+                    if (voucher != null) {
                         voucherFound = true;
-                        voucherValue = voucherSnapshot.child("value").getValue(Double.class); // Assuming the value is stored as a Double
+                        voucherValue = voucher.getValue();
                         break;
                     }
                 }
 
                 if (voucherFound) {
-                    listener.onValidationSuccess(voucherValue);
+                    // Check if the voucher code is already used by the user in UserVouchers node
+                    DatabaseReference userVouchersRef = database.getReference("UserVouchers").child(userId).child(code);
+                    double finalVoucherValue = voucherValue;
+                    userVouchersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                // Voucher code is already used by the user
+                                listener.onValidationFailure();
+                            } else {
+                                // Voucher code is valid and not used by the user
+                                listener.onValidationSuccess(finalVoucherValue);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            listener.onValidationError();
+                        }
+                    });
                 } else {
                     listener.onValidationFailure();
                 }
