@@ -245,12 +245,9 @@ public class Fragment_Booking extends Fragment {
         nextStepButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Validate all inputs including voucher code
                 if (validateInputs() && (!isVoucherChecked || (isVoucherChecked && isVoucherValid))) {
                     // All conditions including voucher validation are met
-                    Intent intent = new Intent(mContext, Activity_BookingSummary.class);
-
-                    startActivity(intent);
+                    continueBookingProcess();
                 } else {
                     // Handle invalid inputs, such as displaying error messages or alerts
                     Toast.makeText(mContext, "Please ensure all fields are filled correctly and voucher code is valid.", Toast.LENGTH_SHORT).show();
@@ -899,7 +896,7 @@ public class Fragment_Booking extends Fragment {
 
     private boolean validateInputs() {
 
-        //we need to make sure subtotal, vat, and status is also included in this
+        // we need to make sure subtotal, vat, and status is also included in this
         String AddOnsPrice = selectedAddOnsPrice.getText().toString().trim();
         String voucherValue = voucherPrice.getText().toString().trim();
         Map<String, Model_AddOns> selectedAddOns = adapter.getSelectedAddOns();
@@ -980,12 +977,6 @@ public class Fragment_Booking extends Fragment {
             return false;
         }
 
-        if (!email.isEmpty() && !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailEditText.setError("Invalid email address");
-            emailEditText.requestFocus();
-            return false;
-        }
-
         if (address1.isEmpty()) {
             address1EditText.setError("Address 1 is required");
             address1EditText.requestFocus();
@@ -997,14 +988,12 @@ public class Fragment_Booking extends Fragment {
         }
 
         if (selectedRegion.isEmpty()) {
-            // Handle empty selection for region
-            // You can show an error message or handle it according to your requirements
+            Toast.makeText(getContext(), "Please select a region", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (selectedCity.isEmpty()) {
-            // Handle empty selection for city
-            // You can show an error message or handle it according to your requirements
+            Toast.makeText(getContext(), "Please select a city", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -1038,7 +1027,6 @@ public class Fragment_Booking extends Fragment {
             return false;
         }
 
-        // Validate notes
         if (notes.isEmpty()) {
             notes = "No Note";
         } else if (notes.split("\\s+").length > 150) {
@@ -1054,11 +1042,9 @@ public class Fragment_Booking extends Fragment {
                 voucherEditText.requestFocus();
                 return false;
             } else {
-                // Validate voucher code from the database
                 validateVoucherCode(voucherCode, new OnVoucherValidationListener() {
                     @Override
                     public void onValidationSuccess(double voucherValue) {
-                        // Voucher is valid, update the UI with voucher value
                         voucherPrice.setText(formatPrice(voucherValue));
                         isVoucherValid = true;
                         continueBookingProcess();
@@ -1078,13 +1064,11 @@ public class Fragment_Booking extends Fragment {
                     }
                 });
 
-                // Return false temporarily until voucher validation is completed
                 return false;
             }
         } else {
-            // If voucher code validation is not required, continue with booking process
-            double defaultVoucherValue = 0.0; // Set default voucher value
-            voucherPrice.setText(formatPrice(defaultVoucherValue)); // Update the UI
+            double defaultVoucherValue = 0.0;
+            voucherPrice.setText(formatPrice(defaultVoucherValue));
             voucherEditText.setText("N/A");
             continueBookingProcess();
         }
@@ -1093,10 +1077,8 @@ public class Fragment_Booking extends Fragment {
     }
 
     private void continueBookingProcess() {
-        // All conditions including voucher validation are met
         Intent intent = new Intent(mContext, Activity_BookingSummary.class);
 
-        // Put all necessary data as extras
         intent.putExtra("addOnsPrice", selectedAddOnsPrice.getText().toString().trim());
         intent.putExtra("voucherValue", voucherPrice.getText().toString().trim());
         intent.putExtra("roomPrice", roomPriceTextView.getText().toString().trim());
@@ -1131,7 +1113,6 @@ public class Fragment_Booking extends Fragment {
         intent.putExtra("nameOnCard", nameOnCardEditText.getText().toString().trim());
         intent.putExtra("notes", notesEditText.getText().toString().trim());
 
-        // Concatenate selected add-ons names and prices
         StringBuilder selectedAddOnsBuilder = new StringBuilder();
         Map<String, Model_AddOns> selectedAddOnsMap = adapter.getSelectedAddOns();
         for (Model_AddOns addOn : selectedAddOnsMap.values()) {
