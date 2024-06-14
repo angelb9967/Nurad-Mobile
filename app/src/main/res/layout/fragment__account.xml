@@ -50,7 +50,7 @@
                         android:layout_height="80dp"
                         android:layout_marginTop="8dp"
                         android:src="@drawable/user"
-                        app:civ_border_color="#F6E3CB"
+                        app:civ_border_color="#D1B32F"
                         app:civ_border_width="6dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -235,7 +235,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="18dp"
-                android:text="My Vouchers"
+                android:text="NURAD Vouchers"
                 android:textColor="#882065"
                 android:textSize="23sp"
                 android:textStyle="bold"
@@ -249,12 +249,53 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:layout_marginTop="40dp"
-                app:layout_constraintBottom_toTopOf="@+id/LogoutBtn"
+                app:layout_constraintBottom_toTopOf="@+id/placeholder_textview"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/vouchers_ons_label"
                 tools:listitem="@layout/item_voucher" />
+
+            <TextView
+                android:id="@+id/placeholder_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="18dp"
+                android:text="Claimed"
+                android:textColor="#882065"
+                android:textSize="23dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recycler_view_vouchers" />
+
+            <TextView
+                android:id="@+id/placeholder_textview2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="18dp"
+                android:text="No Voucher/s Claimed"
+                android:textColor="#948F8F"
+                android:textSize="18dp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/placeholder_textview" />
+
+
+            <!-- Second RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/claimed_recycler_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_marginTop="40dp"
+                app:layout_constraintBottom_toTopOf="@id/LogoutBtn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/placeholder_textview2"
+                tools:listitem="@layout/claimed_vouchers" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/LogoutBtn"
@@ -269,6 +310,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recycler_view_vouchers"
                 app:layout_constraintVertical_bias="0.1" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

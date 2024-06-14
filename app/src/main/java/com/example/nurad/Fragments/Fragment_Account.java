@@ -23,12 +23,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.nurad.Activities.Activity_SignUp;
+import com.example.nurad.Adapters.Adapter_ClaimedVouchers;
 import com.example.nurad.Adapters.Adapter_Vouchers;
+import com.example.nurad.Models.ClaimedVouchersModel;
 import com.example.nurad.Models.VoucherModel;
 import com.example.nurad.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -47,14 +50,15 @@ public class Fragment_Account extends Fragment {
     private Button logoutBtn;
     private ImageView profileImage;
     public static final String SHARED_PREFS = "sharedPrefs";
-
     private RecyclerView recyclerView;
     private TextView userNameTextView;
     private Adapter_Vouchers voucherAdapter;
     private List<VoucherModel> voucherList;
-
     private static final int REQUEST_CODE_PICK_IMAGE = 101;
     private Uri selectedImageUri;
+    private RecyclerView claimedRecyclerView;
+    private Adapter_ClaimedVouchers claimedVouchersAdapter;
+    private List<ClaimedVouchersModel> claimedVouchersList;
 
     public Fragment_Account() {
         // Required empty public constructor
@@ -89,15 +93,24 @@ public class Fragment_Account extends Fragment {
         profileImage = view.findViewById(R.id.profileImages);
         recyclerView = view.findViewById(R.id.recycler_view_vouchers);
         userNameTextView = view.findViewById(R.id.user_name);
+        claimedRecyclerView = view.findViewById(R.id.claimed_recycler_view);
+        TextView placeholderTextView = view.findViewById(R.id.placeholder_textview2); // Find the placeholder TextView
 
         // Set up RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        claimedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         voucherList = new ArrayList<>();
+        claimedVouchersList = new ArrayList<>();
         voucherAdapter = new Adapter_Vouchers(voucherList);
+        claimedVouchersAdapter = new Adapter_ClaimedVouchers(claimedVouchersList, placeholderTextView); // Pass placeholderTextView
         recyclerView.setAdapter(voucherAdapter);
+        claimedRecyclerView.setAdapter(claimedVouchersAdapter);
 
         // Load vouchers from Firebase
         loadVouchersFromFirebase();
+
+        // Load claimed vouchers from Firebase
+        loadClaimedVouchersFromFirebase();
 
         // Load user data from Firebase and display name
         loadUserDataAndDisplayName();
@@ -151,6 +164,37 @@ public class Fragment_Account extends Fragment {
                         Toast.makeText(getContext(), "Failed to upload profile image.", Toast.LENGTH_SHORT).show();
                     });
         }
+    }
+
+    // Load claimed vouchers from Firebase
+    private void loadClaimedVouchersFromFirebase() {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference claimedVouchersRef = FirebaseDatabase.getInstance().getReference()
+                .child("UserVouchers").child(userId);
+
+        claimedVouchersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                claimedVouchersList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String status = snapshot.child("status").getValue(String.class);
+                    if (status != null && status.equals("Used")) {
+                        String code = snapshot.child("code").getValue(String.class);
+                        String usedDate = snapshot.child("claimedDate").getValue(String.class);
+                        if (code != null && usedDate != null) {
+                            ClaimedVouchersModel claimedVoucher = new ClaimedVouchersModel(code, status, usedDate);
+                            claimedVouchersList.add(claimedVoucher);
+                        }
+                    }
+                }
+                claimedVouchersAdapter.notifyDataSetChanged(); // Notify adapter of data change
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getContext(), "Failed to load claimed vouchers.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     // Save the image URL to the database

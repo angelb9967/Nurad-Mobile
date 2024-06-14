@@ -12,68 +12,48 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/gradient_background"
+        android:background="@drawable/gradient_background2"
         android:orientation="horizontal"
         android:padding="16dp">
 
         <LinearLayout
-            android:layout_width="230dp"
+            android:layout_width="235dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/voucher_title"
+                android:id="@+id/claimed_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="5dp"
-                android:text="Voucher Title"
-                android:textColor="#F6E3CB"
+                android:text="Voucher Code"
+                android:textColor="#FFFEFD"
                 android:textSize="18dp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/voucher_description"
+                android:id="@+id/claimed_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Voucher Description"
-                android:textColor="@android:color/white"
                 android:paddingBottom="4dp"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/voucher_validity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Voucher Validity"
+                android:text="Status"
                 android:textColor="@android:color/white"
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/voucher_value"
+                android:id="@+id/claimed_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Value"
+                android:text="Date Redeemed"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/voucher_code"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Voucher Redeem Code"
-                android:textColor="@color/white"
-                android:textSize="17sp"
-                android:textStyle="bold" />
+                android:textSize="14sp" />
         </LinearLayout>
 
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/baseline_discount_24" />
+            android:src="@drawable/baseline_check_circle_24" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

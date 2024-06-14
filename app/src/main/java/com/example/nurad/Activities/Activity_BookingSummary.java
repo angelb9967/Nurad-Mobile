@@ -31,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -112,12 +113,10 @@ public class Activity_BookingSummary extends AppCompatActivity {
         double voucherValueValue = parsePrice(voucherValue);
 
         double semitotal = subtotalValue + vatValue;
-
-        // Deduct the voucher value from the subtotal, VAT, and add-ons total
         double totalValue = semitotal - voucherValueValue;
 
         TextView totalValTextView = findViewById(R.id.totalVal);
-        totalValTextView.setText(String.format("%.2f", totalValue));
+        totalValTextView.setText(formatPrice(totalValue));
 
         TextView roomTitleTextView = findViewById(R.id.roomNameNumber);
         TextView roomPriceTextView = findViewById(R.id.roomNameNumberVals);
@@ -334,12 +333,16 @@ public class Activity_BookingSummary extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null && voucherCode != null && !voucherCode.isEmpty()) {
             String userId = user.getUid();
-            userVouchers_DBref = FirebaseDatabase.getInstance().getReference("UserVouchers").child(userId).child(voucherCode);
+            DatabaseReference userVouchers_DBref = FirebaseDatabase.getInstance().getReference("UserVouchers").child(userId).child(voucherCode);
+
+            // Format the current date
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            String currentDate = dateFormat.format(new Date());
 
             // Add the used voucher under the user's vouchers
             Map<String, Object> userVoucherData = new HashMap<>();
             userVoucherData.put("status", "Used");  // Update status to "Used"
-            userVoucherData.put("usedDate", getCurrentTimestamp());  // Store the timestamp of when it was used
+            userVoucherData.put("claimedDate", currentDate);  // Store the current date as usedDate
             userVoucherData.put("code", voucherCode);  // Save the voucher code under "code"
 
             userVouchers_DBref.setValue(userVoucherData)
@@ -352,11 +355,6 @@ public class Activity_BookingSummary extends AppCompatActivity {
                     });
         }
     }
-
-    private long getCurrentTimestamp() {
-        return System.currentTimeMillis();
-    }
-
 
     private double parsePrice(String price) {
         if (price != null && !price.isEmpty()) {
@@ -423,6 +421,6 @@ public class Activity_BookingSummary extends AppCompatActivity {
 
     private String formatPrice(double price) {
         // Format the price with two decimal places and the currency symbol
-        return String.format("%.2f", price);
+        return String.format(Locale.getDefault(), "%.2f", price);
     }
 }
