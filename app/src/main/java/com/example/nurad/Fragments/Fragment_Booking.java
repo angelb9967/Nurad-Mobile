@@ -1,5 +1,7 @@
 package com.example.nurad.Fragments;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -429,7 +431,12 @@ public class Fragment_Booking extends Fragment {
     }
 
     private void displayAddOns(List<Model_AddOns> addOnList) {
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        if (recyclerView != null) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            // Other RecyclerView setup code
+        } else {
+            Log.e(TAG, "RecyclerView is null. Unable to set LayoutManager.");
+        }
         adapter = new Adapter_AddOn(getContext(), addOnList, new Adapter_AddOn.OnAddOnSelectionChangedListener() {
             @Override
             public void onSelectionChanged(double totalPrice) {

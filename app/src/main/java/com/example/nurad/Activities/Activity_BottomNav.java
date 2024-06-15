@@ -1,13 +1,12 @@
 package com.example.nurad.Activities;
 
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import com.example.nurad.Fragments.Fragment_AboutUs;
 import com.example.nurad.Fragments.Fragment_Account;
+import com.example.nurad.Fragments.Fragment_AboutUs;
 import com.example.nurad.Fragments.Fragment_Booking;
 import com.example.nurad.Fragments.Fragment_Search;
 import com.example.nurad.Models.RoomModel;
@@ -24,12 +23,17 @@ public class Activity_BottomNav extends AppCompatActivity implements Fragment_Se
         binding = ActivityBottomNavBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Set the initial fragment (default) to display when the activity is created
-        replaceFragment(new Fragment_Search());
+        // Check if the intent extra indicates a specific fragment to navigate to
+        if (getIntent().hasExtra("navigateTo") && "account".equals(getIntent().getStringExtra("navigateTo"))) {
+            replaceFragment(new Fragment_Account());
+            updateSelectedNavItem(new Fragment_Account());
+        } else {
+            // Set the initial fragment (default) to display when the activity is created
+            replaceFragment(new Fragment_Search());
+        }
 
         // Set listener for bottom navigation view to handle item selection
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
-            // Check which menu item is selected and replace the current fragment accordingly
             if (item.getItemId() == R.id.search) {
                 replaceFragment(new Fragment_Search());
             } else if (item.getItemId() == R.id.booking) {
@@ -45,10 +49,16 @@ public class Activity_BottomNav extends AppCompatActivity implements Fragment_Se
 
     // Replaces the currently displayed fragment with the specified fragment.
     private void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, fragment);
-        fragmentTransaction.commit();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frame_layout, fragment)
+                .commit();
+    }
+
+    @Override
+    public void onRoomSelected(RoomModel room) {
+        Fragment_Booking fragmentBooking = Fragment_Booking.newInstance(room);
+        replaceFragment(fragmentBooking);
+        updateSelectedNavItem(fragmentBooking);
     }
 
     // Method to update the selected item in the BottomNavigationView based on the current fragment
@@ -62,13 +72,5 @@ public class Activity_BottomNav extends AppCompatActivity implements Fragment_Se
         } else if (fragment instanceof Fragment_Account) {
             binding.bottomNavigationView.setSelectedItemId(R.id.account);
         }
-    }
-
-    @Override
-    public void onRoomSelected(RoomModel room) {
-        // Handle room selection
-        Fragment_Booking fragmentBooking = Fragment_Booking.newInstance(room);
-        replaceFragment(fragmentBooking);
-        updateSelectedNavItem(fragmentBooking);
     }
 }

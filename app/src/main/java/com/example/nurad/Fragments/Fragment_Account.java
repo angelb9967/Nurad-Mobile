@@ -44,14 +44,13 @@ public class Fragment_Account extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
     private String mParam1;
     private String mParam2;
     private Button logoutBtn;
     private ImageView profileImage;
     public static final String SHARED_PREFS = "sharedPrefs";
     private RecyclerView recyclerView;
-    private TextView userNameTextView;
+    private TextView userNameTextView, placeholderTextView;
     private Adapter_Vouchers voucherAdapter;
     private List<VoucherModel> voucherList;
     private static final int REQUEST_CODE_PICK_IMAGE = 101;
@@ -94,7 +93,7 @@ public class Fragment_Account extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_view_vouchers);
         userNameTextView = view.findViewById(R.id.user_name);
         claimedRecyclerView = view.findViewById(R.id.claimed_recycler_view);
-        TextView placeholderTextView = view.findViewById(R.id.placeholder_textview2); // Find the placeholder TextView
+        placeholderTextView = view.findViewById(R.id.placeholder_textview2); // Find the placeholder TextView
 
         // Set up RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -187,6 +186,13 @@ public class Fragment_Account extends Fragment {
                         }
                     }
                 }
+
+                if (claimedVouchersList.isEmpty()) {
+                    placeholderTextView.setVisibility(View.VISIBLE);
+                } else {
+                    placeholderTextView.setVisibility(View.GONE);
+                }
+
                 claimedVouchersAdapter.notifyDataSetChanged(); // Notify adapter of data change
             }
 

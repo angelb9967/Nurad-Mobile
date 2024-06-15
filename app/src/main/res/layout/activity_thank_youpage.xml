@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.Activity_ThankYoupage">
+
+    <!-- Background view -->
+    <FrameLayout
+        android:id="@+id/frame_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#F4EEF2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/big_card"
+            android:layout_width="350dp"
+            android:layout_height="680dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="25dp"
+            app:cardBackgroundColor="#E9D98E"
+            app:cardCornerRadius="30dp">
+
+            <!-- Nested CardView with circular shape -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/circle_card"
+                android:layout_width="288dp"
+                android:layout_height="285dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="30dp"
+                app:cardBackgroundColor="#872065"
+                app:cardCornerRadius="360dp">
+
+                <TextView
+                    android:id="@+id/thankYouText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="75dp"
+                    android:text="Thank you!"
+                    android:textColor="@color/cream"
+                    android:textSize="35sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/roomBookedText"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/roomBookedText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="140dp"
+                    android:text="Room is booked successfully"
+                    android:textColor="@color/cream"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/thankYouText" />
+
+                <View
+                    android:id="@+id/smilingFaceShape"
+                    android:layout_width="120dp"
+                    android:layout_height="80dp"
+                    android:layout_marginStart="80dp"
+                    android:layout_marginTop="200dp"
+                    android:background="@drawable/smiling_face_shape"
+                    android:rotation="180"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/roomAnotherText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="380dp"
+                android:layout_marginEnd="30dp"
+                android:text="You can now check your bookings under your account for a copy of the invoice"
+                android:textAlignment="center"
+                android:textColor="#872065"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/thankYouText" />
+
+        </androidx.cardview.widget.CardView>
+    </FrameLayout>
+
+    <!-- Main CardView -->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

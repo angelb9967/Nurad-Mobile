@@ -58,6 +58,8 @@ public class Activity_BookingSummary extends AppCompatActivity {
         nextStepButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(Activity_BookingSummary.this, Activity_ThankYoupage.class);
+                startActivity(intent);
                 // Call a method to save the data to the database
                 saveDataToDatabase();
             }
@@ -273,7 +275,7 @@ public class Activity_BookingSummary extends AppCompatActivity {
     private void saveToPaymentInfoFirebase(String paymentId, Model_PaymentInfo paymentInfo) {
         payment_DBref.child(paymentId).setValue(paymentInfo)
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(this, "Payment info saved successfully", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, "Payment info saved successfully", Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(this, "Failed to save payment info: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -284,7 +286,7 @@ public class Activity_BookingSummary extends AppCompatActivity {
     private void saveToContactInfoFirebase(String contactId, Model_ContactInfo contactInfo) {
         contact_DBref.child(contactId).setValue(contactInfo)
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(this, "Contact info saved successfully", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, "Contact info saved successfully", Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(this, "Failed to save contact info: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -295,7 +297,7 @@ public class Activity_BookingSummary extends AppCompatActivity {
     private void saveToAddressInfoFirebase(String addressId, Model_AddressInfo addressInfo) {
         address_DBref.child(addressId).setValue(addressInfo)
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(this, "Address info saved successfully", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, "Address info saved successfully", Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(this, "Failed to save address info: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -305,7 +307,7 @@ public class Activity_BookingSummary extends AppCompatActivity {
     private void saveToBookingFirebase(String bookingId, Model_Booking booking) {
         booking_DBref.child(bookingId).setValue(booking)
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(this, "Booking saved successfully", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, "Booking saved successfully", Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(this, "Failed to save booking: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -348,9 +350,9 @@ public class Activity_BookingSummary extends AppCompatActivity {
             userVouchers_DBref.setValue(userVoucherData)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Toast.makeText(Activity_BookingSummary.this, "Voucher status updated successfully for the user!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Activity_BookingSummary.this, "Voucher redeemed", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(Activity_BookingSummary.this, "Failed to update user voucher status.", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(Activity_BookingSummary.this, "Failed to update user voucher status.", Toast.LENGTH_SHORT).show();
                         }
                     });
         }
