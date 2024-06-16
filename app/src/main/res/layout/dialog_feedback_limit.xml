@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Feedback has already been submitted today. You can only submit feedback once per day."
+        android:text="A feedback has already been submitted today. You can only submit feedback once per day."
         android:textColor="@android:color/white"
         android:textSize="16sp" />
 

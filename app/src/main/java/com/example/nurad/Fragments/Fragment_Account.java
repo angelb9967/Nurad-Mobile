@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.nurad.Activities.Activity_Account;
 import com.example.nurad.Activities.Activity_BookingsInvoice;
+import com.example.nurad.Activities.Activity_Help;
 import com.example.nurad.Activities.Activity_Rate;
 import com.example.nurad.Activities.Activity_SignUp;
 import com.example.nurad.Adapters.Adapter_ClaimedVouchers;
@@ -64,6 +65,7 @@ public class Fragment_Account extends Fragment {
     private Context mContext;
     private TextView rateTextView;
     private TextView accountTextView;
+    private TextView helpTextView;
 
     public Fragment_Account() {
         // Required empty public constructor
@@ -104,6 +106,7 @@ public class Fragment_Account extends Fragment {
         placeholderTextView = view.findViewById(R.id.placeholder_textview2); // Find the placeholder TextView
         rateTextView = view.findViewById(R.id.rate_text_view);
         accountTextView = view.findViewById(R.id.account_text_view);
+        helpTextView = view.findViewById(R.id.help_text_view);
 
         // Set up RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
@@ -114,6 +117,12 @@ public class Fragment_Account extends Fragment {
         claimedVouchersAdapter = new Adapter_ClaimedVouchers(claimedVouchersList, placeholderTextView); // Pass placeholderTextView
         recyclerView.setAdapter(voucherAdapter);
         claimedRecyclerView.setAdapter(claimedVouchersAdapter);
+
+        helpTextView.setOnClickListener(v -> {
+            // Handle click event to navigate to Activity_Rate
+            Intent intent = new Intent(getActivity(), Activity_Help.class);
+            startActivity(intent);
+        });
 
         accountTextView.setOnClickListener(v -> {
             // Handle click event to navigate to Activity_Rate

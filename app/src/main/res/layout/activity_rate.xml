@@ -10,8 +10,6 @@
 
 
     <!-- Header View -->
-
-
     <View
         android:id="@+id/headerView"
         android:layout_width="463dp"
@@ -28,8 +26,8 @@
         android:layout_width="110dp"
         android:layout_height="110dp"
         android:layout_marginTop="8dp"
-        android:src="@drawable/hotel_image"
-        app:civ_border_color="#D1B32F"
+        android:src="@drawable/rating_image"
+        app:civ_border_color="@color/cream"
         app:civ_border_width="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -179,7 +179,7 @@ public class Activity_Rate extends AppCompatActivity {
 
         // Set dialog text
         dialogTitle.setText("Thank you for your feedback!");
-        dialogMessage.setText("Feedback has already been submitted today. You can only submit feedback once per day.");
+        dialogMessage.setText(" A feedback has already been submitted today. You can only submit feedback once per day.");
 
         // Create the AlertDialog instance
         AlertDialog alertDialog = builder.create();
