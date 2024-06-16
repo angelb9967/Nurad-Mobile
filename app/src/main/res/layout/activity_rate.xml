@@ -70,17 +70,17 @@
 
 
     <!-- Feedback EditText -->
+
     <TextView
         android:id="@+id/choicesTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
-        android:text="Choose one you think we need most improvement:"
+        android:text="Choose the one you think we need to improve the most:"
         android:textColor="#882065"
-        android:textSize="15sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.304"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ratingBar" />
 

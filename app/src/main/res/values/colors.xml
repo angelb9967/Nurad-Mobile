@@ -6,4 +6,7 @@
     <color name="cream">#EADA8F</color>
     <color name="grey">#545454</color>
     <color name="colorActiveVoucher">#872065</color>
+    <color name="rating_selected_color">#D1B32F</color>
+    <color name="rating_unfilled_color">#B8B1B1</color>
+
 </resources>
