@@ -4,8 +4,9 @@ package com.example.nurad.Models;
 import com.google.firebase.database.PropertyName;
 
 import java.util.Map;
+import java.io.Serializable;
 
-public class Model_Booking {
+public class Model_Booking implements Serializable {
     @PropertyName("booking_id")
     private String bookingId;
     @PropertyName("contact_id")

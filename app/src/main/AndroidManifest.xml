@@ -13,6 +13,16 @@
         android:theme="@style/Theme.NUrad"
         tools:targetApi="31">
         <activity
+            android:name=".Activities.Activity_BookingsInvoice"
+            android:exported="false"
+            android:theme="@style/Theme.NUrad" />
+        <activity
+            android:name=".Activities.PrintActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.BookingsHistoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.Activity_ThankYoupage"
             android:exported="false" />
         <activity

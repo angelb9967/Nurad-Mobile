@@ -50,7 +50,7 @@ public class Fragment_Account extends Fragment {
     private ImageView profileImage;
     public static final String SHARED_PREFS = "sharedPrefs";
     private RecyclerView recyclerView;
-    private TextView userNameTextView, placeholderTextView;
+    private TextView userNameTextView, placeholderTextView, bookingsTextView;
     private Adapter_Vouchers voucherAdapter;
     private List<VoucherModel> voucherList;
     private static final int REQUEST_CODE_PICK_IMAGE = 101;
@@ -87,6 +87,7 @@ public class Fragment_Account extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment__account, container, false);
 
+
         // Initialize views
         logoutBtn = view.findViewById(R.id.LogoutBtn);
         profileImage = view.findViewById(R.id.profileImages);
@@ -94,6 +95,7 @@ public class Fragment_Account extends Fragment {
         userNameTextView = view.findViewById(R.id.user_name);
         claimedRecyclerView = view.findViewById(R.id.claimed_recycler_view);
         placeholderTextView = view.findViewById(R.id.placeholder_textview2); // Find the placeholder TextView
+
 
         // Set up RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

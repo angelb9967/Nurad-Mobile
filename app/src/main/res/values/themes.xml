@@ -5,7 +5,7 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
-        <item name="android:statusBarColor" >@color/purple</item>
+        <item name="android:statusBarColor">@color/purple</item>
         <item name="android:navigationBarColor">@color/purple</item>
     </style>
 
