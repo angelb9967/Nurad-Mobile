@@ -269,7 +269,7 @@ public class BookingsAdapter extends RecyclerView.Adapter<BookingsAdapter.Bookin
                     String country = snapshot.child("country").getValue(String.class);
                     String zip = snapshot.child("zipCode").getValue(String.class);
 
-                    String fullAddress = address1 + "/" + address2 + ";" + city + ", " + region + ", " + country + ", " + zip;
+                    String fullAddress = address1 + "/" + address2 + "; " + city + ", " + region + ", " + country + ", " + zip;
 
                     custAddress.setText("Address: " + fullAddress);
                 } else {
