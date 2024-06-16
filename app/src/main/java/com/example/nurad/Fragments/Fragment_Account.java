@@ -59,6 +59,7 @@ public class Fragment_Account extends Fragment {
     private RecyclerView claimedRecyclerView;
     private Adapter_ClaimedVouchers claimedVouchersAdapter;
     private List<ClaimedVouchersModel> claimedVouchersList;
+    private Context mContext;
 
     public Fragment_Account() {
         // Required empty public constructor
@@ -88,6 +89,7 @@ public class Fragment_Account extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment__account, container, false);
 
+        mContext = getContext(); // Assign context when fragment is attached
 
         // Initialize views
         logoutBtn = view.findViewById(R.id.LogoutBtn);
@@ -97,10 +99,9 @@ public class Fragment_Account extends Fragment {
         claimedRecyclerView = view.findViewById(R.id.claimed_recycler_view);
         placeholderTextView = view.findViewById(R.id.placeholder_textview2); // Find the placeholder TextView
 
-
         // Set up RecyclerView
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        claimedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        claimedRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         voucherList = new ArrayList<>();
         claimedVouchersList = new ArrayList<>();
         voucherAdapter = new Adapter_Vouchers(voucherList);
@@ -111,7 +112,7 @@ public class Fragment_Account extends Fragment {
         bookingsTextView = view.findViewById(R.id.bookings_text_view);
         bookingsTextView.setOnClickListener(v -> {
             // Navigate to Activity_BookingsInvoice
-            Intent intent = new Intent(requireContext(), Activity_BookingsInvoice.class);
+            Intent intent = new Intent(mContext, Activity_BookingsInvoice.class);
             startActivity(intent);
         });
 
@@ -170,7 +171,7 @@ public class Fragment_Account extends Fragment {
                     })
                     .addOnFailureListener(e -> {
                         // Handle image upload failure
-                        Toast.makeText(getContext(), "Failed to upload profile image.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "Failed to upload profile image.", Toast.LENGTH_SHORT).show();
                     });
         }
     }
@@ -208,7 +209,7 @@ public class Fragment_Account extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getContext(), "Failed to load claimed vouchers.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Failed to load claimed vouchers.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -224,7 +225,7 @@ public class Fragment_Account extends Fragment {
                 })
                 .addOnFailureListener(e -> {
                     // Handle failure
-                    Toast.makeText(getContext(), "Failed to save image to database", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Failed to save image to database", Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -238,7 +239,7 @@ public class Fragment_Account extends Fragment {
                         if (snapshot.exists()) {
                             String profileImageUrl = snapshot.child("profileImage").getValue(String.class);
                             if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
-                                Glide.with(requireContext())
+                                Glide.with(mContext)
                                         .load(profileImageUrl)
                                         .placeholder(R.drawable.user)
                                         .error(R.drawable.user)
@@ -252,7 +253,7 @@ public class Fragment_Account extends Fragment {
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         // Handle database error
-                        Toast.makeText(getContext(), "Failed to retrieve profile image", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "Failed to retrieve profile image", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -273,12 +274,12 @@ public class Fragment_Account extends Fragment {
                 }
                 voucherAdapter.setVoucherList(voucherList); // Update the adapter with the new list
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(), "Failed to load vouchers.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Failed to load vouchers.", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     private void logoutUser() {
@@ -286,7 +287,7 @@ public class Fragment_Account extends Fragment {
         FirebaseAuth.getInstance().signOut();
 
         // Get SharedPreferences instance
-        SharedPreferences sharedPreferences = requireContext().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         // Clear the user account information from SharedPreferences
@@ -294,7 +295,7 @@ public class Fragment_Account extends Fragment {
         editor.apply();
 
         // Go back to Sign up Activity
-        Intent intent = new Intent(getActivity(), Activity_SignUp.class);
+        Intent intent = new Intent(mContext, Activity_SignUp.class);
         startActivity(intent);
 
         // Finish the current activity (fragment's hosting activity)
@@ -321,13 +322,13 @@ public class Fragment_Account extends Fragment {
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         // Handle database error
-                        Toast.makeText(getContext(), "Failed to retrieve user data", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "Failed to retrieve user data", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
     private void showLogoutConfirmationDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setTitle("Logout");
         builder.setMessage("Are you sure you want to logout?");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {

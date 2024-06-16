@@ -15,7 +15,6 @@
         android:clickable="true"
         android:background="?android:attr/selectableItemBackground">
 
-
         <ImageView
             android:id="@+id/nuradManilaLogo"
             android:layout_width="170dp"
@@ -24,7 +23,6 @@
             android:layout_marginTop="10dp"
             android:contentDescription="Nurad Manila Logo"
             android:src="@drawable/logo_text_purple" />
-
 
         <!-- TextViews -->
         <TextView
@@ -629,6 +627,25 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
+
+        <View
+            android:layout_width="400dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="30dp"
+            android:background="#882065" />
+
+        <Button
+            android:id="@+id/printButton"
+            android:layout_width="106dp"
+            android:layout_marginTop="5dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#882065"
+            android:text="PRINT"
+            android:textColor="#FFFFFF"
+            android:textSize="13sp"
+            android:textStyle="bold" />
 
 
     </LinearLayout>

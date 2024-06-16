@@ -1,13 +1,31 @@
 package com.example.nurad.Adapters;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+import android.graphics.pdf.PdfDocument;
+import android.os.Bundle;
+import android.os.CancellationSignal;
+import android.os.ParcelFileDescriptor;
+import android.print.PageRange;
+import android.print.PrintAttributes;
+import android.print.PrintDocumentAdapter;
+import android.print.PrintDocumentInfo;
+import android.print.PrintManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nurad.Activities.Activity_BookingsInvoice;
@@ -19,6 +37,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -72,6 +95,12 @@ public class BookingsAdapter extends RecyclerView.Adapter<BookingsAdapter.Bookin
 
         displaySelectedAddOns(booking.getSelectedAddOns(), holder.addOnsTextView, holder.addOnsValTextView);
 
+        holder.printButton.setOnClickListener(v -> {
+            // Print the booking invoice layout
+            printBookingInvoiceLayout(holder.itemView);
+        });
+
+
         // Handle click event
         holder.itemView.setOnClickListener(v -> {
             // Navigate to Activity_BookingsInvoice with booking details
@@ -96,6 +125,7 @@ public class BookingsAdapter extends RecyclerView.Adapter<BookingsAdapter.Bookin
         TextView paymentMethod;
         TextView custName, custEmail, custContact, custAddress;
         TextView addOnsTextView, addOnsValTextView;
+        Button printButton;
 
         public BookingViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -123,6 +153,7 @@ public class BookingsAdapter extends RecyclerView.Adapter<BookingsAdapter.Bookin
             custAddress = itemView.findViewById(R.id.cust_address);
             addOnsTextView = itemView.findViewById(R.id.addOns);
             addOnsValTextView = itemView.findViewById(R.id.addOnsVal);
+            printButton = itemView.findViewById(R.id.printButton);
         }
     }
 
@@ -205,9 +236,9 @@ public class BookingsAdapter extends RecyclerView.Adapter<BookingsAdapter.Bookin
                     String fullName = prefix + " " + firstName + " " + lastName;
                     String contactInfo = mobilePhone + " or " + phone;
 
-                    custName.setText("Name: "+fullName);
-                    custEmail.setText("Email: "+email);
-                    custContact.setText("Contact No: "+contactInfo);
+                    custName.setText("Name: " + fullName);
+                    custEmail.setText("Email: " + email);
+                    custContact.setText("Contact No: " + contactInfo);
                 } else {
                     custName.setText("Name not found");
                     custEmail.setText("Email not found");
@@ -240,7 +271,7 @@ public class BookingsAdapter extends RecyclerView.Adapter<BookingsAdapter.Bookin
 
                     String fullAddress = address1 + "/" + address2 + ";" + city + ", " + region + ", " + country + ", " + zip;
 
-                    custAddress.setText("Address: "+fullAddress);
+                    custAddress.setText("Address: " + fullAddress);
                 } else {
                     custAddress.setText("Address not found");
                 }
@@ -261,4 +292,107 @@ public class BookingsAdapter extends RecyclerView.Adapter<BookingsAdapter.Bookin
         }
     }
 
+    private void printBookingInvoiceLayout(View view) {
+        Bitmap bitmap = loadBitmapFromView(view);
+        if (bitmap != null) {
+            try {
+                File pdfFile = createPdfFromBitmap(bitmap);
+                if (pdfFile != null) {
+                    PrintManager printManager = (PrintManager) context.getSystemService(Context.PRINT_SERVICE);
+                    if (printManager != null) {
+                        String jobName = context.getString(R.string.app_name) + " Invoice";
+                        printManager.print(jobName, new PdfPrintDocumentAdapter(pdfFile), null);
+                    }
+                } else {
+                    Toast.makeText(context, "Failed to create PDF", Toast.LENGTH_SHORT).show();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(context, "Error creating PDF", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(context, "Failed to capture view", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private Bitmap loadBitmapFromView(View view) {
+        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        Drawable bgDrawable = view.getBackground();
+        if (bgDrawable != null) {
+            bgDrawable.draw(canvas);
+        } else {
+            canvas.drawColor(ContextCompat.getColor(context, android.R.color.white));
+        }
+        view.draw(canvas);
+        return bitmap;
+    }
+
+    private File createPdfFromBitmap(Bitmap bitmap) throws IOException {
+        File pdfFile = new File(context.getExternalCacheDir(), "booking_invoice.pdf");
+        FileOutputStream fos = new FileOutputStream(pdfFile);
+
+        // Create a PDF document
+        PdfDocument pdfDocument = new PdfDocument();
+        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(bitmap.getWidth(), bitmap.getHeight(), 1).create();
+        PdfDocument.Page page = pdfDocument.startPage(pageInfo);
+
+        // Draw the bitmap to the PDF page
+        Canvas canvas = page.getCanvas();
+        canvas.drawBitmap(bitmap, 0, 0, null);
+
+        // Finish the page and write the document content to the file
+        pdfDocument.finishPage(page);
+        pdfDocument.writeTo(fos);
+
+        // Close the document
+        pdfDocument.close();
+        fos.close();
+
+        return pdfFile;
+    }
+
+    private class PdfPrintDocumentAdapter extends PrintDocumentAdapter {
+        private File pdfFile;
+
+        public PdfPrintDocumentAdapter(File pdfFile) {
+            this.pdfFile = pdfFile;
+        }
+
+        @Override
+        public void onLayout(PrintAttributes oldAttributes, PrintAttributes newAttributes, CancellationSignal cancellationSignal, LayoutResultCallback callback, Bundle extras) {
+            if (cancellationSignal.isCanceled()) {
+                callback.onLayoutCancelled();
+                return;
+            }
+
+            PrintDocumentInfo pdi = new PrintDocumentInfo.Builder("BookingInvoice.pdf")
+                    .setContentType(PrintDocumentInfo.CONTENT_TYPE_DOCUMENT)
+                    .build();
+
+            callback.onLayoutFinished(pdi, true);
+        }
+
+        @Override
+        public void onWrite(PageRange[] pages, ParcelFileDescriptor destination, CancellationSignal cancellationSignal, WriteResultCallback callback) {
+            try {
+                FileInputStream input = new FileInputStream(pdfFile);
+                FileOutputStream output = new FileOutputStream(destination.getFileDescriptor());
+
+                byte[] buf = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = input.read(buf)) > 0) {
+                    output.write(buf, 0, bytesRead);
+                }
+
+                callback.onWriteFinished(new PageRange[]{PageRange.ALL_PAGES});
+                input.close();
+                output.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

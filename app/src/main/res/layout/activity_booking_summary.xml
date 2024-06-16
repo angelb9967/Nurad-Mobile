@@ -68,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="30dp"
-                    android:text="Your Booking Summary"
+                    android:text="YOUR BOOKING SUMMARY"
                     android:textAlignment="center"
                     android:textColor="#882065"
                     android:textSize="18sp"
@@ -77,7 +77,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="3dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginStart="30dp"
                     android:layout_marginEnd="30dp"
