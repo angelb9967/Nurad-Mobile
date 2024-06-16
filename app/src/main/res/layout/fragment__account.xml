@@ -282,10 +282,10 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/LogoutBtn"
-                android:layout_width="380dp"
+                android:layout_width="360dp"
                 android:layout_height="32dp"
                 android:layout_marginBottom="20dp"
-                android:background="@drawable/rounded_button"
+                android:background="@drawable/gradient_background"
                 android:text="Log out"
                 android:textAlignment="textStart"
                 android:paddingStart="20dp"
