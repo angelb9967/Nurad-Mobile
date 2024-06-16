@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.nurad.Activities.Activity_BookingsInvoice;
 import com.example.nurad.Activities.Activity_SignUp;
 import com.example.nurad.Adapters.Adapter_ClaimedVouchers;
 import com.example.nurad.Adapters.Adapter_Vouchers;
@@ -106,6 +107,13 @@ public class Fragment_Account extends Fragment {
         claimedVouchersAdapter = new Adapter_ClaimedVouchers(claimedVouchersList, placeholderTextView); // Pass placeholderTextView
         recyclerView.setAdapter(voucherAdapter);
         claimedRecyclerView.setAdapter(claimedVouchersAdapter);
+
+        bookingsTextView = view.findViewById(R.id.bookings_text_view);
+        bookingsTextView.setOnClickListener(v -> {
+            // Navigate to Activity_BookingsInvoice
+            Intent intent = new Intent(requireContext(), Activity_BookingsInvoice.class);
+            startActivity(intent);
+        });
 
         // Load vouchers from Firebase
         loadVouchersFromFirebase();
