@@ -27,6 +27,7 @@ public class Model_Booking implements Serializable {
     private String notes;
     private String room;
     private Map<String, String> selectedAddOns;
+
     private String bookingDate;
     private double voucherValueValue;
     private String status;

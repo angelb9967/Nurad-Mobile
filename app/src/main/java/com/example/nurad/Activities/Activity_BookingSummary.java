@@ -170,7 +170,7 @@ public class Activity_BookingSummary extends AppCompatActivity {
 
 // Display the last four digits in the TextView
         TextView methodPaymentTextView = findViewById(R.id.paymentmethod);
-        methodPaymentTextView.setText("Card ending in ****" + lastFourDigits);
+        methodPaymentTextView.setText("Card ending in **** **** ****" + lastFourDigits);
 
 
     }

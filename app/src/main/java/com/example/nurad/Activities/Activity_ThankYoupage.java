@@ -15,7 +15,7 @@ import com.example.nurad.R;
 
 public class Activity_ThankYoupage extends AppCompatActivity {
 
-    private static final long REDIRECT_DELAY = 6000; // 6 seconds
+    private static final long REDIRECT_DELAY = 5000; // 5 seconds
 
     @SuppressLint("MissingInflatedId")
     @Override

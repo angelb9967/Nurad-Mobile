@@ -23,17 +23,34 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.007" />
 
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="-203dp"
+        tools:layout_editor_absoluteY="8dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="60dp"
             android:padding="10dp"
             tools:listitem="@layout/item_booking_invoice" />
+
+        <TextView
+            android:id="@+id/no_booking_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginBottom="656dp"
+            android:text="No Bookings Yet"
+            android:textColor="#948F8F"
+            android:textSize="19dp"
+            android:visibility="gone"
+            tools:ignore="MissingConstraints" />
 
     </RelativeLayout>
 

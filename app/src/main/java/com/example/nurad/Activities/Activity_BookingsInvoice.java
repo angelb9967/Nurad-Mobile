@@ -1,14 +1,12 @@
 package com.example.nurad.Activities;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,6 +30,7 @@ public class Activity_BookingsInvoice extends AppCompatActivity {
     private BookingsAdapter adapter;
     private List<Model_Booking> bookingList;
     private DatabaseReference bookingsRef;
+    private TextView noBookingTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +38,7 @@ public class Activity_BookingsInvoice extends AppCompatActivity {
         setContentView(R.layout.activity_bookings_invoice);
 
         recyclerView = findViewById(R.id.recyclerView);
+        noBookingTextView = findViewById(R.id.no_booking_text);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         bookingList = new ArrayList<>();
@@ -63,6 +63,13 @@ public class Activity_BookingsInvoice extends AppCompatActivity {
                     }
                     // Update RecyclerView
                     adapter.notifyDataSetChanged();
+
+                    // Show or hide the "No Bookings Yet" text based on the booking list size
+                    if (bookingList.isEmpty()) {
+                        noBookingTextView.setVisibility(View.VISIBLE);
+                    } else {
+                        noBookingTextView.setVisibility(View.GONE);
+                    }
                 }
 
                 @Override
