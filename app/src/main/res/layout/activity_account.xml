@@ -5,12 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    tools:context=".Activities.Activity_Rate">
-
-
-    <!-- Header View -->
-
+    tools:context=".Activities.Activity_Account">
 
     <View
         android:id="@+id/headerView"
@@ -28,7 +23,7 @@
         android:layout_width="110dp"
         android:layout_height="110dp"
         android:layout_marginTop="8dp"
-        android:src="@drawable/hotel_image"
+        android:src="@drawable/person"
         app:civ_border_color="#D1B32F"
         app:civ_border_width="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -45,103 +40,96 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_marginTop="50dp"
-        android:text="Rate Our Service"
+        android:text="My Account"
         android:layout_marginBottom="5dp"
         android:textColor="#882065"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/ratingBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/headerView" />
 
-    <RatingBar
-        android:id="@+id/ratingBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:numStars="5"
-        android:stepSize="1"
-        app:layout_constraintBottom_toTopOf="@+id/choicesTextView"
+    <EditText
+        android:id="@+id/FirstN_Etxt"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/custom_input"
+        android:drawableStart="@drawable/user"
+        android:drawablePadding="16dp"
+        android:ems="10"
+        android:hint="First Name"
+        android:inputType="text"
+        android:paddingStart="18dp"
+        android:paddingEnd="18dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/titleTextView" />
-
-
-    <!-- Feedback EditText -->
-
-    <TextView
-        android:id="@+id/choicesTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:text="Choose the one you think we need to improve the most:"
-        android:textColor="#882065"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ratingBar" />
-
-    <RadioGroup
-        android:id="@+id/choicesRadioGroup"
-        android:layout_width="368dp"
-        android:layout_height="197dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/choicesTextView">
-
-
-        <RadioButton
-            android:id="@+id/option1RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Overall Services" />
-
-
-        <RadioButton
-            android:id="@+id/option2RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Room Quality" />
-
-
-        <RadioButton
-            android:id="@+id/option3RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Speed and Efficiency" />
-
-
-        <RadioButton
-            android:id="@+id/option4RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Transparency" />
-    </RadioGroup>
-
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
     <EditText
-        android:id="@+id/feedbackEditText"
-        android:layout_width="370dp"
-        android:layout_height="121dp"
-        android:layout_marginTop="16dp"
+        android:id="@+id/LastN_Etxt"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="30dp"
         android:background="@drawable/custom_input"
-        android:gravity="top"
-        android:hint="Tell Us More..."
-        android:inputType="textMultiLine"
-        android:minLines="3"
+        android:drawableStart="@drawable/user"
+        android:drawablePadding="16dp"
+        android:ems="10"
+        android:hint="Last Name"
+        android:inputType="text"
         android:paddingStart="18dp"
-        android:paddingTop="10dp"
         android:paddingEnd="18dp"
-        android:paddingBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/choicesRadioGroup" />
+        app:layout_constraintTop_toBottomOf="@+id/FirstN_Etxt" />
 
-    <!-- Submit Button -->
+    <EditText
+        android:id="@+id/Email_Etxt"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/custom_input"
+        android:drawableStart="@drawable/mail"
+        android:drawablePadding="16dp"
+        android:ems="10"
+        android:hint="Enter your email"
+        android:inputType="textEmailAddress"
+        android:paddingStart="18dp"
+        android:paddingEnd="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LastN_Etxt" />
+
+    <EditText
+        android:id="@+id/Password_Etxt"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/custom_input"
+        android:drawableStart="@drawable/lock"
+        android:drawableEnd="@drawable/eye"
+        android:drawablePadding="16dp"
+        android:ems="10"
+        android:hint="Enter your password"
+        android:inputType="textPassword"
+        android:paddingStart="18dp"
+        android:paddingEnd="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Email_Etxt" />
+
     <Button
         android:id="@+id/submitRatingButton"
         android:layout_width="wrap_content"
@@ -149,16 +137,14 @@
         android:layout_gravity="center"
         android:layout_marginTop="24dp"
         android:backgroundTint="#882065"
-        android:text="SUBMIT"
+        android:text="UPDATE"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/feedbackEditText"
+        app:layout_constraintTop_toBottomOf="@id/Password_Etxt"
         app:layout_constraintVertical_bias="0.0" />
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>
-
