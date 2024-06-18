@@ -857,16 +857,20 @@ public class Fragment_Booking extends Fragment {
     }
 
     private void changeGuestCount(EditText editText, int change, int min, int max) {
-        int currentCount = Integer.parseInt(editText.getText().toString());
-        int newCount = currentCount + change;
+        try {
+            int currentCount = Integer.parseInt(editText.getText().toString());
+            int newCount = currentCount + change;
 
-        if (newCount >= min && newCount <= max) {
-            editText.setText(String.valueOf(newCount));
-            updateGuestPrices(); // Update guest prices after changing the count
-        } else if (newCount < min) {
-            Toast.makeText(getContext(), "Value cannot be lower than " + min, Toast.LENGTH_SHORT).show();
-        } else if (newCount > max) {
-            Toast.makeText(getContext(), "Value cannot be higher than " + max, Toast.LENGTH_SHORT).show();
+            if (newCount >= min && newCount <= max) {
+                editText.setText(String.valueOf(newCount));
+                updateGuestPrices(); // Update guest prices after changing the count
+            } else if (newCount < min) {
+                Toast.makeText(getContext(), "Value cannot be lower than " + min, Toast.LENGTH_SHORT).show();
+            } else if (newCount > max) {
+                Toast.makeText(getContext(), "Value cannot be higher than " + max, Toast.LENGTH_SHORT).show();
+            }
+        } catch (NumberFormatException e) {
+            Toast.makeText(getContext(), "Invalid input", Toast.LENGTH_SHORT).show();
         }
     }
 
