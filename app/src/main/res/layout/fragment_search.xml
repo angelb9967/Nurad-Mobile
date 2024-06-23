@@ -152,7 +152,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/roomsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="451dp"
+        android:layout_height="521dp"
         android:layout_gravity="bottom"
         android:background="#FFFFFF"
         android:clipToPadding="false"

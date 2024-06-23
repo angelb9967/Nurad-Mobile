@@ -64,7 +64,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewHelpCenter"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="567dp"
             android:padding="8dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_help_center" />
