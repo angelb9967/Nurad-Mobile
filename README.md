@@ -1,4 +1,4 @@
-# 🏨 Nurad: Mobile Hotel Booking System (Guest)
+# 🏨 Nurad: Mobile Hotel Booking System
 
 ## ✨ Project Overview
 
@@ -10,12 +10,11 @@ It streamlines room browsing, reservation processes, and booking management. Dev
 
 Explore the core functionalities of Nurad:
 
-*   **🔍 Room Catalog:** Enables users to view available hotel rooms, including specifications such as room type, amenities, and pricing.
-*   **🔒 Reservation Process:** Supports the creation of new room reservations with robust data handling mechanisms.
-*   **🗓️ Booking Management:** Provides functionality for users to access current and past bookings, monitor reservation statuses, and execute modification or cancellation requests (subject to established hotel policies).
-*   **🔑 User Authentication:** Implements Firebase Authentication for secure user registration, login, and session management protocols.
-*   **⚡ Real-time Availability:** Displays dynamic room availability information, synchronized instantaneously with the central hotel management system.
-*   **📱 User Interface (UI):** Engineered for intuitive navigation and a clear, efficient booking experience for guests.
+*   **Room Catalog:** Enables users to view available hotel rooms, including specifications such as room type, amenities, and pricing.
+*   **Booking Management:** Provides functionality for users to access current and past bookings.
+*   **User Authentication:** Implements Firebase Authentication for secure user registration, login, and session management protocols.
+*   **Real-time Availability:** Displays dynamic room availability information, synchronized instantaneously with the central hotel management system.
+*   **User Interface (UI):** Engineered for intuitive navigation and a clear, efficient booking experience for guests.
 
 ## 🛠️ Technologies Utilized
 
