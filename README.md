@@ -80,4 +80,4 @@ For any inquiries or feedback regarding this project, please reach out to the te
 | Angie Suson        | [***REMOVED***](mailto:***REMOVED***) |
 | Jersey Usman       | [***REMOVED***](mailto:***REMOVED***) |
 
-Project Repository: [https://github.com/angelb9967/NUrad.git](https://github.com/angelb9967/NUrad.git)
+Project Repository: [https://github.com/angelb9967/Nurad-Mobile.git](https://github.com/angelb9967/Nurad-Mobile.git)
