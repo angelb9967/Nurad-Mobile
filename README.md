@@ -77,11 +77,11 @@ Post-installation, the Nurad application can be operated as follows:
 
 For any inquiries or feedback regarding this project, please reach out to the team:
 
-| Name               | Email                                    |
+| Contributor               | Github Account                                    |
 | :----------------- | :--------------------------------------- |
-| Allysandrei Aparicio | [***REMOVED***](mailto:***REMOVED***) |
-| Angeline Bedis     | [***REMOVED***](mailto:***REMOVED***) |
-| Angie Suson        | [***REMOVED***](mailto:***REMOVED***) |
-| Jersey Usman       | [***REMOVED***](mailto:***REMOVED***) |
+| Allysandrei | 👨‍🎨 [allysandreiaparicio](https://github.com/allysandreiaparicio) |
+| Angeline     | 👩‍💻 [angelb9967](https://github.com/angelb9967) |
+| Angie        | 👩‍🎨 [anjicln ](https://github.com/anjicln) |
+| Jersey       | 👩‍💻 [jerseyloveu](https://github.com/jerseyloveu) |
 
 Project Repository: [https://github.com/angelb9967/Nurad-Mobile.git](https://github.com/angelb9967/Nurad-Mobile.git)
