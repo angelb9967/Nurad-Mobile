@@ -91,8 +91,9 @@ Project Repository: [https://github.com/angelb9967/Nurad-Mobile.git](https://git
 Get a quick look at Nurad Mobile in action!
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/265154fe-7861-4e28-88ae-09d3c7fa1510" />
+<img width="285" alt="image" src="https://github.com/user-attachments/assets/9866d4c5-6cb5-4f54-b4e7-a70ec62123d9" />
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/8f8ad215-1d43-4d39-bf58-176657a24cb9" />
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/8e835808-8b70-4251-ae18-591487d460cd" />
-<img width="300" alt="image" src="https://github.com/user-attachments/assets/a1718177-c2ed-4d0c-88da-9bd6456a431e" />
+<img width="303" alt="image" src="https://github.com/user-attachments/assets/a1718177-c2ed-4d0c-88da-9bd6456a431e" />
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/fca3739b-036e-41e7-be3e-3f69ed346150" />
 
