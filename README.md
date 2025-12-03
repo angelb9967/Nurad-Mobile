@@ -2,8 +2,17 @@
   <img src="https://github.com/user-attachments/assets/2d9805b4-9a86-4d69-b7f5-bd6740bdd889" alt="Nurad_App_Logo" width="500" />
 </div>
 
+<br>
+<p align="center" >
+  <a href="https://github.com/angelb9967/Nurad-Mobile/issues/new">
+    <img src="https://img.shields.io/badge/Report%20a%20Bug-red?style=for-the-badge&logo=github" />
+  </a>
+  <a href="https://github.com/angelb9967/Nurad-Mobile/issues/new">
+    <img src="https://img.shields.io/badge/Request%20Feature-blue?style=for-the-badge&logo=github" />
+  </a>
+</p>
 
-# 🏨 Nurad: Mobile Hotel Booking System
+# Nurad: Mobile Hotel Booking System
 
 ## ✨ Project Overview
 
@@ -98,3 +107,5 @@ Get a quick look at Nurad Mobile in action!
 <img width="303" alt="image" src="https://github.com/user-attachments/assets/a1718177-c2ed-4d0c-88da-9bd6456a431e" />
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/fca3739b-036e-41e7-be3e-3f69ed346150" />
 
+<br><br>
+<img src="https://img.shields.io/badge/Developed%20with%20%E2%9D%A4-angelb9967-red?style=for-the-badge" />
