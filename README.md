@@ -3,13 +3,8 @@
 </div>
 
 <br>
-<p align="center" >
-  <a href="https://github.com/angelb9967/Nurad-Mobile/issues/new">
-    <img src="https://img.shields.io/badge/Report%20a%20Bug-red?style=for-the-badge&logo=github" />
-  </a>
-  <a href="https://github.com/angelb9967/Nurad-Mobile/issues/new">
-    <img src="https://img.shields.io/badge/Request%20Feature-blue?style=for-the-badge&logo=github" />
-  </a>
+<p align="center">
+  <a href="https://github.com/angelb9967/Nurad-Mobile/issues/new"><img src="https://img.shields.io/badge/Report%20a%20Bug-red?style=for-the-badge&logo=github" /></a><span>&nbsp;</span><a href="https://github.com/angelb9967/Nurad-Mobile/issues/new"><img src="https://img.shields.io/badge/Request%20Feature-blue?style=for-the-badge&logo=github" /></a>
 </p>
 
 # Nurad: Mobile Hotel Booking System
